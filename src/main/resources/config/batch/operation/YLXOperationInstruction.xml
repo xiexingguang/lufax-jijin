@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="YLX_OPERATION_INSTRUCTION">
+
+
+	<typeAlias alias="OperationInstructionDTO"
+		type="com.lufax.fa.ylx.operation.dto.OperationInstructionDTO" />
+
+	<sql id = "operationFields">
+		ID as id,
+		TYPE as type,
+		PARAMETER as parameter,
+		STATUS as status,
+		AUDIT_TYPE as auditType,
+		AUDIT_ID as auditId,
+		BATCH_ID as batchId,
+		CREATED_AT as createdAt,
+		UPDATED_AT as updatedAt,
+		CREATED_BY as createdBy,
+		UPDATED_BY as updatedBy
+	</sql>
+	
+	<resultMap id="statistic" class="java.util.HashMap">
+		<result property="maxId" column="maxId" javaType="java.lang.Long" />
+		<result property="minId" column="minId" javaType="java.lang.Long" />
+		<result property="totalCount" column="totalCount" javaType="java.lang.Long" />
+	</resultMap>
+
+
+	<insert id="insert" parameterClass="OperationInstructionDTO">
+		<selectKey keyProperty="id" resultClass="java.lang.Long">
+			SELECT SEQ_YLX_OPERATION_INSTRUCTION.NEXTVAL FROM DUAL
+		</selectKey>
+		insert into YLX_OPERATION_INSTRUCTION (
+		ID,
+		TYPE,
+		PARAMETER,
+		STATUS,
+		AUDIT_TYPE,
+		AUDIT_ID,
+		BATCH_ID,
+		CREATED_AT,
+		UPDATED_AT,
+		CREATED_BY,
+		UPDATED_BY
+		) values (
+		#id#,
+		#type#,
+		#parameter#,
+		#status#,
+		#auditType#,
+		#auditId#,
+		#batchId#,
+		sysdate,
+		sysdate,
+		'SYS',
+		'SYS'
+		)
+	</insert>
+
+	<select id = "getOperationStatic" parameterClass="map" resultMap="statistic">
+		select 
+			nvl(max(i.id),-1) as maxId, 
+			nvl(min(i.id),-1) as minId, 
+			count(i.id) as totalCount 
+		from YLX_OPERATION_INSTRUCTION i
+		where i.BATCH_ID =  #batchId#  
+		<iterate prepend="and" property="statusList" open="(" close=")" conjunction="or">
+            i.status = #statusList[]#
+        </iterate>
+	</select>
+	
+	<select id = "queryOperationList" parameterClass="map" resultClass="OperationInstructionDTO">
+		select * from ( select row_.*, rownum rownum_ from (
+			select 
+				 <include refid="operationFields"/>
+			from YLX_OPERATION_INSTRUCTION 
+			where batch_id = #batchId# 
+			<iterate prepend="and" property="statusList" open="(" close=")" conjunction="or">
+	            status = #statusList[]#
+	        </iterate>
+	        and type = #type#
+	        and id >= #start#  order by id asc 
+        <![CDATA[
+         ) row_ ) where rownum_ <= #offset# 
+        ]]>
+	</select>
+
+	<select id="queryOperationListNoPage" parameterClass="map" resultClass="OperationInstructionDTO">
+		select
+		<include refid="operationFields" />
+		from YLX_OPERATION_INSTRUCTION
+		where batch_id = #batchId#
+		<iterate prepend="and" property="statusList" open="(" close=")" conjunction="or">
+			status = #statusList[]#
+		</iterate>
+		and type = #type#
+		order by id asc
+	</select>
+	
+	<update id="updateStatus" parameterClass="OperationInstructionDTO">
+		update YLX_OPERATION_INSTRUCTION set status =  #status#, UPDATED_AT = sysdate where id = #id#
+	</update>
+	
+</sqlMap>

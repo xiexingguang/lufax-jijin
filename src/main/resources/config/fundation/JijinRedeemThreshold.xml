@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+        
+        
+<sqlMap namespace="BusJijinRedeemThreshold">
+
+    <select id="getRedeemThresholdByFundCode" parameterClass="java.lang.String" resultClass="com.lufax.jijin.fundation.dto.JijinRedeemThresholdDTO">
+        select
+            id id,
+            created_at createdAt,
+            created_by createBy,
+            updated_at updatedAt,
+            updated_by updatedBy,
+            fund_code fundCode,
+            current_status currentStatus,
+            open_switch openSwitch,
+            close_switch closeSwitch,
+            account_status accountStatus
+        from BUS_JIJIN_REDEEM_THRESHOLD
+        where fund_code =#fundCode#
+    </select>
+    <update id="updateJijinRedeemStatusByFundCode" parameterClass="java.util.Map">
+		update BUS_JIJIN_REDEEM_THRESHOLD
+		set current_status = #currentStatus#,
+		    updated_at = sysdate
+		where fund_code = #fundCode#
+    </update>
+    <update id="updateDahuaAccountStatusByFundCode" parameterClass="java.util.Map">
+        update BUS_JIJIN_REDEEM_THRESHOLD
+		set account_status = #accountStatus#,
+			updated_at = sysdate
+		where fund_code = #fundCode#
+    </update>
+</sqlMap>

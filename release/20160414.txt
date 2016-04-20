@@ -1,0 +1,14 @@
+[DEP]
+
+[DB1]
+
+[DB2]
+
+[NOTIFY]
+    wuxiujun685@pingan.com.cn
+
+[ADVICE]
+    WEBDEV-8355 基金(PC)赎回到账时间显示优化
+
+    hot,修复大华对账文件生成时query不到用户账户
+

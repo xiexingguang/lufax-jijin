@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+        
+        
+<sqlMap namespace="BusJijinSyncFile">
+
+    <select id="getNextVal" resultClass="java.lang.Long">
+        select seq_bus_jijin_sync_file.nextval from dual
+    </select>
+
+    <insert id="insertBusJijinSyncFile" parameterClass="com.lufax.jijin.fundation.dto.JijinSyncFileDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select seq_bus_jijin_sync_file.nextval as id from dual
+        </selectKey>
+        <![CDATA[
+            insert into bus_jijin_sync_file (
+                id,
+                biz_date,
+                file_name,
+                biz_type,
+                status,
+                memo,
+                retry_times,
+                current_line,
+                created_at,
+                updated_at,
+                created_by,
+                updated_by,
+                source_path
+            )
+            values (
+                #id#,
+                #bizDate#,
+                #fileName#,
+                #bizType#,
+                #status#,
+                #memo#,
+                #retryTimes#,
+                #currentLine#,
+                sysdate,
+                sysdate,
+                'sys',
+                'sys',
+                #sourcePath#
+            )
+        ]]>
+    </insert>
+
+
+
+    <select id="findBusJijinSyncFile" parameterClass="java.util.Map" resultClass="com.lufax.jijin.fundation.dto.JijinSyncFileDTO">
+        <![CDATA[
+            select
+                id id,
+                biz_date bizDate,
+                file_name fileName,
+                biz_type bizType,
+                status status,
+                memo memo,
+                retry_times retryTimes,
+                current_line currentLine,
+                created_at createdAt,
+                updated_at updatedAt,
+                created_by createdBy,
+                updated_by updatedBy,
+                source_path sourcePath
+            from bus_jijin_sync_file
+            where 1=1
+        ]]>
+        <isNotEmpty prepend="and" property="id">
+            id = #id#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="bizDate">
+            biz_date = #bizDate#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="fileName">
+            file_name = #fileName#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="bizType">
+            biz_type = #bizType#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="status">
+            status = #status#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="memo">
+            memo = #memo#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="retryTimes">
+            retry_times = #retryTimes#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="currentLine">
+            current_line = #currentLine#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="createdAt">
+            created_at = #createdAt#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="updatedAt">
+            updated_at = #updatedAt#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="createdBy">
+            created_by = #createdBy#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="updatedBy">
+            updated_by = #updatedBy#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="sourcePath">
+            source_path = #sourcePath#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="bizTypes">
+            <iterate property="bizTypes" open="(" close=")"	conjunction="or">
+                biz_type = #bizTypes[]#
+            </iterate>
+        </isNotEmpty>
+        order by id
+
+    </select>
+
+
+
+    <update id="updateBusJijinSyncFile" parameterClass="java.util.Map">
+        update bus_jijin_sync_file t set
+        <isNotEmpty property="bizDate">
+            t.biz_date = #bizDate#,
+        </isNotEmpty>
+        <isNotEmpty property="fileName">
+            t.file_name = #fileName#,
+        </isNotEmpty>
+        <isNotEmpty property="bizType">
+            t.biz_type = #bizType#,
+        </isNotEmpty>
+        <isNotEmpty property="status">
+            t.status = #status#,
+        </isNotEmpty>
+        <isNotEmpty property="memo">
+            t.memo = #memo#,
+        </isNotEmpty>
+        <isNotEmpty property="retryTimes">
+            t.retry_times = #retryTimes#,
+        </isNotEmpty>
+        <isNotEmpty property="currentLine">
+            t.current_line = #currentLine#,
+        </isNotEmpty>
+        <isNotEmpty property="createdAt">
+            t.created_at = #createdAt#,
+        </isNotEmpty>
+        <isNotEmpty property="createdBy">
+            t.created_by = #createdBy#,
+        </isNotEmpty>
+        <isNotEmpty property="updatedBy">
+            t.updated_by = #updatedBy#,
+        </isNotEmpty>
+        t.updated_at=sysdate
+        where t.id = #id#
+    </update>
+
+</sqlMap>

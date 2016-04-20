@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="BusJijinExFee">
+
+    <insert id="insertJijinExFee" parameterClass="com.lufax.jijin.daixiao.dto.JijinExFeeDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select seq_bus_jijin_ex_fee.nextval as id from dual
+        </selectKey>
+
+        <![CDATA[
+            insert into bus_jijin_ex_fee (
+                id,
+                fund_code ,
+                fee_type ,
+                charge_type ,
+                upper_limit_amount ,
+                lower_limit_amount ,
+                lower_limit_hold_year ,
+                upper_limit_hold_year ,
+                fee ,
+                change_date ,
+                batch_id ,
+                status ,
+                fee_memo,
+                hold_period_unit,
+                fix_value,
+                created_at,
+                updated_at,
+                created_by,
+                updated_by
+            )
+            values (
+                #id#,
+                #fundCode#,
+                #feeType#,
+                #chargeType#,
+                #upperLimitAmount#,
+                #lowerLimitAmount#,
+                #lowerLimitHoldYear#,
+                #upperLimitHoldYear#,
+                #fee#,
+                #changeDate#,
+                #batchId#,
+                #status#,
+                #feeMemo#,
+                #holdPeriodUnit#,
+                #fixValue#,
+                sysdate,
+                sysdate,
+                'sys',
+                'sys'
+            )
+        ]]>
+    </insert>
+
+    <sql id="selectAll">
+        select
+        id id,
+        created_at createdAt,
+        created_by createdBy,
+        updated_at updatedAt,
+        updated_by updatedBy,
+        fund_code fundCode,
+        fee_type feeType,
+        charge_type chargeType,
+        upper_limit_amount upperLimitAmount,
+        lower_limit_amount lowerLimitAmount,
+        lower_limit_hold_year lowerLimitHoldYear,
+        upper_limit_hold_year upperLimitHoldYear,
+        fee fee,
+        change_date changeDate,
+        batch_id batchId,
+        status status,
+        is_valid isValid,
+        fee_memo feeMemo,
+        hold_period_unit holdPeriodUnit,
+        fix_value fixValue
+        from bus_jijin_ex_fee
+    </sql>
+
+    <select id="getJijinExFee" parameterClass="java.util.Map" resultClass="com.lufax.jijin.daixiao.dto.JijinExFeeDTO">
+        <include refid="selectAll"></include>
+        where 1=1
+        <isNotEmpty property="id" prepend="and">
+            id = #id#
+        </isNotEmpty>
+        <isNotEmpty property="fundCode" prepend="and">
+            fund_code = #fundCode#
+        </isNotEmpty>
+        <isNotEmpty property="status" prepend="and">
+            status = #status#
+        </isNotEmpty>
+        <isNotEmpty property="limit" prepend="and">
+            rownum <![CDATA[<=]]>#limit#
+        </isNotEmpty>
+        <isNotEmpty property="batchId" prepend="and">
+            batch_id =#batchId#
+        </isNotEmpty>
+        order by id
+    </select>
+
+    <select id="getJijinExFeeByFundCode" parameterClass="java.lang.String"
+            resultClass="com.lufax.jijin.daixiao.dto.JijinExFeeDTO">
+        <include refid="selectAll"></include>
+        where fund_code=#fundCode# order by batch_id desc
+    </select>
+
+    <select id="getJijinExFeeByFundCodeAndFeeType" parameterClass="java.util.Map"
+            resultClass="com.lufax.jijin.daixiao.dto.JijinExFeeDTO">
+        <include refid="selectAll"></include>
+        where fund_code=#fundCode# and fee_type =#feeType# order by batch_id desc
+    </select>
+
+    <update id="updateJijinExFee" parameterClass="java.util.Map">
+        update bus_jijin_ex_fee t set
+        <isNotEmpty property="errMsg">
+            t.err_msg = #errMsg#,
+        </isNotEmpty>
+        t.status = #status#,
+        t.updated_at=sysdate
+        where t.id = #id#
+    </update>
+
+    <select id="getLatestBatchIdByFundCodeAndType" parameterClass="java.util.Map" resultClass="java.lang.Long">
+        <![CDATA[
+        select max(batch_id) from bus_jijin_ex_fee
+        where
+        fund_code=#fundCode#
+        and
+        fee_type = #feeType#
+        ]]>
+    </select>
+
+    <select id="getLatestFeeBatchIdByDate" parameterClass="java.util.Map" resultClass="java.lang.Long">
+        <![CDATA[
+        select max(batch_id) from bus_jijin_ex_fee
+        where
+        fund_code=#fundCode#]]>
+        <isNotEmpty property="feeType" prepend="and">
+            fee_type = #feeType#
+        </isNotEmpty>
+        <isNotEmpty property="currentDate" prepend="and">
+            <![CDATA[change_date <= #currentDate#]]>
+        </isNotEmpty>
+    </select>
+
+    <select id="getJijinExFeeByBatchIdAndFundCodeAndBizCode" parameterClass="java.util.Map"
+            resultClass="com.lufax.jijin.daixiao.dto.JijinExFeeDTO">
+        <include refid="selectAll"></include>
+        where batch_id=#batchId# and fund_code =#fundCode# and fee_type =#feeType#
+          order by lower_limit_amount
+    </select>
+
+</sqlMap>

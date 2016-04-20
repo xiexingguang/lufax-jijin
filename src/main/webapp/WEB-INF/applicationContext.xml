@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+    <context:component-scan base-package="com.lufax">
+    </context:component-scan>
+
+    <context:annotation-config/>
+    
+    <bean id="threadPoolTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <!-- 核心线程数，默认为1 -->
+        <property name="corePoolSize" value="0" />
+        <!-- 队列最大长度，默认为Integer.MAX_VALUE -->
+        <property name="queueCapacity" value="0" />
+        <!-- 线程池维护线程所允许的空闲时间，默认为60s -->
+        <property name="keepAliveSeconds" value="300" />
+        <!-- 线程池对拒绝任务（无线程可用）的处理策略，目前只支持AbortPolicy、CallerRunsPolicy；默认为后者 -->
+        <property name="rejectedExecutionHandler">
+            <!-- AbortPolicy:直接抛出java.util.concurrent.RejectedExecutionException异常 -->
+            <!-- CallerRunsPolicy:主线程直接执行该任务，执行完之后尝试添加下一个任务到线程池中，可以有效降低向线程池内添加任务的速度 -->
+            <!-- DiscardOldestPolicy:抛弃旧的任务、暂不支持；会导致被丢弃的任务无法再次被执行 -->
+            <!-- DiscardPolicy:抛弃当前任务、暂不支持；会导致被丢弃的任务无法再次被执行 -->
+            <bean class="java.util.concurrent.ThreadPoolExecutor$AbortPolicy" />
+        </property>
+    </bean>
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:jijin-app-env.properties</value>
+                <value>classpath:jijin-app.properties</value>
+            </list>
+        </property>
+        <property name="searchSystemEnvironment" value="true"/>
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+    </bean>
+	
+    <bean id="sqlMapClient" class="com.lufax.kernel.dal.LufaxSqlMapClientFactoryBean">
+        <property name="configLocation" value="classpath:/config/sqlMapConfig.xml"/>
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="sqlMapClient_trddata" class="com.lufax.kernel.dal.LufaxSqlMapClientFactoryBean">
+        <property name="configLocation" value="classpath:/config/sqlMapConfig_trddata.xml" />
+        <property name="dataSource" ref="dataSource_trddata"/>
+    </bean>
+
+    <bean id="sqlMapClient_cfgdata" class="com.lufax.kernel.dal.LufaxSqlMapClientFactoryBean">
+        <property name="configLocation" value="classpath:/config/sqlMapConfig_cfgdata.xml" />
+        <property name="dataSource" ref="dataSource_cfgdata"/>
+    </bean>
+    
+    <bean id="sqlMapClient_userdata" class="com.lufax.kernel.dal.LufaxSqlMapClientFactoryBean">
+        <property name="configLocation" value="classpath:/config/sqlMapConfig_userdata.xml" />
+        <property name="dataSource" ref="dataSource_userdata"/>
+    </bean>
+
+
+    <bean id="sqlMapClient_busdata" class="com.lufax.kernel.dal.LufaxSqlMapClientFactoryBean">
+        <property name="configLocation" value="classpath:/config/sqlMapConfig_busdata.xml" />
+        <property name="dataSource" ref="dataSource_busdata"/>
+    </bean>
+
+    <!-- TRANSACTION MANAGER ONLY MANAGE BD WHICH THE APP HAS WRITE PERMISSION OF -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <bean class="com.lufax.jersey.utils.JerseyConfig">
+        <property name="serverType" value="APP"/>
+        <!--<property name="applicationSalt" value=":p2p-483764657443508:"/>-->
+    </bean>
+
+    <bean id="userContextProvider" class="com.lufax.jersey.usercontext.filter.impl.SHAUserTokenProvider"></bean>
+
+    <bean id="userContextFilter" class="com.lufax.jijin.web.filter.UsersContextFilter">
+        <property name="userContextProvider" ref="userContextProvider"/>
+    </bean>
+
+    <!--list app invoke service-->
+    <bean id="listAppHost" class="com.lufax.jersey.client.JerseyHost">
+        <property name="hostURI" value="${list.app.host.url}"/>
+    </bean>
+    <bean id="jerseyServiceForListApp" class="com.lufax.jersey.client.JerseyService">
+        <constructor-arg name="host" ref="listAppHost"/>
+         <property name="clientFilterList">
+            <list>
+                <ref bean="catJerseyClientFilter" />
+            </list>
+        </property>
+    </bean>
+    
+    <!--prodopr-svc invoke service-->
+    <bean id="prodoprSvcHost" class="com.lufax.jersey.client.JerseyHost">
+        <property name="hostURI" value="${prodopr.svc.host.url}"/>
+    </bean>
+    <bean id="jerseyServiceForProdoprSvc" class="com.lufax.jersey.client.JerseyService">
+        <constructor-arg name="host" ref="prodoprSvcHost"/>
+         <property name="clientFilterList">
+            <list>
+                <ref bean="catJerseyClientFilter" />
+            </list>
+        </property>
+    </bean>
+    
+
+    <!--contract app invoke service-->
+    <bean id="contractAppHost" class="com.lufax.jersey.client.JerseyHost">
+        <property name="hostURI" value="${contract.app.host.url}"/>
+    </bean>
+    <bean id="jerseyServiceForContract" class="com.lufax.jersey.client.JerseyService">
+        <constructor-arg name="host" ref="contractAppHost"/>
+         <property name="clientFilterList">
+            <list>
+                <ref bean="catJerseyClientFilter" />
+            </list>
+        </property>
+    </bean>
+
+    <!--ext app invoke service-->
+    <bean id="extAppHost" class="com.lufax.jersey.client.JerseyHost">
+        <property name="hostURI" value="${ext.app.host.url}"/>
+    </bean>
+    <bean id="jerseyServiceForExt" class="com.lufax.jersey.client.JerseyService">
+        <constructor-arg name="host" ref="extAppHost"/>
+         <property name="clientFilterList">
+            <list>
+                <ref bean="catJerseyClientFilter" />
+            </list>
+        </property>
+    </bean>
+
+    <!--Trade app invoke service-->
+    <bean id="tradeAppHost" class="com.lufax.jersey.client.JerseyHost">
+        <property name="hostURI" value="${trade.app.host.url}"/>
+    </bean>
+    <bean id="jerseyServiceForTrade" class="com.lufax.jersey.client.JerseyService">
+        <constructor-arg name="host" ref="tradeAppHost"/>
+         <property name="clientFilterList">
+            <list>
+                <ref bean="catJerseyClientFilter" />
+            </list>
+        </property>
+    </bean>
+
+
+ 	<!-- trade svc service -->
+ 	<bean id="tradeSvcHost" class="com.lufax.jersey.client.JerseyHost">
+        <property name="hostURI" value="${trade.svc.host.url}"/>
+    </bean>
+    <bean id="jerseyServiceForTradeSvc" class="com.lufax.jersey.client.JerseyService">
+        <constructor-arg name="host" ref="tradeSvcHost"/>
+         <property name="clientFilterList">
+            <list>
+                <ref bean="catJerseyClientFilter" />
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="paymentAppHost" class="com.lufax.jersey.client.JerseyHost">
+        <property name="hostURI" value="${payment.app.host.url}"/>
+    </bean>
+    <bean id="jerseyServiceForPaymentApp" class="com.lufax.jersey.client.JerseyService">
+        <constructor-arg name="host" ref="paymentAppHost"/>
+         <property name="clientFilterList">
+            <list>
+                <ref bean="catJerseyClientFilter" />
+            </list>
+        </property>
+    </bean>
+ 	
+    
+    <!--Settle app invoke service-->
+    <bean id="settleAppHost" class="com.lufax.jersey.client.JerseyHost">
+        <property name="hostURI" value="${settle.app.host.url}"/>
+    </bean>
+    <bean id="jerseyServiceForSettle" class="com.lufax.jersey.client.JerseyService">
+        <constructor-arg name="host" ref="settleAppHost"/>
+         <property name="clientFilterList">
+            <list>
+                <ref bean="catJerseyClientFilter" />
+            </list>
+        </property>
+    </bean>
+
+    <!--account app invoke service-->
+    <bean id="accountAppHost" class="com.lufax.jersey.client.JerseyHost">
+        <property name="hostURI" value="${account.app.host.url}"/>
+    </bean>
+    <bean id="jerseyServiceForAccount" class="com.lufax.jersey.client.JerseyService">
+        <constructor-arg name="host" ref="accountAppHost"/>
+         <property name="clientFilterList">
+            <list>
+                <ref bean="catJerseyClientFilter" />
+            </list>
+        </property>
+    </bean>
+    <bean id="accountrAppHost" class="com.lufax.jersey.client.JerseyHost">
+        <property name="hostURI" value="${accountr.app.host.url}"/>
+    </bean>
+    <bean id="jerseyServiceForAccountr" class="com.lufax.jersey.client.JerseyService">
+        <constructor-arg name="host" ref="accountrAppHost"/>
+         <property name="clientFilterList">
+            <list>
+                <ref bean="catJerseyClientFilter" />
+            </list>
+        </property>
+    </bean>
+
+    <!--fund app invoke service-->
+    <bean id="fundAppHost" class="com.lufax.jersey.client.JerseyHost">
+        <property name="hostURI" value="${fund.app.host.url}"/>
+    </bean>
+    <bean id="jerseyServiceForFund" class="com.lufax.jersey.client.JerseyService">
+        <constructor-arg name="host" ref="fundAppHost"/>
+         <property name="clientFilterList">
+            <list>
+                <ref bean="catJerseyClientFilter" />
+            </list>
+        </property>
+    </bean>
+
+
+    <!--fund app invoke service-->
+    <bean id="userAppHost" class="com.lufax.jersey.client.JerseyHost">
+        <property name="hostURI" value="${user.app.host.url}"/>
+    </bean>
+    <bean id="jerseyServiceForUser" class="com.lufax.jersey.client.JerseyService">
+        <constructor-arg name="host" ref="userAppHost"/>
+    </bean>
+    
+    <!--YLX GW invoke service-->
+    <bean id="ylxGWHost" class="com.lufax.jersey.client.JerseyHost">
+        <property name="hostURI" value="${gw.ylx.service.url}"/>
+    </bean>
+    <bean id="jerseyServiceForYLXGW" class="com.lufax.jersey.client.JerseyService">
+        <constructor-arg name="host" ref="ylxGWHost"/>
+    </bean>
+    
+    <bean id="jijinGwAppHost" class="com.lufax.jersey.client.JerseyHost">
+        <property name="hostURI" value="${gw.jijin.service.url}"/>
+    </bean>
+    <bean id="jerseyServiceForJijinGW" class="com.lufax.jersey.client.JerseyService">
+        <constructor-arg name="host" ref="jijinGwAppHost"/>
+        <property name="clientFilterList">
+            <list>
+                <ref bean="catJerseyClientFilter" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="dahuaGwAppHost" class="com.lufax.jersey.client.JerseyHost">
+        <property name="hostURI" value="${gw.dahua.service.url}"/>
+    </bean>
+    <bean id="jerseyServiceForDahuaGW" class="com.lufax.jersey.client.JerseyService">
+        <constructor-arg name="host" ref="dahuaGwAppHost"/>
+        <property name="maxConnTotal" value="${gw.dahua.max.total}"/> <!-- 500 -->
+        <property name="maxConnPerRoute" value="${gw.dahua.max.per.route}"/> <!-- 200 -->
+        <property name="clientFilterList">
+            <list>
+                <ref bean="catJerseyClientFilter" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="PAFGwAppHost" class="com.lufax.jersey.client.JerseyHost">
+        <property name="hostURI" value="${gw.paf.service.url}"/>
+    </bean>
+    
+    <bean id="jerseyServiceForPAFGW" class="com.lufax.jersey.client.JerseyService">
+        <constructor-arg name="host" ref="PAFGwAppHost"/>
+        <property name="maxConnTotal" value="${gw.paf.max.total}"/>
+        <property name="maxConnPerRoute" value="${gw.paf.max.per.route}"/>
+        <property name="clientFilterList">
+            <list>
+                <ref bean="catJerseyClientFilter" />
+            </list>
+        </property>
+    </bean>
+
+	 <bean id="catJerseyClientFilter" class="com.lufax.kernel.jersey.CatJerseyClientFilter" >
+        <property name="patterns">
+            <list>
+                    <value>/{2}/{3}/{4}/{0,number}/{5}/{1,number}:??#id#,#num#</value>
+                    <value>/{1}/{2}/{3}/{4}/{0,number}/{5}:??#id#</value>
+                    <value>/{1}/{2}/{3}/{0,number}/{4}/{5}:??#id#</value>
+                    <value>/{1}/{2}/{3}/{0,number}/{4}:??#id#</value>
+                    <value>/{1}/{2}/{3}/{0,number}:??#id#</value>
+            </list>
+        </property>
+    </bean> 
+    
+   	<bean id="mqClient" class="com.lufax.mq.client.MqClient">
+        <constructor-arg index="0" ref="mqClientConfig"/>
+    </bean>
+    
+    <bean id="mqClientConfig" class="com.lufax.mq.client.MqClientConfig">
+        <property name="dataSource"                    ref="dataSource"/>
+        <property name="mqClientMessageTableName"    value="jijin_mq_client_msg"/>
+        <property name="mqClientMessageTableSeqName" value="seq_jijin_mq_client_msg"/>
+        <property name="mqServerUris"                value="${MQ_APP_HOST_LIST}"/>
+        <property name="workQueueMaxPoolSize" value="${JIJIN_MQ_CLIENT_POOL_SIZE}"/>
+        <property name="workQueueQueueCapacity"    value="${JIJIN_MQ_CLIENT_QUEUE_CAPACITY}"/>
+        <property name="maxConnections" value="${JIJIN_MQ_CLIENT_CONNECTION}"/>
+    </bean>
+    
+     <bean id="mqClientLBO" class="com.lufax.mq.client.MqClient">
+        <constructor-arg index="0" ref="mqClientConfigLBO"/>
+    </bean>
+    
+    <bean id="mqClientConfigLBO" class="com.lufax.mq.client.MqClientConfig">
+        <property name="dataSource"                    ref="dataSource"/>
+        <property name="mqClientMessageTableName"    value="jijin_mq_client_msg"/>
+        <property name="mqClientMessageTableSeqName" value="seq_jijin_mq_client_msg"/>
+        <property name="mqServerUris"                value="${MQ_APP_HOST_LBO}"/>
+        <property name="workQueueMaxPoolSize" value="${JIJIN_LBO_MQ_CLIENT_POOL_SIZE}"/>
+        <property name="workQueueQueueCapacity"    value="${JIJIN_LBO_MQ_CLIENT_QUEUE_CAPACITY}"/>
+        <property name="maxConnections" value="${JIJIN_LBO_MQ_CLIENT_CONNECTION}"/>
+    </bean>
+
+	<bean id="zookeeperService" class="com.lufax.kernel.zookeeper.ZookeeperServiceFactoryBean">
+	   <!-- zookeeper地址列表，支持域名和ip，必填 -->
+	   <property name="location" value="${ZOOKEEPER_LOCATION}"/>
+	   <!-- zookeeper名字空间，建议设为应用所在的domain，比如trading-app设置为trading，必填 -->
+	   <property name="namespace" value="${ZOOKEEPER_NAMESPACE}"/>
+	   <!-- 以下参数选填 -->
+	   <!-- 连接：会话超时时间，单位毫秒，默认60000，即1分钟 -->
+	   <property name="sessionTimeoutMs" value="60000"/>
+	   <!-- 连接：连接超时时间，单位毫秒，默认3000 -->
+	   <property name="connectionTimeoutMs" value="3000"/>
+	   <!-- 连接：关闭客户端等待时间，单位毫秒，默认3000 -->
+	   <property name="closeWaitMs" value="3000"/>
+	   <!-- 重试：基础重试等待时间，单位毫秒，默认1000 -->
+	   <property name="retryBaseSleepTimeMs" value="1000"/>
+	   <!-- 重试：最大重试等待时间，单位毫秒，默认600000，即10分钟 -->
+	   <property name="retryMaxSleepTimeMs" value="600000"/>
+	   <!-- 重试：最大重试次数，默认5次 -->
+	   <property name="retryMaxRetries" value="5"/>
+	</bean>
+	
+	<bean id="kmsService" class="com.lufax.kernel.security.kms.api.KmsServiceFactoryBean">
+        <property name="kmsLocation" value="${kms.location}"/>
+    </bean>
+	
+	<bean id="redisCacheConfig" class="com.lufax.kernel.cache.redis.RedisCacheConfig">
+        <constructor-arg name="sentinels" value="${jijin.app.redis.sentinels.url}"/>              <!-- sentinel集群地址，格式： ip:port;ip:port;ip:port... -->
+        <constructor-arg name="masterName" value="${jijin.app.redis.master.name}"/> <!-- sentinel在sentinel.conf里面配置的masterName，代表一组redis实例  -->
+        <constructor-arg name="prefix" value="${jijin.app.redis.prefix}"/>                     <!--  缓存key前缀，根据业务场景设置，比如session可以将前缀设为session -->
+        <!-- 以下参数选填 -->
+        <property name="timeout" value="2000" />                                                   <!-- 请求超时时间，单位毫秒，默认2秒 -->
+        <property name="password" value="${jijin.app.redis.pwd}" />                                                         <!-- redis密码，默认没有密码 -->
+        <property name="maxTotal" value="20" />                                                    <!-- 连接池最大连接数，默认10 -->
+        <property name="maxIdel" value="20" />                                                         <!-- 连接池最大空闲连接数，默认8 -->
+        <property name="minIdel" value="2" />                                                           <!-- 连接池最小连接数，默认2 -->
+        <property name="blockWhenExhausted" value="true" />                       <!-- 连接池满时是否等待，默认等待（true） -->
+        <property name="maxWaitMillis" value="5000" />                                       <!-- 连接池满时的等待时间，单位毫秒，默认5秒 -->
+        <property name="lifo" value="false" />                                                             <!-- 是否使用lifo队列管理连接，默认不使用（false）-->
+        <property name="testOnBorrow" value="false" />                                      <!-- 是否在获取连接时测试可用性，默认不使用（false）-->
+        <property name="testOnReturn" value="false" />                                       <!-- 是否在归还连接时测试可用性，默认不使用（false）-->
+        <property name="testWhileIdle" value="true" />                                          <!-- 是否在连接空闲时测试可用性，默认使用（true）-->
+        <property name="timeBetweenEvictionRunsMillis" value="30000" /> <!-- 多久测试空闲连接，单位毫秒，默认30秒 -->
+        <property name="numTestsPerEvictionRun" value="-1" />                     <!-- 每次测试的空闲连接数量，默认不限制（-1）-->
+        <property name="minEvictableIdleTimeMillis" value="60000" />           <!-- 连接空闲多久被认为idle，单位毫秒，默认60秒 -->
+    </bean>
+</beans>

@@ -1,0 +1,14 @@
+[DEP]
+
+[DB1]
+
+[DB2]
+
+[NOTIFY]
+    chenzhiqiang288@lu.com
+    liudong735@lu.com
+
+[ADVICE]
+    WEBDEV-8554: 基金申购增加冻结期
+    fixBug:15178
+    fix bug

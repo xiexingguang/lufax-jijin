@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+        
+<sqlMap namespace="BusJijinExYieldRate">
+
+    <insert id="insertJijinExYieldRate" parameterClass="com.lufax.jijin.daixiao.dto.JijinExYieldRateDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select seq_bus_jijin_ex_yield_rate.nextval as id from dual
+        </selectKey>
+
+        <![CDATA[
+            insert into bus_jijin_ex_yield_rate (
+                id,
+                fund_code ,
+				start_date,
+				end_date,
+				notice_date,
+				benefit_per_ten_thousand,
+				interest_rate_per_sevenday,
+                batch_id ,
+                status,
+                err_msg,
+                created_at,
+                updated_at,
+                created_by,
+                updated_by,
+                is_valid
+            )
+            values (
+                #id#,
+                #fundCode#,
+                #startDate#,
+                #endDate#,
+                #noticeDate#,
+                #benefitPerTenthousand#,
+                #interestratePerSevenday#,
+                #batchId#,
+                #status#,
+                #errMsg#,
+                sysdate,
+                sysdate,
+                'sys',
+                'sys',
+                #isValid#
+            )
+        ]]>
+    </insert>
+
+    <sql id="selectAll">
+        select
+            id  id,
+            created_at  createdAt,
+            created_by  createdBy,
+            updated_at  updatedAt,
+            updated_by  updatedBy,
+            fund_code  fundCode,
+            start_date startDate,
+            end_date 	endDate,
+            notice_date noticeDate,
+            benefit_per_ten_thousand benefitPerTenthousand,
+            interest_rate_per_sevenday interestratePerSevenday,
+            batch_id  batchId,
+            status  status,
+            err_msg errMsg,
+            is_valid isValid
+        from bus_jijin_ex_yield_rate
+    </sql>
+    
+    <select id="countNumberOfAfterDate" parameterClass="java.util.Map" resultClass="java.lang.Integer">
+        select 1 from bus_jijin_ex_yield_rate where fund_code=#fundCode# and end_date <![CDATA[>]]> #endDate#  and rownum =1
+    </select>
+
+    <update id="updateJijinExYieldRateStatus" parameterClass="java.util.Map">
+        update bus_jijin_ex_yield_rate t set
+        t.status = #status#,
+        <isNotEmpty property="errMsg">
+           err_msg =#errMsg#,
+        </isNotEmpty>
+        <isNotEmpty property="isValid">
+           is_valid=#isValid#,
+        </isNotEmpty>
+        t.updated_at=sysdate
+        where t.id = #id#
+    </update>
+    
+    <update id="updateSameFundCodeDateRecordToNotVaild" parameterClass="java.util.Map">
+    	update bus_jijin_ex_yield_rate 
+    	set 
+    		is_valid = 0,
+    		updated_at =sysdate
+    	where 
+    		id <![CDATA[<>]]> #id# 
+    	and 
+    		fund_code=#fundCode# 
+    	and 
+    		end_date=#endDate# 
+    	and 
+    		is_valid=1
+    </update>
+    
+    <select id="getUnDispatchedJijinExYieldRate" parameterClass="java.lang.Integer" resultClass="com.lufax.jijin.daixiao.dto.JijinExYieldRateDTO">
+        <include refid="selectAll"></include>
+        where  status='NEW' and rownum <![CDATA[<=]]>#limit#
+    </select>
+    
+    <select id="getLastJijinExYieldRateDTOByFundCode" parameterClass="java.lang.String" resultClass="com.lufax.jijin.daixiao.dto.JijinExYieldRateDTO">
+        select * from(
+        <include refid="selectAll"></include>
+        where fund_code=#fundCode# 
+        order by end_date desc,id desc) where rownum = 1
+    </select>
+
+    <select id="getYieldRateDtoByFundCodeAndEndDate" parameterClass="java.util.Map" resultClass="com.lufax.jijin.daixiao.dto.JijinExYieldRateDTO">
+        <include refid="selectAll"></include>
+        where fund_code=#fundCode# and is_valid = 1 and end_date >= #endDate# order by end_date desc
+    </select>
+    
+    <select id="getYieldRateByPage" parameterClass="java.util.Map" resultClass="com.lufax.jijin.daixiao.dto.JijinExYieldRateDTO">
+    	select * from (
+	    	select rownum rn,a.* from(
+		    	 <include refid="selectAll"></include>
+		          where fund_code = #fundCode# 
+		            and is_valid = 1 order by end_date desc) a 
+	            where rownum <![CDATA[<=]]>#end#
+            ) b where b.rn <![CDATA[>]]> #start# 
+    </select>
+    
+    
+    
+</sqlMap>

@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="BusJijinExCharacter">
+
+    <insert id="insert" parameterClass="com.lufax.jijin.daixiao.dto.JijinExCharacterDTO">
+        <selectKey resultClass="long" keyProperty="id">
+            select seq_bus_jijin_ex_character.nextval from dual
+        </selectKey>
+        insert into bus_jijin_ex_character (
+        id,
+        created_at,
+        created_by,
+        updated_at,
+        updated_by,
+        fund_code,
+        is_hongkong,
+        is_macao,
+        is_taiwan,
+        is_foreign,
+        is_plan1,
+        is_plan2,
+        is_plan3,
+        is_pre_redeem,
+        is_pre_sub,
+        is_real_redeem,
+        is_mts_redeem,
+        is_mts_sub,
+        is_stm_redeem,
+        is_stm_sub,
+        ta_code,
+        batch_id,
+        status,
+        is_valid
+        ) values (
+        #id#,
+        sysdate,
+        'SYS',
+        sysdate,
+        'SYS',
+        #fundCode#,
+        #isHongkong#,
+        #isMacao#,
+        #isTaiwan#,
+        #isForeign#,
+        #isPlan1#,
+        #isPlan2#,
+        #isPlan3#,
+        #isPreRedeem#,
+        #isPreSub#,
+        #isRealRedeem#,
+        #isMtsRedeem#,
+        #isMtsSub#,
+        #isStmRedeem#,
+        #isStmSub#,
+        #taCode#,
+        #batchId#,
+        #status#,
+        #isValid#
+        )
+    </insert>
+
+    <update id="update" parameterClass="com.lufax.jijin.daixiao.dto.JijinExCharacterDTO">
+        update bus_jijin_ex_character
+        set
+        <isNotEmpty property="fundCode">
+            fund_code = #fundCode#,
+        </isNotEmpty>
+        <isNotEmpty property="isHongkong">
+            is_hongkong = #isHongkong#,
+        </isNotEmpty>
+        <isNotEmpty property="isMacao">
+            is_macao = #isMacao#,
+        </isNotEmpty>
+        <isNotEmpty property="isTaiwan">
+            is_taiwan = #isTaiwan#,
+        </isNotEmpty>
+        <isNotEmpty property="isForeign">
+            is_foreign = #isForeign#,
+        </isNotEmpty>
+        <isNotEmpty property="isPlan1">
+            is_plan1 = #isPlan1#,
+        </isNotEmpty>
+        <isNotEmpty property="isPlan2">
+            is_plan2 = #isPlan2#,
+        </isNotEmpty>
+        <isNotEmpty property="isPlan3">
+            is_plan3 = #isPlan3#,
+        </isNotEmpty>
+        <isNotEmpty property="isPreRedeem">
+            is_pre_redeem = #isPreRedeem#,
+        </isNotEmpty>
+        <isNotEmpty property="isPreSub">
+            is_pre_sub = #isPreSub#,
+        </isNotEmpty>
+        <isNotEmpty property="isRealRedeem">
+            is_real_redeem = #isRealRedeem#,
+        </isNotEmpty>
+        <isNotEmpty property="isMtsRedeem">
+            is_mts_redeem = #isMtsRedeem#,
+        </isNotEmpty>
+        <isNotEmpty property="isMtsSub">
+            is_mts_sub = #isMtsSub#,
+        </isNotEmpty>
+        <isNotEmpty property="isStmRedeem">
+            is_stm_redeem = #isStmRedeem#,
+        </isNotEmpty>
+        <isNotEmpty property="isStmSub">
+            is_stm_sub = #isStmSub#,
+        </isNotEmpty>
+        <isNotEmpty property="taCode">
+            ta_code = #taCode#,
+        </isNotEmpty>
+        <isNotEmpty property="batchId">
+            batch_id = #batchId#,
+        </isNotEmpty>
+        <isNotEmpty property="status">
+            status = #status#,
+        </isNotEmpty>
+        <isNotEmpty property="isValid">
+            is_valid = #isValid#,
+        </isNotEmpty>
+        updated_at = sysdate
+        where
+        id = #id#
+    </update>
+
+    <sql id="allFields">
+        id,
+        created_at createdAt,
+        created_by createdBy,
+        updated_at updatedAt,
+        updated_by updatedBy,
+        fund_code fundCode,
+        is_hongkong isHongkong,
+        is_macao isMacao,
+        is_taiwan isTaiwan,
+        is_foreign isForeign,
+        is_plan1 isPlan1,
+        is_plan2 isPlan2,
+        is_plan3 isPlan3,
+        is_pre_redeem isPreRedeem,
+        is_pre_sub isPreSub,
+        is_real_redeem isRealRedeem,
+        is_mts_redeem isMtsRedeem,
+        is_mts_sub isMtsSub,
+        is_stm_redeem isStmRedeem,
+        is_stm_sub isStmSub,
+        ta_code taCode,
+        batch_id batchId,
+        status status,
+        is_valid isValid
+    </sql>
+
+    <select id="getByID" parameterClass="long" resultClass="com.lufax.jijin.daixiao.dto.JijinExCharacterDTO">
+        select <include refid="allFields"/>
+        from bus_jijin_ex_character
+        where id = #id#
+    </select>
+
+    <select id="selectLatestRecordByFundCode" parameterClass="java.util.Map" resultClass="com.lufax.jijin.daixiao.dto.JijinExCharacterDTO">
+        select * from (
+        select <include refid="allFields"/>
+        from bus_jijin_ex_character
+        where fund_code=#fundCode#
+        and is_valid = 1
+        order by batch_id desc)
+        where rownum = 1
+    </select>
+    
+    <!-- <select id="selectByFundCodesAndBool" parameterClass="map" resultClass="string">
+		select fund_code fundCode
+        from bus_jijin_ex_character
+        where fund_code in 
+		<iterate property="fundCodes" open="(" close=")" conjunction=",">
+			#fundCodes[]#
+		</iterate>
+		and is_valid = 1
+		<isNotEmpty property="isMtsRedeem" prepend="and">
+            IS_MTS_REDEEM = #isMtsRedeem#   是否支持货转股转购出
+        </isNotEmpty>
+        <isNotEmpty property="isMtsSub" prepend="and">
+            IS_MTS_SUB = #isMtsSub#         是否支持货转股转购入
+        </isNotEmpty>
+    </select> -->
+    
+    <select id="selectMtsRedeem" parameterClass="map" resultClass="string">
+		select fund_code fundCode from bus_jijin_ex_character where id in  (
+			select max(id)
+			from bus_jijin_ex_character
+			where fund_code in
+			<iterate property="fundCodes" open="(" close=")" conjunction=",">
+				#fundCodes[]#
+			</iterate>
+			group by fund_code
+		)
+		and is_valid = 1
+		and IS_MTS_REDEEM = #isMtsRedeem#   <!-- 是否支持货转股转购出 -->
+    </select>
+</sqlMap>

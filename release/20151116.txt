@@ -1,0 +1,13 @@
+[DEP]
+
+[DB1]
+    BETTLE=1436
+
+[DB2]
+
+
+[NOTIFY]
+    chenzhiqiang288@pingan.com.cn
+
+[ADVICE]
+    WEBDEV-6765

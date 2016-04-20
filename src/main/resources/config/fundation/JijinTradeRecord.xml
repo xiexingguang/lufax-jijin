@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+        
+        
+<sqlMap namespace="JijinTradeRecord">
+
+    <insert id="insertBusJijinTradeRecord" parameterClass="com.lufax.jijin.fundation.dto.JijinTradeRecordDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select SEQ_BUS_JIJIN_TRADE_RECORD.nextval as id from dual
+        </selectKey>
+        <![CDATA[
+            insert into bus_jijin_trade_record (
+                id,
+                user_id,
+                fund_code,
+                trx_time,
+                trx_date,
+                status,
+                type,
+                req_amount,
+                req_share,
+                contract_no,
+                app_no,
+                app_sheet_no,
+                notify_app_no,
+                cancel_app_no,
+                cancel_app_sheet_no,
+                dividend_type,
+                charge_type,
+                error_code,
+                error_msg,
+                retry_times,
+                is_controversial,
+                trx_id,
+                frozen_code,
+                frozen_type,
+                pay_order_no,
+                pay_cancel_order_no,
+                channel,
+                inst_id,
+                order_complete_time,
+                is_agree_risk,
+                flag,
+                redeem_type,
+                uk_token,
+                business_mode,
+                prod_code,
+                transfer_type,
+                source_fund_code,
+                remark,
+                expect_Confirm_Date,
+                expect_Account_Date,
+                confirm_Date,
+                account_Date,
+                created_at,
+                updated_at,
+                created_by,
+                updated_by
+            )
+            values (
+                #id#,
+                #userId#,
+                #fundCode#,
+                #trxTime#,
+                #trxDate#,
+                #status#,
+                #type#,
+                #reqAmount#,
+                #reqShare#,
+                #contractNo#,
+                #appNo#,
+                #appSheetNo#,
+                #notifyAppNo#,
+                #cancelAppNo#,
+                #cancelAppSheetNo#,
+                #dividendType#,
+                #chargeType#,
+                #errorCode#,
+                #errorMsg#,
+                0,
+                #isControversial#,
+                #trxId#,
+                #frozenCode#,
+                #frozenType#,
+                #payOrderNo#,
+                #payCancelOrderNo#,
+                #channel#,
+                #instId#,
+                #orderCompleteTime#,
+                #isAgreeRisk#,
+                #flag#,
+                #redeemType#,
+                #ukToken#,
+                #businessMode#,
+                #prodCode#,
+                #transferType#,
+                #sourceFundCode#,
+                #remark#,
+                #expectConfirmDate#,
+                #expectAccountDate#,
+                #confirmDate#,
+                #accountDate#,
+                sysdate,
+                sysdate,
+                'SYS',
+                'SYS'
+            )
+        ]]>
+    </insert>
+
+    <sql id="SelectJijinTradeRecordDTO">
+        select
+        id id,
+        user_id userId,
+        fund_code fundCode,
+        trx_time trxTime,
+        trx_date trxDate,
+        status status,
+        type type,
+        req_amount reqAmount,
+        req_share reqShare,
+        contract_no contractNo,
+        app_no appNo,
+        app_sheet_no appSheetNo,
+        notify_app_no notifyAppNo,
+        cancel_app_no cancelAppNo,
+        cancel_app_sheet_no cancelAppSheetNo,
+        dividend_type dividendType,
+        charge_type chargeType,
+        error_code errorCode,
+        error_msg errorMsg,
+        retry_times retryTimes,
+        is_controversial isControversial,
+        trx_id trxId,
+        frozen_code frozenCode,
+        frozen_type frozenType,
+        pay_order_no payOrderNo,
+        pay_cancel_order_no payCancelOrderNo,
+        channel channel,
+        inst_id instId,
+        order_complete_time orderCompleteTime,
+        is_agree_risk isAgreeRisk,
+        flag flag,
+        redeem_type redeemType,
+        uk_token ukToken,
+        business_mode businessMode,
+        prod_code prodCode,
+        transfer_type transferType,
+        source_fund_code sourceFundCode,
+        remark remark,
+        expect_Confirm_Date expectConfirmDate,
+        expect_Account_Date expectAccountDate,
+        confirm_Date confirmDate,
+        account_Date accountDate,
+        created_at createdAt,
+        updated_at updatedAt,
+        created_by createdBy,
+        updated_by updatedBy
+    </sql>
+
+
+
+    <update id="updateBusJijinTradeRecord" parameterClass="java.util.Map">
+        update bus_jijin_trade_record t set
+        <isNotEmpty property="id">
+            t.id = #id#,
+        </isNotEmpty>
+        <isNotEmpty property="userId">
+            t.user_id = #userId#,
+        </isNotEmpty>
+        <isNotEmpty property="fundCode">
+            t.fund_code = #fundCode#,
+        </isNotEmpty>
+        <isNotEmpty property="trxTime">
+            t.trx_time = #trxTime#,
+        </isNotEmpty>
+        <isNotEmpty property="trxDate">
+            t.trx_date = #trxDate#,
+        </isNotEmpty>
+        <isNotEmpty property="status">
+            t.status = #status#,
+        </isNotEmpty>
+        <isNotEmpty property="type">
+            t.type = #type#,
+        </isNotEmpty>
+        <isNotEmpty property="reqAmount">
+            t.req_amount = #reqAmount#,
+        </isNotEmpty>
+        <isNotEmpty property="reqShare">
+            t.req_share = #reqShare#,
+        </isNotEmpty>
+        <isNotEmpty property="contractNo">
+            t.contract_no = #contractNo#,
+        </isNotEmpty>
+        <isNotEmpty property="appNo">
+            t.app_no = #appNo#,
+        </isNotEmpty>
+        <isNotEmpty property="appSheetNo">
+            t.app_sheet_no = #appSheetNo#,
+        </isNotEmpty>
+        <isNotEmpty property="notifyAppNo">
+            t.notify_app_no = #notifyAppNo#,
+        </isNotEmpty>
+        <isNotEmpty property="cancelAppNo">
+            t.cancel_app_no = #cancelAppNo#,
+        </isNotEmpty>
+        <isNotEmpty property="cancelAppSheetNo">
+            t.cancel_app_sheet_no = #cancelAppSheetNo#,
+        </isNotEmpty>
+        <isNotEmpty property="dividendType">
+            t.dividend_type = #dividendType#,
+        </isNotEmpty>
+        <isNotEmpty property="chargeType">
+            t.charge_type = #chargeType#,
+        </isNotEmpty>
+        <isNotEmpty property="errorCode">
+            t.error_code = #errorCode#,
+        </isNotEmpty>
+        <isNotEmpty property="errorMsg">
+            t.error_msg = #errorMsg#,
+        </isNotEmpty>
+        <isNotEmpty property="retryTimes">
+            t.retry_times = #retryTimes#,
+        </isNotEmpty>
+        <isNotEmpty property="isControversial">
+            t.is_controversial = #isControversial#,
+        </isNotEmpty>
+        <isNotEmpty property="trxId">
+            t.trx_id = #trxId#,
+        </isNotEmpty>
+        <isNotEmpty property="frozenCode">
+            t.frozen_code = #frozenCode#,
+        </isNotEmpty>
+        <isNotEmpty property="frozenType">
+            t.frozen_type = #frozenType#,
+        </isNotEmpty>
+        <isNotEmpty property="payOrderNo">
+            t.pay_order_no = #payOrderNo#,
+        </isNotEmpty>
+        <isNotEmpty property="payCancelOrderNo">
+            t.pay_cancel_order_no = #payCancelOrderNo#,
+        </isNotEmpty>
+        <isNotEmpty property="channel">
+            t.channel = #channel#,
+        </isNotEmpty>
+        <isNotEmpty property="instId">
+            t.inst_id = #instId#,
+        </isNotEmpty>
+        <isNotEmpty property="orderCompleteTime">
+            t.order_complete_time = #orderCompleteTime#,
+        </isNotEmpty>
+        <isNotEmpty property="isAgreeRisk">
+            t.is_agree_risk = #isAgreeRisk#,
+        </isNotEmpty>
+        <isNotEmpty property="flag">
+            t.flag = #flag#,
+        </isNotEmpty>
+		<isNotEmpty property="remark">
+            t.remark= #remark#,
+        </isNotEmpty>
+        <isNotEmpty property="expectConfirmDate">
+            t.expect_Confirm_Date = #expectConfirmDate#,
+        </isNotEmpty>
+        <isNotEmpty property="expectAccountDate">
+            t.expect_Account_Date = #expectAccountDate#,
+        </isNotEmpty>
+        <isNotEmpty property="confirmDate">
+            t.confirm_Date = #confirmDate#,
+        </isNotEmpty>
+        <isNotEmpty property="accountDate">
+            t.account_Date = #accountDate#,
+        </isNotEmpty>
+        t.updated_at=sysdate
+        where t.id = #id#
+    </update>
+
+    <select id="getRecordById" parameterClass="java.lang.Long" resultClass="com.lufax.jijin.fundation.dto.JijinTradeRecordDTO">
+        <include refid="SelectJijinTradeRecordDTO"/>
+        from bus_jijin_trade_record where  id = #id#
+    </select>
+	
+	<select id="getRecordByAppNo" parameterClass="java.lang.String" resultClass="com.lufax.jijin.fundation.dto.JijinTradeRecordDTO">
+        <include refid="SelectJijinTradeRecordDTO"/>
+        from bus_jijin_trade_record where  app_no = #appNo#
+    </select>
+
+    <select id="getRecordByTrxIdAndTypeChannel" parameterClass="map" resultClass="com.lufax.jijin.fundation.dto.JijinTradeRecordDTO">
+        <include refid="SelectJijinTradeRecordDTO"/>
+        from bus_jijin_trade_record where  trx_id = #trxId# and type = #type# and channel=#channel#
+    </select>
+
+    <select id="getRecordByAppSheetNoAndInstId" parameterClass="map" resultClass="com.lufax.jijin.fundation.dto.JijinTradeRecordDTO">
+        <include refid="SelectJijinTradeRecordDTO"/>
+        from bus_jijin_trade_record where  app_sheet_no = #appSheetNo# and inst_id = #instId#
+    </select>
+
+	<select id="getRecordsByStatusAndTypeWithRownum" parameterClass="map" resultClass="com.lufax.jijin.fundation.dto.JijinTradeRecordDTO">
+        <include refid="SelectJijinTradeRecordDTO" />
+        from bus_jijin_trade_record
+        where status = #status# and type = #type#
+        <![CDATA[
+            and rownum <= #maxNum#
+        ]]>
+    </select>
+
+    <select id="getRecordsByStatusAndTypeAndInstId" parameterClass="map" resultClass="com.lufax.jijin.fundation.dto.JijinTradeRecordDTO">
+        <include refid="SelectJijinTradeRecordDTO" />
+        from ( select *
+        from bus_jijin_trade_record
+        where status = #status# 
+        	and type = #type# 
+        	and inst_id = #instId#
+            and redeem_Type = #redeemType# order by id asc)
+        <![CDATA[
+            where rownum <= #maxNum#
+        ]]>
+    </select>
+
+   <select id="getUndoT0RedeemRecords" parameterClass="java.lang.Long" resultClass="com.lufax.jijin.fundation.dto.JijinTradeRecordDTO">
+        <include refid="SelectJijinTradeRecordDTO" />
+        <![CDATA[
+        from bus_jijin_trade_record
+        where (status = 'SUBMIT_SUCCESS' or status='PAY_IN_ADVANCE')
+        	and type = 'REDEEM'
+        	and inst_id = 'dh103'
+            and redeem_Type = '0'
+            and rownum <= #maxNum#
+        ]]>
+    </select>
+
+	<select id="countModifyingDividendTradeRecord" parameterClass="map" resultClass="java.lang.Integer">
+		select count(1) from bus_jijin_trade_record 
+		where 
+			fund_code=#fundCode#
+		 and
+		 	user_id = #userId#
+		 and
+		 	type = 'DIVIDEND_MODIFY'
+		 and 
+		 	status ='SUBMIT_SUCCESS'
+		 	
+	</select>
+
+	<select id="getUnreconTradeRecords" parameterClass="map" resultClass="java.lang.Long">
+		 <![CDATA[
+		select id from(
+ 		select
+        	t.id id,
+          d.fund_seq_id 
+		 from bus_jijin_trade_record t left join bus_jijin_paf_buy_audit d on t.app_sheet_no = d.fund_seq_id and d.file_id=#fileId#
+		 where t.trx_date=#trxDate# and t.status ='SUCCESS' and t.type='PURCHASE' and t.inst_id=#instId#)
+      where fund_seq_id is null
+		]]>
+	</select>
+    
+    <select id="getRecordsByTradeDay" parameterClass="map"  resultClass="com.lufax.jijin.fundation.dto.JijinTradeRecordDTO">
+        <include refid="SelectJijinTradeRecordDTO"/>
+		<![CDATA[ 
+		from (select rownum as rn, a.*
+		          from (select t.*
+		                  from bus_jijin_trade_record t
+		                 where trx_date = #trxDate#
+		                   and status = 'SUCCESS'
+		                   and type = 'PURCHASE'
+		                   and inst_id = #instId#
+		                 order by t.id) a
+		         where rownum < #end#) b
+		 where b.rn >= #start#                                 
+	     ]]>
+    </select>
+  
+    
+    <select id="countSuccessTradeRecordByTradeDay" parameterClass="map" resultClass="com.lufax.jijin.fundation.dto.JijinTradeRecordCountDTO">
+		select count(1) total,sum(req_amount) amount from bus_jijin_trade_record 
+		where trx_date=#trxDate# and status='SUCCESS' and type='PURCHASE' and inst_id=#instId#	
+	</select>
+
+
+    <select id="countTradeRecordByCreatedAtAndTypes" parameterClass="map" resultClass="com.lufax.jijin.fundation.dto.JijinTradeRecordCountDTO">
+        select count(1) total from bus_jijin_trade_record
+        where inst_id=#instId#
+        <![CDATA[
+	        and  created_at >= cast(#createFrom# as date)
+	        and  created_at < cast(#createTo# as date)
+	    ]]>
+        and type in
+        <iterate property="types" open="(" close=")" conjunction=",">
+            #types[]#
+        </iterate>
+    </select>
+
+
+    <select id="getRecordsByCreatedAtAndTypes" parameterClass="map"  resultClass="com.lufax.jijin.fundation.dto.JijinTradeRecordDTO">
+        <include refid="SelectJijinTradeRecordDTO"/>
+		from (select rownum as rn, a.*
+		          from (select t.*
+		                  from bus_jijin_trade_record t
+		                 where inst_id = #instId#
+        <![CDATA[
+	        and  created_at >= cast(#createFrom# as date)
+	        and  created_at < cast(#createTo# as date)
+	    ]]>
+        and type in
+		<iterate property="types" open="(" close=")"	conjunction=",">
+            #types[]#
+        </iterate>
+        <![CDATA[
+		                 order by t.id) a
+		         where rownum < #end#) b
+		 where b.rn >= #start#
+	     ]]>
+    </select>
+    <select id="countPurchaseAmountByFundCodeAndTime" parameterClass="map" resultClass="java.math.BigDecimal">
+    	<![CDATA[
+    	select sum(req_amount) from bus_jijin_trade_record where fund_code=#fundCode# and type in('APPLY','PURCHASE') and 
+		created_at >= cast(#startTime# as date)and created_at <= cast(#endTime# as date)
+		]]>
+    </select>
+
+    <select id="countRedeemAmountByFundCodeAndTime" parameterClass="map" resultClass="java.math.BigDecimal">
+        <![CDATA[
+    	select sum(req_share) from bus_jijin_trade_record where fund_code=#fundCode# and type ='REDEEM' and status not in ('FAIL','SUBMIT_FAIL','CANCEL_SUCCESS')
+    	and created_at >= cast(#startTime# as date) and created_at <= cast(#endTime# as date) and user_id = #userId#
+		]]>
+    </select>
+    
+    <!-- <resultMap id="recordMap" class="com.lufax.jijin.fundation.dto.JijinTradeRecordDTO">
+		<result property="id" column="id" javaType="long"/>
+		<result property="channel" column="channel" javaType="string"/>
+		<result property="prodCode" column="prodCode" javaType="string"/>
+	</resultMap> -->
+    
+    <select id="getJijinTradeRecordDTOInfoByIds" parameterClass="map" resultClass="com.lufax.jijin.fundation.dto.JijinTradeRecordDTO">
+		<!-- SELECT r.id id, r.channel channel, nvl(r.PROD_CODE, -1) prodCode -->
+		<include refid="SelectJijinTradeRecordDTO"/>
+		from bus_jijin_trade_record r
+		where r.id in
+		<iterate property="ids" open="(" close=")" conjunction=",">
+			#ids[]#
+		</iterate>
+	</select>
+
+</sqlMap>

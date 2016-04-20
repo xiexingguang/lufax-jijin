@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="JijinExAnnounce">
+
+    <insert id="insert" parameterClass="com.lufax.jijin.daixiao.dto.JijinExAnnounceDTO">
+        <selectKey resultClass="long" keyProperty="id">
+            select seq_bus_jijin_ex_announce.nextval from dual
+        </selectKey>
+        insert into bus_jijin_ex_announce (
+        id,
+        created_at,
+        created_by,
+        updated_at,
+        updated_by,
+        object_id,
+        fund_code,
+        security_id,
+        company_id,
+        pub_date,
+        title,
+        col_code,
+        abstract_info,
+        pub_link,
+        batch_id,
+        status,
+        is_valid
+        ) values (
+        #id#,
+        sysdate,
+        'SYS',
+        sysdate,
+        'SYS',
+        #objectId#,
+        #fundCode#,
+        #securityId#,
+        #companyId#,
+        #pubDate#,
+        #title#,
+        #colCode#,
+        #abstractInfo#,
+        #pubLink#,
+        #batchId#,
+        #status#,
+        #isValid#
+        )
+    </insert>
+
+    <update id="update" parameterClass="com.lufax.jijin.daixiao.dto.JijinExAnnounceDTO">
+        update bus_jijin_ex_announce
+        set
+        <isNotEmpty property="fundCode">
+            fund_code = #fundCode#,
+        </isNotEmpty>
+        <isNotEmpty property="securityId">
+            security_id = #securityId#,
+        </isNotEmpty>
+        <isNotEmpty property="companyId">
+            company_id = #companyId#,
+        </isNotEmpty>
+        <isNotEmpty property="pubDate">
+            pub_date = #pubDate#,
+        </isNotEmpty>
+        <isNotEmpty property="title">
+            title = #title#,
+        </isNotEmpty>
+        <isNotEmpty property="colCode">
+            col_code = #colCode#,
+        </isNotEmpty>
+        <isNotEmpty property="abstractInfo">
+            abstract_info = #abstractInfo#,
+        </isNotEmpty>
+        <isNotEmpty property="pubLink">
+            pub_link = #pubLink#,
+        </isNotEmpty>
+        <isNotEmpty property="batchId">
+            batch_id = #batchId#,
+        </isNotEmpty>
+        <isNotEmpty property="status">
+            status = #status#,
+        </isNotEmpty>
+        <isNotEmpty property="isValid">
+            is_valid = #isValid#,
+        </isNotEmpty>
+        updated_at = sysdate
+        where
+        id = #id#
+    </update>
+
+    <sql id="allFields">
+        id,
+        created_at createdAt,
+        created_by createdBy,
+        updated_at updatedAt,
+        updated_by updatedBy,
+        object_id objectId,
+        fund_code fundCode,
+        security_id securityId,
+        company_id companyId,
+        pub_date pubDate,
+        title title,
+        col_code colCode,
+        abstract_info abstractInfo,
+        pub_link pubLink,
+        batch_id batchId,
+        status status,
+        is_valid isValid
+    </sql>
+
+    <select id="getByID" parameterClass="long" resultClass="com.lufax.jijin.daixiao.dto.JijinExAnnounceDTO">
+        select <include refid="allFields"/>
+        from bus_jijin_ex_announce
+        where id = #id#
+    </select>
+
+   
+
+    <select id="selectLatestRecordByFundCode" parameterClass="java.util.Map" resultClass="com.lufax.jijin.daixiao.dto.JijinExAnnounceDTO">
+        select * from (
+        select <include refid="allFields"/>
+        from bus_jijin_ex_announce
+        where fund_code=#fundCode#
+        order by batch_id desc)
+        where rownum = 1
+    </select>
+    
+    <select id="getPageByFundCodeAndStartEnd" parameterClass="java.util.Map" resultClass="com.lufax.jijin.daixiao.gson.JijinExAnnounceGson">
+        select * from(
+        select rownum rn, a.* from 
+        (select <include refid="allFields"/>
+        from bus_jijin_ex_announce
+        where fund_code=#fundCode#
+        and is_valid = 1
+        order by  pub_date desc) a where rownum <![CDATA[<=]]> #end#) b where b.rn>#start#
+    </select>
+    
+    <select id="countTotalNumByFundCode" parameterClass="String" resultClass="java.lang.Integer">
+    	select count(1) 
+    	from bus_jijin_ex_announce
+        where fund_code=#fundCode#
+        and is_valid = 1
+    </select>
+    
+    <select id="findUnDispatchedAnnounce" parameterClass="Integer" resultClass="com.lufax.jijin.daixiao.dto.JijinExAnnounceDTO">
+    	select <include refid="allFields"/> 
+    	from bus_jijin_ex_announce
+    	where status ='NEW'
+    	and rownum <![CDATA[<=]]> #limit#
+    </select>
+    
+    <update id="updateIsValidByObjectIdAndMaxBatchId" parameterClass="map">
+    	update bus_jijin_ex_announce set is_valid = 0,
+    	updated_at = sysdate
+    	where object_id =#ojbectId# 
+    	and is_valid = 1 
+    	and batch_id<![CDATA[<]]> #maxBatchId#
+    </update>
+    
+    <update id="updateStatusAndIsValidById" parameterClass="map">
+    	update bus_jijin_ex_announce 
+    	set is_valid = #isValid#,
+    	status=#status#,
+    	updated_at = sysdate
+    	where id =#id#
+    </update>
+    
+    <select id="countBatchIdIsBiggerThanThis" parameterClass="map" resultClass="java.lang.Integer">
+    	select count(1) from bus_jijin_ex_announce
+    	where object_id =#objectId#
+    	 	and
+    	 	  batch_id <![CDATA[ > ]]>#batchId#
+    </select>
+</sqlMap>

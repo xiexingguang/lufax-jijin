@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+
+
+<sqlMapConfig>
+    <settings useStatementNamespaces="true" errorTracingEnabled="false"/>    
+    
+    <!--<sqlMap resource="config/fund/FaAccountTransferRecordDTO.xml"/>
+    <sqlMap resource="config/fund/FaAccountTransferRecordHisDTO.xml"/>
+    <sqlMap resource="config/fund/FaBillFactoringWithdrawDTO.xml"/>
+    <sqlMap resource="config/fund/FaFundWithdrawRecordDTO.xml"/>
+    <sqlMap resource="config/fund/FaFundWithdrawRecordHisDTO.xml"/>
+ 	<sqlMap resource="config/fund/FaRepaymentRequestDTO.xml"/>-->
+
+	<!--<sqlMap resource="config/batch/YLXAccount.xml"/>
+	<sqlMap resource="config/batch/YLXBatch.xml"/>
+	<sqlMap resource="config/batch/YLXBatchFile.xml"/>
+	<sqlMap resource="config/batch/request/YLXInvestment.xml"/>
+	<sqlMap resource="config/batch/request/YLXOpenRequestDetail.xml"/>
+	<sqlMap resource="config/batch/request/YLXBuyRequestDetail.xml"/>
+	<sqlMap resource="config/batch/request/YLXSellRequestDetail.xml"/>
+	<sqlMap resource="config/batch/request/YLXFaLoan.xml"/>
+	
+	<sqlMap resource="config/batch/confirm/YLXOpenConfirmDetail.xml"/>
+	<sqlMap resource="config/batch/confirm/YLXBuyConfirmDetail.xml"/>
+	<sqlMap resource="config/batch/confirm/YLXSellConfirmDetail.xml"/>
+	<sqlMap resource="config/batch/operation/YLXOperationInstruction.xml"/>
+	<sqlMap resource="config/batch/operation/YLXOperationLog.xml"/>-->
+	
+	
+	<sqlMap resource="config/fundation/JijinSyncFile.xml"/>
+	<sqlMap resource="config/fundation/JijinUserBalance.xml"/>
+    <sqlMap resource="config/fundation/JijinAccount.xml"/>
+    <sqlMap resource="config/fundation/JijinTradeRecord.xml"/>
+    <sqlMap resource="config/fundation/JijinTradeLog.xml"/>
+    <sqlMap resource="config/fundation/JijinTradeSync.xml"/>
+    <sqlMap resource="config/fundation/JijinRegisteRecord.xml"/>
+    <sqlMap resource="config/fundation/JijinDividend.xml"/>
+    <sqlMap resource="config/fundation/JijinNetValue.xml"/>
+    <sqlMap resource="config/fundation/JijinIncrease.xml"/>
+    <sqlMap resource="config/fundation/JijinInfo.xml"/>
+    <sqlMap resource="config/fundation/JijinThirdPaySync.xml"/>
+    <sqlMap resource="config/fundation/JijinFundDividend.xml"/>
+    
+    <sqlMap resource="config/fundation/JijinPAFBuyAudit.xml"/>
+    <sqlMap resource="config/fundation/JijinBuyAudit.xml"/>
+    <sqlMap resource="config/fundation/JijinRedeemAudit.xml"/>
+    <sqlMap resource="config/fundation/JijinUserBalanceAudit.xml"/>
+    <sqlMap resource="config/fundation/JijinUserBalanceHistory.xml"/>
+    
+    <sqlMap resource="config/fundation/JijinRedeemThreshold.xml"/>
+    <sqlMap resource="config/fundation/JijinRedeemThresholdHis.xml"/>
+
+    <sqlMap resource="config/fundation/JijinTransfer.xml"/>
+    <sqlMap resource="config/fundation/JijinTradeConfirm.xml"/>
+    <sqlMap resource="config/fundation/JijinWithdrawRecord.xml"/>
+    <sqlMap resource="config/fundation/JijinTradeRecon.xml"/>  
+
+    <sqlMap resource="config/daixiao/JijinExNetValue.xml"/>
+    <sqlMap resource="config/daixiao/JijinExScope.xml"/>
+    <sqlMap resource="config/daixiao/JijinExGrade.xml"/>
+    <sqlMap resource="config/daixiao/JijinExInfo.xml"/>
+    <sqlMap resource="config/daixiao/JijinExManager.xml"/>
+    <sqlMap resource="config/daixiao/JijinExDividend.xml"/>
+    <sqlMap resource="config/daixiao/JijinExBuyLimit.xml"/>
+    <sqlMap resource="config/daixiao/JijinExDiscount.xml"/>
+    <sqlMap resource="config/daixiao/JijinExFee.xml"/>
+    <sqlMap resource="config/daixiao/JijinExIncomeMode.xml"/>
+    <sqlMap resource="config/daixiao/JijinExSellDayCount.xml"/>
+    <sqlMap resource="config/daixiao/JijinExSellLimit.xml"/>
+    <sqlMap resource="config/daixiao/JijinExFundType.xml"/>
+    <sqlMap resource="config/daixiao/JijinExFxPerform.xml"/>
+    <sqlMap resource="config/daixiao/JijinExGoodSubject.xml"/>
+    <sqlMap resource="config/daixiao/JijinExHotSubject.xml"/>
+    <sqlMap resource="config/daixiao/JijinExMfPerform.xml"/>
+    <sqlMap resource="config/daixiao/JijinExRiskGrade.xml"/>
+    <sqlMap resource="config/daixiao/JijinExDict.xml"/>
+    <sqlMap resource="config/daixiao/JijinExYieldRate.xml"/>
+    <sqlMap resource="config/daixiao/JijinExCharacter.xml"/>
+    <sqlMap resource="config/daixiao/JijinExAssetConf.xml"/>
+    <sqlMap resource="config/daixiao/JijinExIndustryConf.xml"/>
+    <sqlMap resource="config/daixiao/JijinExStockConf.xml"/>
+    <sqlMap resource="config/daixiao/JijinExBondConf.xml"/>
+    <sqlMap resource="config/daixiao/JijinExAnnounce.xml"/>
+    <sqlMap resource="config/daixiao/JijinExMaPerf.xml"/>
+	<sqlMap resource="config/fundation/JijinPromotionConfig.xml"/>
+
+    <sqlMap resource="config/fundation/JijinFrozenDetail.xml"/>
+    <sqlMap resource="config/fundation/JijinRedeemBal.xml"/>
+    <sqlMap resource="config/fundation/JijinRedeemBalHis.xml"/>
+
+    <sqlMap resource="config/fundation/JijinFreezeRule.xml"/>
+    <sqlMap resource="config/fundation/JijinFreezeRecord.xml"/>
+    <sqlMap resource="config/fundation/JijinUnFreezeRecord.xml"/>
+    <sqlMap resource="config/fundation/JijinUnFreezeSchedule.xml"/>
+</sqlMapConfig>

@@ -1,0 +1,25 @@
+{
+ "namespace": "com.lufax.jijin.fundation.schedular",
+ "type": "record",
+ "name": "DIVIDEND",
+ "target":"com.lufax.jijin.fundation.dto.JijinDividendDTO",
+ "repository":"jijinDividendRepository",
+ "titlelinenumber":"2",
+ "title":"基金公司交易账号|投资人平台用户号|TA确认交易流水号|销售人代码|业务代码|权益登记日期|交易确认日期|分红日/发放日|基金代码|收费方式|转投份额|红利金额|默认分红方式|分红类型|手续费|交易处理返回代码|交易处理返回描述",
+ "fields": [
+     {"name": "userId", "type": "long", "index":"1", "required":"true"},
+     {"name": "appSheetNo", "type": "string", "index":"2", "required":"true"},
+     {"name": "fundCode", "type": "string", "index":"8", "required":"true"},
+     {"name": "dividendType", "type": "string", "index":"12", "required":"true"},
+     {"name": "rightDate", "type": "string", "index":"5", "required":"true"},
+     {"name": "trxDate", "type": "string", "index":"6", "required":"true"},
+     {"name": "dividendDate", "type": "string", "index":"7", "required":"true"},
+     {"name": "chargeType", "type": "string", "index":"9", "required":"true"},
+     {"name": "dividendShare", "type": "double", "index":"10", "required":"true"},
+     {"name": "dividendAmount", "type": "double", "index":"11", "required":"true"},
+     {"name": "fee", "type": "double", "index":"14", "required":"true"},
+     {"name": "dividendMode", "type": "string", "index":"13", "required":"true"},
+     {"name": "resCode", "type": "string", "index":"15", "required":"true"},
+     {"name": "resMsg", "type": "string", "index":"16", "required":"false"}
+ ]
+}

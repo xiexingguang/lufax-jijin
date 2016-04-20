@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="JijinExAssetConf">
+
+    <insert id="insert" parameterClass="com.lufax.jijin.daixiao.dto.JijinExAssetConfDTO">
+        <selectKey resultClass="long" keyProperty="id">
+            select seq_bus_jijin_ex_asset_conf.nextval from dual
+        </selectKey>
+        insert into bus_jijin_ex_asset_conf (
+        id,
+        created_at,
+        created_by,
+        updated_at,
+        updated_by,
+        fund_code,
+        end_date,
+        asset_value,
+        stock_per,
+        bond_per,
+        cash_per,
+        other_per,
+        national_debt_per,
+        finanicial_bond_per,
+        enterprise_bond_per,
+        central_bank_bill_per,
+        batch_id,
+        is_valid,
+        status,
+        error_msg
+        ) values (
+        #id#,
+        sysdate,
+        'SYS',
+        sysdate,
+        'SYS',
+        #fundCode#,
+        #endDate#,
+        #assetValue#,
+        #stockPer#,
+        #bondPer#,
+        #cashPer#,
+        #otherPer#,
+        #nationalDebtPer#,
+        #finanicialBondPer#,
+        #enterpriseBondPer#,
+        #centralBankBillPer#,
+        #batchId#,
+        #isValid#,
+        #status#,
+        #errorMsg#
+        )
+    </insert>
+
+
+    <sql id="allFields">
+        id,
+        created_at createdAt,
+        created_by createdBy,
+        updated_at updatedAt,
+        updated_by updatedBy,
+        fund_code fundCode,
+        end_date endDate,
+        asset_value assetValue,
+        stock_per stockPer,
+        bond_per bondPer,
+        cash_per cashPer,
+        other_per otherPer,
+        national_debt_per nationalDebtPer,
+        finanicial_bond_per finanicialBondPer,
+        enterprise_bond_per enterpriseBondPer,
+        central_bank_bill_per centralBankBillPer,
+        batch_id batchId,
+        is_valid isValid,
+        status status,
+        error_msg errorMsg
+    </sql>
+
+    <select id="getByID" parameterClass="long" resultClass="com.lufax.jijin.daixiao.dto.JijinExAssetConfDTO">
+        select <include refid="allFields"/>
+        from bus_jijin_ex_asset_conf
+        where id = #id#
+    </select>
+
+    
+    <select id ="getLatestAssetConfByFundCode" parameterClass="String" resultClass="com.lufax.jijin.daixiao.dto.JijinExAssetConfDTO">
+        select * from 
+        (select <include refid="allFields"/>
+        from bus_jijin_ex_asset_conf
+        where fund_code=#fundCode#
+        and is_valid = 1
+         order by end_date desc,batch_id desc) where rownum = 1
+   </select>
+
+	
+</sqlMap>

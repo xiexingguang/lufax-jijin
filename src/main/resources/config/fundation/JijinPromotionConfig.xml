@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="BusJijinPromotionConfig">
+	
+	<sql id="jijinPromotionConfigColumn">
+		id id,
+        fund_code fundCode,
+        status status,
+        start_time startTime,
+        end_time endTime,
+        actual_end_time actualEndTime,
+        max_amount maxAmount,
+        actual_amount actualAmount,
+        is_valid isValid,
+        created_at createdAt,
+        updated_at updatedAt,
+        created_by createdBy,
+        updated_by updatedBy
+	</sql>
+    <select id="findJijinPromotionConfigByFundCode" parameterClass="java.util.Map" resultClass="com.lufax.jijin.fundation.dto.JijinPromotionConfigDTO">
+		select 
+			<include refid="jijinPromotionConfigColumn"/>
+            from BUS_JIJIN_PROMOTION_CONFIG
+            where fund_code =#fundCode# and is_valid =#isValid#
+
+    </select>
+
+    <update id="updateJijinPromotionConfig" parameterClass="com.lufax.jijin.fundation.dto.JijinPromotionConfigDTO">
+        update BUS_JIJIN_PROMOTION_CONFIG t set
+        <isNotEmpty property="status">
+            t.status = #status#,
+        </isNotEmpty>
+        <isNotEmpty property="actualAmount">
+         	t.actual_amount = #actualAmount#,
+        </isNotEmpty>
+        <isNotEmpty property="actualEndTime">
+         	t.actual_end_time = #actualEndTime#,
+        </isNotEmpty>
+        t.updated_at=sysdate
+        where t.id = #id#
+    </update>
+
+	<select id="findAllActivePromotionList" resultClass="com.lufax.jijin.fundation.dto.JijinPromotionConfigDTO">
+		select 
+			<include refid="jijinPromotionConfigColumn"/>
+		from BUS_JIJIN_PROMOTION_CONFIG
+		where  is_valid= '1'
+	</select>
+</sqlMap>

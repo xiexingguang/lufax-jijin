@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="YLX_BATCH_FILE">
+	   
+    <typeAlias alias="YLXBatchFileDTO" type="com.lufax.jijin.ylx.batch.dto.YLXBatchFileDTO"/>
+
+    <insert id="insert" parameterClass="YLXBatchFileDTO">
+        <selectKey keyProperty="id" resultClass="java.lang.Long">
+            SELECT SEQ_YLX_BATCH_FILE.NEXTVAL FROM DUAL
+        </selectKey>
+        insert into YLX_BATCH_FILE (
+        ID,
+        BATCH_ID,
+        FILE_NAME,
+        STATUS,
+        ORG_CODE,
+        TRX_DATE,
+        TOTAL,
+        AMOUNT,
+        SUCCESS_TOTAL,
+        SUCCESS_AMOUNT,
+        ABNORMAl_TOTAL,
+        VERSION,
+        RETRY_TIMES,
+        CURRENT_LINE,
+        RETURN_CODE,
+        FILE_ID,
+        CREATED_AT,
+        UPDATED_AT,
+        CREATED_BY,
+        UPDATED_BY      
+        ) values (
+        #id#,
+        #batchId#,
+        #fileName#,
+        #status#,
+        #orgCode#,
+        #trxDate#,
+        #total#,
+        #amount#,
+        #successTotal#,
+        #successAmount#,
+        #abnormalTotal#,
+        #version#,
+        #retryTimes#,
+        #currentLine#,
+        #returnCode#,
+        #fileId#,
+        sysdate,
+        sysdate,
+        'SYS',
+        'SYS')
+    </insert>
+    
+    <sql id="SelectBatchFileDTO">
+        select
+        ID as id,
+        BATCH_ID as batchId,
+        FILE_NAME as fileName,
+        STATUS as status,
+        ORG_CODE as orgCode,
+        TRX_DATE as trxDate,
+        TOTAL as total,
+        AMOUNT as amount,
+        SUCCESS_TOTAL as successTotal,
+        SUCCESS_AMOUNT as successAmount,
+        ABNORMAL_TOTAL as abnormalTotal,
+        VERSION as version,
+        RETRY_TIMES as retryTimes,
+        CURRENT_LINE as currentLine,
+        RETURN_CODE as returnCode,
+        FILE_ID as fileId,
+        CREATED_AT as createdAt,
+        UPDATED_AT as updatedAt,
+        CREATED_BY as createdBy,
+        UPDATED_BY as updateBy
+    </sql>
+    
+    
+    <select id="getYLXBatchFileDTOsByBatchId" parameterClass="java.lang.Long"  resultClass="YLXBatchFileDTO">
+        <include refid="SelectBatchFileDTO"/>
+        from YLX_BATCH_FILE where batch_id=#id#
+    </select>
+    
+    <select id="getYLXBatchFileDTOsByBatchIdAndStatus" parameterClass="map"  resultClass="YLXBatchFileDTO">
+        <include refid="SelectBatchFileDTO"/>
+        from YLX_BATCH_FILE where batch_id=#id# and status=#status#
+    </select>
+    
+    <select id="getYLXBatchFileDTOsById" parameterClass="java.lang.Long"  resultClass="YLXBatchFileDTO">
+        <include refid="SelectBatchFileDTO"/>
+        from YLX_BATCH_FILE where id=#id#
+    </select>
+
+
+   <!-- <select id="getYLXBatchFileDTOsByBatchIdAndTradeType" parameterClass="map"  resultClass="YLXBatchFileDTO">
+        <include refid="SelectBatchFileDTO"/>
+        from YLX_BATCH_FILE where batch_id=#id# and trade_type=#tradeType#
+    </select>-->
+       
+    <update id="updateYLXBatchFileSuccessDTOById" parameterClass="map">
+        update YLX_BATCH_FILE
+        set status=#status#,
+        total=#total#,
+        amount=#amount#,
+        trx_date=#trxDate#,
+        updated_at = sysdate
+        where id=#id#
+    </update>
+               
+   <update id="updateYLXBatchFileDTOStatusById" parameterClass="map">
+        update YLX_BATCH_FILE
+        set status=#status#,
+        retry_times=#retryTimes#,
+        return_code=#returnCode#,
+        file_id=#fileId#,
+        updated_at = sysdate
+        where id=#id#
+    </update>
+    
+     <update id="updateByIdSelective" parameterClass="YLXBatchFileDTO">
+        update YLX_BATCH_FILE 
+        set updated_at = sysdate,
+        updated_by = 'SYS'
+       	<dynamic>
+			<isNotNull prepend="," property="status">
+				 status=#status#
+			</isNotNull>
+			<isNotNull prepend="," property="trxDate">
+				 TRX_DATE=#trxDate#
+			</isNotNull>
+			<isNotNull prepend="," property="total">
+				 TOTAL=#total#
+			</isNotNull>
+			<isNotNull prepend="," property="amount">
+				 AMOUNT=#amount#
+			</isNotNull>
+			<isNotNull prepend="," property="successTotal">
+				 SUCCESS_TOTAL=#successTotal#
+			</isNotNull>
+			<isNotNull prepend="," property="successAmount">
+				 ABNORMAL_TOTAL=#successAmount#
+			</isNotNull>
+			<isNotNull prepend="," property="version">
+				 VERSION=#version#
+			</isNotNull>
+			<isNotNull prepend="," property="retryTimes">
+				 RETRY_TIMES=#retryTimes#
+			</isNotNull>
+			<isNotNull prepend="," property="currentLine">
+				 CURRENT_LINE=#currentLine#
+			</isNotNull>
+			<isNotNull prepend="," property="returnCode">
+				 RETURN_CODE=#returnCode#
+			</isNotNull>
+		</dynamic>
+        where id=#id#
+    </update>
+    
+    <update id="updateCurrentLineById" parameterClass="map">
+        update YLX_BATCH_FILE 
+        set updated_at = sysdate,
+        CURRENT_LINE=#currentLine#
+        where id = #id#
+     </update>
+
+</sqlMap>

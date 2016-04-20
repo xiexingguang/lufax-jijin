@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+        
+        
+<sqlMap namespace="BusJijinUserBalanceHistory">
+
+    <insert id="insertBusJijinUserBalanceHistory" parameterClass="com.lufax.jijin.fundation.dto.JijinUserBalanceHistoryDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select SEQ_BUS_JIJIN_USR_BAL_HISTORY.nextval as id from dual
+        </selectKey>
+        <![CDATA[
+            insert into BUS_JIJIN_USR_BAL_HISTORY (
+                id,
+                user_id,
+                fund_code,
+                balance,
+                frozen_amount,
+                share_balance,
+                frozen_share,
+                dividend_type,
+                dividend_status,
+                applying_amount,
+				biz_date,
+				increase,
+				decrease,
+				remark,
+				BIZ_TYPE,
+				TRADE_RECORD_ID,
+				TRX_TIME,
+                created_at,
+                updated_at,
+                created_by,
+                updated_by
+            )
+            values (
+                #id#,
+                #userId#,
+                #fundCode#,
+                #balance#,
+                #frozenAmount#,
+                #shareBalance#,
+                #frozenShare#,
+                #dividendType#,
+                #dividendStatus#,
+                #applyingAmount#,
+                #bizDate#,
+                #increase#,
+                #decrease#,
+                #remark#,
+                #bizType#,
+                #tradeRecordId#,
+                sysdate,
+                sysdate,
+                sysdate,
+                'sys',
+                'sys'
+            )
+        ]]>
+    </insert>
+
+    <select id="findBusJijinUserBalanceHistory" parameterClass="java.util.Map" resultClass="com.lufax.jijin.fundation.dto.JijinUserBalanceHistoryDTO">
+        <![CDATA[
+            select
+                id id,
+                user_id userId,
+                fund_code fundCode,
+                balance balance,
+                frozen_amount frozenAmount,
+                share_balance shareBalance,
+                frozen_share frozenShare,
+                dividend_type dividendType,
+                dividend_status dividendStatus,
+                applying_amount applyingAmount,
+                biz_date bizDate,
+                increase increase,
+                decrease decrease,
+                remark remark,
+                BIZ_TYPE bizType,
+				TRADE_RECORD_ID tradeRecordId,
+				TRX_TIME trxTime,
+                created_at createdAt,
+                updated_at updatedAt,
+                created_by createdBy,
+                updated_by updatedBy
+            from BUS_JIJIN_USR_BAL_HISTORY
+            where user_id=#userId# and fund_code=#fundCode# and biz_date=#bizDate# order by created_at desc
+        ]]>
+    </select>
+	
+</sqlMap>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="YlxFundBalance">
+    <typeAlias alias="YLXFundBalanceDTO" type="com.lufax.jijin.ylx.dto.YLXFundBalanceDTO" />
+    
+    <sql id="selectYlxFundBalance">
+                select
+                id id,
+                user_id userId,
+                fund_name fundName,
+                fund_account_id fundAccountId,
+                product_category productCategory,
+                product_code productCode,
+                product_id productId,
+                third_customer_account thirdCustomerAccount,
+                third_account thirdAccount,
+                balance balance,
+                frozen_amount frozenAmount,
+                unit_price unitPrice,
+                fund_share fundShare,
+                frozen_fund_share frozenFundShare,
+                total_buy_amount totalBuyAmount,
+                total_sell_amount totalSellAmount,
+                status status,
+                created_at createdAt,
+                updated_at updatedAt,
+                created_by createdBy,
+                updated_by updatedBy,
+                version version
+            from ylx_fund_balance yfb
+    </sql>
+
+    <insert id="insertYlxFundBalance" parameterClass="YLXFundBalanceDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select seq_ylx_fund_balance.nextval as id from dual
+        </selectKey>
+        <![CDATA[
+            insert into ylx_fund_balance (
+                id,
+                user_id,
+                fund_name,
+                fund_account_id,
+                product_category,
+                product_code,
+                product_id,
+                third_customer_account,
+                third_account,
+                balance,
+                frozen_amount,
+                total_buy_amount,
+                unit_price,
+                fund_share,
+                frozen_fund_share,
+                status,
+                created_at,
+                updated_at,
+                created_by,
+                updated_by,
+                version
+            )
+            values (
+                #id#,
+                #userId#,
+                #fundName#,
+                #fundAccountId#,
+                #productCategory#,
+                #productCode#,
+                #productId#,
+                #thirdCustomerAccount#,
+                #thirdAccount#,
+                #balance#,
+                #frozenAmount#,
+                #totalBuyAmount#,
+                #unitPrice#,
+                #fundShare#,
+                #frozenFundShare#,
+                #status#,
+                #createdAt#,
+                #updatedAt#,
+                #createdBy#,
+                #updatedBy#,
+                #version#
+            )
+        ]]>
+    </insert>
+
+
+
+    <select id="findYlxFundBalanceByUserIdAndProductCode" parameterClass="java.util.Map" resultClass="YLXFundBalanceDTO">
+        <include refid="selectYlxFundBalance"/>
+        where yfb.user_id = #userId# and yfb.product_code = #productCode#
+    </select>
+
+
+
+    <update id="updateYlxFundBalance" parameterClass="java.util.Map">
+        update ylx_fund_balance t set
+        <isNotEmpty property="balance">
+            t.balance = #balance#,
+        </isNotEmpty>
+        <isNotEmpty property="frozenAmount">
+            t.frozen_amount = #frozenAmount#,
+        </isNotEmpty>
+        <isNotEmpty property="unitPrice">
+            t.unit_price = #unitPrice#,
+        </isNotEmpty>
+        <isNotEmpty property="fundShare">
+            t.fund_share = #fundShare#,
+        </isNotEmpty>
+        <isNotEmpty property="frozenFundShare">
+            t.frozen_fund_share = #frozenFundShare#,
+        </isNotEmpty>
+        <isNotEmpty property="totalBuyAmount">
+            t.total_buy_amount = #totalBuyAmount#,
+        </isNotEmpty>
+        <isNotEmpty property="totalSellAmount">
+            t.total_sell_amount = #totalSellAmount#,
+        </isNotEmpty>
+        t.version = t.version + 1,
+        t.updated_at= sysdate
+        where t.id = #id# and t.version = #version#
+    </update>
+	
+	<update id="updateYlxFundBalanceUnitPrice" parameterClass="java.util.Map">
+        update ylx_fund_balance t set t.yestoday_unit_price = t.unit_price ,  t.unit_price = #unitPrice#, t.created_at= #profitDate#
+        where t.product_code = #productCode#
+    </update>
+    
+    <select id="getByThirdAccounts" parameterClass="java.util.Map" resultClass="YLXFundBalanceDTO">
+        <include refid="selectYlxFundBalance"/>
+        <iterate prepend="where" property="accounts" open="(" close=")" conjunction="or">
+	            yfb.third_customer_account = #accounts[]#
+	    </iterate>
+    </select>
+</sqlMap>

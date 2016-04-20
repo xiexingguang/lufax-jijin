@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="JijinExIndustryConf">
+
+    <insert id="insert" parameterClass="com.lufax.jijin.daixiao.dto.JijinExIndustryConfDTO">
+        <selectKey resultClass="long" keyProperty="id">
+            select seq_bus_jijin_ex_industry_conf.nextval from dual
+        </selectKey>
+        insert into bus_jijin_ex_industry_conf (
+        id,
+        created_at,
+        created_by,
+        updated_at,
+        updated_by,
+        fund_code,
+        end_date,
+        industry_code,
+        industry_name,
+        industry_per,
+        batch_id,
+        is_valid,
+        status
+        ) values (
+        #id#,
+        sysdate,
+        'SYS',
+        sysdate,
+        'SYS',
+        #fundCode#,
+        #endDate#,
+        #industryCode#,
+        #industryName#,
+        #industryPer#,
+        #batchId#,
+        #isValid#,
+        #status#
+        )
+    </insert>
+
+    <update id="update" parameterClass="com.lufax.jijin.daixiao.dto.JijinExIndustryConfDTO">
+        update bus_jijin_ex_industry_conf
+        set
+        <isNotEmpty property="fundCode">
+            fund_code = #fundCode#,
+        </isNotEmpty>
+        <isNotEmpty property="endDate">
+            end_date = #endDate#,
+        </isNotEmpty>
+        <isNotEmpty property="industryCode">
+            industry_code = #industryCode#,
+        </isNotEmpty>
+        <isNotEmpty property="industryName">
+            industry_name = #industryName#,
+        </isNotEmpty>
+        <isNotEmpty property="industryPer">
+            industry_per = #industryPer#,
+        </isNotEmpty>
+        <isNotEmpty property="batchId">
+            batch_id = #batchId#,
+        </isNotEmpty>
+        <isNotEmpty property="isValid">
+            is_valid = #isValid#,
+        </isNotEmpty>
+        <isNotEmpty property="status">
+            status = #status#,
+        </isNotEmpty>
+        updated_at = sysdate
+        where
+        id = #id#
+    </update>
+
+    <sql id="allFields">
+        id,
+        created_at createdAt,
+        created_by createdBy,
+        updated_at updatedAt,
+        updated_by updatedBy,
+        fund_code fundCode,
+        end_date endDate,
+        industry_code industryCode,
+        industry_name industryName,
+        industry_per industryPer,
+        batch_id batchId,
+        is_valid isValid,
+        status status
+    </sql>
+
+    <select id="getByID" parameterClass="long" resultClass="com.lufax.jijin.daixiao.dto.JijinExIndustryConfDTO">
+        select <include refid="allFields"/>
+        from bus_jijin_ex_industry_conf
+        where id = #id#
+    </select>
+
+
+	 <select id="getIndustryLatestEndDateAndBatchIdByFundCode" parameterClass="java.lang.String" resultClass="com.lufax.jijin.daixiao.dto.JijinExIndustryConfDTO">
+	   select end_date endDate,batch_id batchId from(
+	   			select end_date,batch_id  
+	   			from  bus_jijin_ex_industry_conf
+	   			where fund_code = #fundCode# 
+	   			and is_valid = 1
+	   			order by end_date desc,batch_id desc) 
+	   where rownum = 1
+	</select>
+	
+	 <select id="queryLatestIndustryRecordsByFundCodeAndEndDateAndBatchId" parameterClass="java.util.Map" resultClass="com.lufax.jijin.daixiao.dto.JijinExIndustryConfDTO">
+        select <include refid="allFields"/>
+        from bus_jijin_ex_industry_conf
+        where fund_code=#fundCode#
+        and batch_id=#batchId#
+        and end_date = #endDate#
+        and is_valid = 1
+        order by to_number(industry_per) desc
+    </select>
+</sqlMap>

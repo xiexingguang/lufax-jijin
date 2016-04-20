@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+        
+        
+<sqlMap namespace="BusJijinRedeemThresholdHis">
+
+	<insert id="insertJijinRedeemThresholdHis" parameterClass="com.lufax.jijin.fundation.dto.JijinRedeemThresholdHisDTO">
+	    <selectKey resultClass="java.lang.Long" keyProperty="id">
+	        select SEQ_BUS_JIJIN_REDEEM_THR_HIS.nextval as id from dual
+	    </selectKey>
+	    insert into BUS_JIJIN_REDEEM_THR_HIS(
+	    	id,fund_code,old_status,new_status,current_amount,created_by,created_at,updated_by,updated_at
+	    )
+	    values(#id#,#fundCode#,#oldStatus#,#newStatus#,#currentAmount#,'SYS',sysdate,'SYS',sysdate)
+	</insert>
+</sqlMap>

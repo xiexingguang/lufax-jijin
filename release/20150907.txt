@@ -1,0 +1,10 @@
+[DEP]
+
+[DB1]
+
+[DB2]
+
+[NOTIFY]
+    chenqunhui168@pingan.com.cn
+[ADVICE]
+    生成产品去掉基金规模限制

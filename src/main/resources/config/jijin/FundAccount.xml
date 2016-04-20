@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="FundAccount">
+
+    
+    <typeAlias alias="FundAccountDTO" type="com.lufax.jijin.dto.FundAccountDTO"/>
+
+    <insert id="insertBusFundAccount" parameterClass="FundAccountDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select seq_bus_fund_account.nextval as id from dual
+        </selectKey>
+        <![CDATA[
+            insert into bus_fund_account (
+                id,
+                user_id,
+                fund_name,
+                third_customer_account,
+                third_account,
+                balance,
+                frozen_amount,
+                fund_share,
+                frozen_fund_share,
+                version,
+                created_at,
+                updated_at,
+                created_by,
+                updated_by
+            )
+            values (
+                #id#,
+                #userId#,
+                #fundName#,
+                #thirdCustomerAccount#,
+                #thirdAccount#,
+                #balance#,
+                #frozenAmount#,
+                #fundShare#,
+                #frozenFundShare#,
+                0,
+                sysdate,
+				sysdate,
+				'SYS',
+				'SYS'
+            )
+        ]]>
+    </insert>
+
+
+
+    <select id="findBusFundAccount" parameterClass="java.util.Map" resultClass="FundAccountDTO">
+        <![CDATA[
+            select
+                id id,
+                user_id userId,
+                fund_name fundName,
+                third_customer_account thirdCustomerAccount,
+                third_account thirdAccount,
+                balance balance,
+                frozen_amount frozenAmount,
+                fund_share fundShare,
+                frozen_fund_share frozenFundShare,
+                version version,
+                created_at createdAt,
+                updated_at updatedAt,
+                created_by createdBy,
+                updated_by updatedBy
+            from bus_fund_account
+            where 1=1
+        ]]>
+        <isNotEmpty prepend="and" property="id">
+            id = #id#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="userId">
+            user_id = #userId#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="fundName">
+            fund_name = #fundName#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="thirdCustomerAccount">
+            third_customer_account = #thirdCustomerAccount#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="thirdAccount">
+            third_account = #thirdAccount#
+        </isNotEmpty>
+    </select>
+
+    <update id="updateBusFundAccount" parameterClass="java.util.Map">
+        update bus_fund_account t set
+        <isNotEmpty property="id">
+            t.id = #id#,
+        </isNotEmpty>
+        <isNotEmpty property="userId">
+            t.user_id = #userId#,
+        </isNotEmpty>
+        <isNotEmpty property="fundName">
+            t.fund_name = #fundName#,
+        </isNotEmpty>
+        <isNotEmpty property="thirdCustomerAccount">
+            t.third_customer_account = #thirdCustomerAccount#,
+        </isNotEmpty>
+        <isNotEmpty property="thirdAccount">
+            t.third_account = #thirdAccount#,
+        </isNotEmpty>
+        <isNotEmpty property="balance">
+            t.balance = #balance#,
+        </isNotEmpty>
+        <isNotEmpty property="frozenAmount">
+            t.frozen_amount = #frozenAmount#,
+        </isNotEmpty>
+        <isNotEmpty property="fundShare">
+            t.fund_share = #fundShare#,
+        </isNotEmpty>
+        <isNotEmpty property="frozenFundShare">
+            t.frozen_fund_share = #frozenFundShare#,
+        </isNotEmpty>
+        <isNotEmpty property="version">
+            t.version = #version#+1,
+        </isNotEmpty>
+        <isNotEmpty property="createdAt">
+            t.created_at = #createdAt#,
+        </isNotEmpty>
+        <isNotEmpty property="updatedAt">
+            t.updated_at = #updatedAt#,
+        </isNotEmpty>
+        <isNotEmpty property="createdBy">
+            t.created_by = #createdBy#,
+        </isNotEmpty>
+        <isNotEmpty property="updatedBy">
+            t.updated_by = #updatedBy#,
+        </isNotEmpty>
+        t.updated_at=sysdate
+        where t.id = #id# and t.version=#version#
+    </update>
+    
+    
+    <sql id="SelectAccountDTO">
+		select
+                id id,
+                user_id userId,
+                fund_name fundName,
+                third_customer_account thirdCustomerAccount,
+                third_account thirdAccount,
+                balance balance,
+                frozen_amount frozenAmount,
+                fund_share fundShare,
+                frozen_fund_share frozenFundShare,
+                version version,
+                created_at createdAt,
+                updated_at updatedAt,
+                created_by createdBy,
+                updated_by updatedBy
+	</sql>
+
+	<select id="getOpenUserIdByIds" parameterClass="map" resultClass="Long">
+        select user_id from BUS_FUND_ACCOUNT
+        where fund_name='YLX' and user_id in 
+        <iterate property="ids" open="(" close=")" conjunction=",">
+        	#ids[]#
+        </iterate>
+    </select>
+    
+   	<select id="getOpenUserDTOsByIds" parameterClass="map" resultClass="FundAccountDTO">
+        <include refid="SelectAccountDTO"/> 
+        from BUS_FUND_ACCOUNT where fund_name='YLX' and user_id in 
+        <iterate property="ids" open="(" close=")" conjunction=",">
+        	#ids[]#
+        </iterate>
+    </select>
+
+   <update id="updateFundAccount" parameterClass="FundAccountDTO">
+            update BUS_FUND_ACCOUNT t set
+            t.balance = #balance#,
+            t.frozen_amount = #frozenAmount#,
+            t.fund_share = #fundShare#,
+            t.frozen_fund_share = #frozenFundShare#,
+            t.updated_at=sysdate,
+            t.version = #version#+1
+            where t.id = #id# and t.version = #version#       
+    </update>
+
+    <update id="updateFrozenAmount" parameterClass="map">
+        update BUS_FUND_ACCOUNT t set
+        t.frozen_amount = #frozenAmount#,
+        t.updated_at=sysdate,
+        t.version = #version#+1
+        where t.user_id = #userId# and t.version = #version#
+    </update>
+
+
+    <select id="findBusFundAccountByUserId" parameterClass="java.lang.Long" resultClass="FundAccountDTO">
+        <include refid="SelectAccountDTO"/>
+        from BUS_FUND_ACCOUNT where  user_id = #userId# and fund_name='YLX'
+    </select>
+
+</sqlMap>
+

@@ -1,0 +1,14 @@
+[DEP]
+
+[DB1]
+	bettle=2266
+[DB2]
+
+[NOTIFY]
+    xuneng311@pingan.com.cn
+
+[ADVICE]
+  webdev7997 主账户展示
+  webdev9313  DB，jersey conn配置项可配置
+
+

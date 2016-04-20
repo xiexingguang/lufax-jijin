@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="YebJJZLIncomeSync">
+
+    <typeAlias alias="yebJJZLIncomeSync" type="com.lufax.jijin.yeb.dto.YebJJZLIncomeSyncDTO" />
+    
+    <insert id="insertyebJJZLIncomeSync" parameterClass="yebJJZLIncomeSync">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select SEQ_YEB_JJZL_INCOME_SYNC.nextval as id from dual
+        </selectKey>
+        <![CDATA[
+            insert into yeb_JJZL_income_sync (
+            	id,
+            	fund_code,
+            	user_id,
+            	income_date,
+            	amount,
+            	yesterday_yield,
+            	total_yield,
+            	unpay_yield,
+            	status,
+            	created_at,
+            	updated_at,
+            	created_by,
+            	updated_by
+            )
+            values (
+                #id#,
+                #fundCode#,
+                #userId#,
+                #incomeDate#,
+                #amount#,
+                #yesterdayYield#,
+                #totalYield#,
+                #unpayYield#,
+                #status#,
+                sysdate,
+                sysdate,
+                'sys',
+                'sys'
+            )
+        ]]>
+    </insert>
+    
+    
+    
+
+    <sql id="selectAsYebJJZLIncomeSync">
+        select
+            ypis.id id,
+            ypis.fund_code fundCode,
+            ypis.user_id userId,
+            ypis.income_date incomeDate,
+            ypis.amount amount,
+            ypis.yesterday_yield yesterdayYield,
+            ypis.total_yield totalYield,
+            ypis.unpay_yield unpayYield,
+            ypis.status status,
+            ypis.created_at createdAt,
+            ypis.updated_at updatedAt,
+            ypis.created_by createdBy,
+            ypis.updated_by updatedBy
+        from yeb_JJZL_income_sync ypis
+    </sql>
+
+    <select id="findYebIncomeSyncByStatusWithLimit" parameterClass="map" resultClass="yebJJZLIncomeSync">
+        <include refid="selectAsYebJJZLIncomeSync" />
+        where ypis.status = #status#
+        <![CDATA[
+            and rownum <= #maxNum#
+             ]]>
+    </select>
+    
+    <select id="findLastSuccessYebIncomeSync" parameterClass="map" resultClass="yebJJZLIncomeSync">
+        select
+            ypis.id id,
+            ypis.fund_code fundCode,
+            ypis.user_id userId,
+            ypis.income_date incomeDate,
+            ypis.amount amount,
+            ypis.yesterday_yield yesterdayYield,
+            ypis.total_yield totalYield,
+            ypis.unpay_yield unpayYield,
+            ypis.status status,
+            ypis.created_at createdAt,
+            ypis.updated_at updatedAt,
+            ypis.created_by createdBy,
+            ypis.updated_by updatedBy
+        from (
+	        select *
+	        from yeb_JJZL_income_sync 
+	        where user_id = #userId#
+	        and   fund_code = #fundCode#
+	        and   status = '3'
+	        order by id desc
+        ) ypis
+        where rownum = 1 
+    </select>
+
+    <update id="updateYebJJZLIncomeSync" parameterClass="map">
+        update yeb_JJZL_income_sync ypis
+        set updated_at = sysdate
+        <isNotEmpty prepend="," property="status">
+            ypis.status = #status#
+        </isNotEmpty>
+        where ypis.id = #id#
+    </update>
+
+</sqlMap>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="BusJijinFundDividend">
+
+
+    <select id="findJijinFundDividend" parameterClass="java.util.Map" resultClass="com.lufax.jijin.fundation.dto.JijinFundDividendDTO">
+        <![CDATA[
+            select
+                id id,
+                fund_code fundCode,
+                dividend_date dividendDate,
+                amount amount,
+                created_at createdAt,
+                updated_at updatedAt,
+                created_by createdBy,
+                updated_by updatedBy
+            from bus_jijin_fund_dividend
+            where 1=1
+        ]]>
+        <isNotEmpty prepend="and" property="id">
+            id = #id#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="fundCode">
+            fund_code = #fundCode#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="dividendDate">
+            dividend_date = #dividendDate#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="amount">
+            amount = #amount#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="createdAt">
+            created_at = #createdAt#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="updatedAt">
+            updated_at = #updatedAt#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="createdBy">
+            created_by = #createdBy#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="updatedBy">
+            updated_by = #updatedBy#
+        </isNotEmpty>
+    </select>
+
+
+</sqlMap>

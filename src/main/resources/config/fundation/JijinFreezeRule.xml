@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="BusJijinFreezeRule">
+    <select id="getJijinFreezeRuleByFundCodeAndMode" parameterClass="java.util.Map" resultClass="com.lufax.jijin.fundation.dto.JijinFreezeRuleDTO">
+        <![CDATA[
+            select
+                id id,
+                FUND_CODE fundCode,
+                BUSINESS_MODE businessMode,
+                FREEZE_DAY freezeDay,
+                IS_ACTIVE isActive,
+                created_at createdAt,
+                updated_at updatedAt,
+                created_by createdBy,
+                updated_by updatedBy
+            from bus_jijin_freeze_rule
+            where FUND_CODE = #fundCode#
+                and BUSINESS_MODE = #businessMode#
+                and IS_ACTIVE = #isActive#
+        ]]>
+    </select>
+</sqlMap>

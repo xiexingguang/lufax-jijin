@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="LOAN_REQUEST_SEQUENCE">
+
+    <insert id="insertLoanRequestSequence" parameterClass="com.lufax.jijin.base.dto.LoanRequestSequenceDTO">
+        <selectKey resultClass="long" keyProperty="id">
+            select SEQ_LOAN_REQUEST_SEQUENCE.nextval from dual
+        </selectKey>
+        insert into LOAN_REQUEST_SEQUENCE (id, created_at)values(#id#,#createdAt#)
+    </insert>
+
+    <select id="getMaxSequence" parameterClass="date" resultClass="long">
+        <![CDATA[
+        select max(id) as id
+          from LOAN_REQUEST_SEQUENCE
+          where created_at<#date#
+      ]]>
+    </select>
+
+</sqlMap>

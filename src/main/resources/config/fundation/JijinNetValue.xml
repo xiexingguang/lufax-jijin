@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="BusJijinNetValue">
+
+    <insert id="insertBusJijinNetValue" parameterClass="com.lufax.jijin.fundation.dto.JijinNetValueDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select SEQ_BUS_JIJIN_NET_VALUE.nextval as id from dual
+        </selectKey>
+        <![CDATA[
+            insert into busdata.bus_jijin_net_value (
+                id,
+                fund_code,
+                fund_status,
+                net_value_date,
+                net_value,
+                total_net_value,
+                benefit_per_tenthousand,
+                interestrate_per_sevenday,
+                created_at,
+                updated_at,
+                created_by,
+                updated_by,
+                status
+            )
+            values (
+                #id#,
+                #fundCode#,
+                #fundStatus#,
+                #netValueDate#,
+                #netValue#,
+                #totalNetValue#,
+                #benefitPerTenthousand#,
+                #interestratePerSevenday#,
+                sysdate,
+                sysdate,
+                'sys',
+                'sys',
+                #status#
+            )
+        ]]>
+    </insert>
+
+
+
+    <select id="findBusJijinNetValue" parameterClass="java.util.Map" resultClass="com.lufax.jijin.fundation.dto.JijinNetValueDTO">
+        <![CDATA[
+            select
+                id id,
+                fund_code fundCode,
+                fund_status fundStatus,
+                net_value_date netValueDate,
+                net_value netValue,
+                total_net_value totalNetValue,
+                benefit_per_tenthousand benefitPerTenthousand,
+                interestrate_per_sevenday interestratePerSevenday,
+                created_at createdAt,
+                updated_at updatedAt,
+                created_by createdBy,
+                updated_by updatedBy
+            from busdata.bus_jijin_net_value
+            where 1=1
+        ]]>
+        <isNotEmpty prepend="and" property="id">
+            id = #id#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="fundCode">
+            fund_code = #fundCode#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="fundStatus">
+            fund_status = #fundStatus#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="netValueDate">
+            net_value_date = #netValueDate#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="netValue">
+            net_value = #netValue#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="totalNetValue">
+            total_net_value = #totalNetValue#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="benefitPerTenthousand">
+            benefit_per_tenthousand = #benefitPerTenthousand#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="interestratePerSevenday">
+            interestrate_per_sevenday = #interestratePerSevenday#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="createdAt">
+            created_at = #createdAt#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="updatedAt">
+            updated_at = #updatedAt#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="createdBy">
+            created_by = #createdBy#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="updatedBy">
+            updated_by = #updatedBy#
+        </isNotEmpty>
+    </select>
+    
+    <select id="findLatestBusJijinNetValueByFundCode" parameterClass="java.util.Map" resultClass="com.lufax.jijin.fundation.dto.JijinNetValueDTO">
+    		<![CDATA[
+    		select 
+    			id id,
+                fund_code fundCode,
+                fund_status fundStatus,
+                net_value_date netValueDate,
+                net_value netValue,
+                total_net_value totalNetValue,
+                benefit_per_tenthousand benefitPerTenthousand,
+                interestrate_per_sevenday interestratePerSevenday,
+                created_at createdAt,
+                updated_at updatedAt,
+                created_by createdBy,
+                updated_by updatedBy
+    		from(
+    		select
+                id,
+                fund_code,
+                fund_status,
+                net_value_date,
+                net_value,
+                total_net_value,
+                benefit_per_tenthousand,
+                interestrate_per_sevenday,
+                created_at,
+                updated_at,
+                created_by,
+                updated_by
+            from busdata.bus_jijin_net_value where fund_code=#fundCode# order by net_value_date desc
+            ) where rownum<2
+            ]]>
+    </select>
+    
+    <select id="findBusJijinNetValueByFundCodeAndDate" parameterClass="java.util.Map" resultClass="com.lufax.jijin.fundation.dto.JijinNetValueDTO">
+        <![CDATA[
+            select
+                id id,
+                fund_code fundCode,
+                fund_status fundStatus,
+                net_value_date netValueDate,
+                net_value netValue,
+                total_net_value totalNetValue,
+                benefit_per_tenthousand benefitPerTenthousand,
+                interestrate_per_sevenday interestratePerSevenday,
+                created_at createdAt,
+                updated_at updatedAt,
+                created_by createdBy,
+                updated_by updatedBy
+            from busdata.bus_jijin_net_value
+        ]]>
+        where fund_code=#fundCode# and
+        net_value_date in
+        <iterate property="dates" conjunction="," close=")" open="(">
+            #dates[]#
+        </iterate>   
+    </select>
+    
+    <select id="findBusJijinNetValueByFundCodeAndBetweenDate" parameterClass="java.util.Map" resultClass="com.lufax.jijin.fundation.dto.JijinNetValueDTO">
+        <![CDATA[
+            select
+                id id,
+                fund_code fundCode,
+                fund_status fundStatus,
+                net_value_date netValueDate,
+                net_value netValue,
+                total_net_value totalNetValue,
+                benefit_per_tenthousand benefitPerTenthousand,
+                interestrate_per_sevenday interestratePerSevenday,
+                created_at createdAt,
+                updated_at updatedAt,
+                created_by createdBy,
+                updated_by updatedBy
+            from busdata.bus_jijin_net_value        
+	        where fund_code=#fundCode#
+	        and net_value_date >= #startDate# 
+	        and net_value_date <= #endDate#
+        ]]>
+    </select>
+    <select id="getUnDispachedNetValue" parameterClass="java.lang.Integer" resultClass="com.lufax.jijin.fundation.dto.JijinNetValueDTO">
+    	<![CDATA[
+            select
+                id id,
+                fund_code fundCode,
+                fund_status fundStatus,
+                net_value_date netValueDate,
+                net_value netValue,
+                total_net_value totalNetValue,
+                benefit_per_tenthousand benefitPerTenthousand,
+                interestrate_per_sevenday interestratePerSevenday,
+                created_at createdAt,
+                updated_at updatedAt,
+                created_by createdBy,
+                updated_by updatedBy
+            from bus_jijin_net_value
+        ]]>
+        where status='NEW' and rownum <![CDATA[<=]]> #limit#
+    </select>
+
+	<update id="updateJijinNetValueStatus" parameterClass="java.util.Map">
+		update bus_jijin_net_value 
+		set status=#status#,
+		updated_at = sysdate
+		where id =#id#
+	</update>
+	
+	 <select id="getJijinYieldRateByPageFromNetValueTable" parameterClass="java.util.Map" resultClass="com.lufax.jijin.daixiao.gson.JijinYieldRateGson">
+    	select *
+		  from (select rownum rn, a.*
+		          from (select net_value_date endDate,
+		                       benefit_per_tenthousand benefitPerTenthousand,
+		                       interestrate_per_sevenday interestratePerSevenday
+		                  from bus_jijin_net_value
+		                 where fund_code = #fundCode#
+		                 order by net_value_date desc) a
+		         where rownum <![CDATA[<=]]>#end#) b
+		 where b.rn <![CDATA[>]]> #start# 
+    </select>
+</sqlMap>

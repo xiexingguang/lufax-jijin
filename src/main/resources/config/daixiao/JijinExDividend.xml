@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+        
+<sqlMap namespace="BusJijinExDividend">
+
+    <insert id="insertJijinExDividend" parameterClass="com.lufax.jijin.daixiao.dto.JijinExDividendDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select seq_bus_jijin_ex_dividend.nextval as id from dual
+        </selectKey>
+
+        <![CDATA[
+            insert into bus_jijin_ex_dividend (
+                id,
+                fund_code,
+                ann_date,
+                record_date,
+                ex_date,
+                div_edex_date,
+                dividend_date,
+                currency_code,
+                per_dividend,
+                div_date,
+                batch_id,
+                is_valid,
+                created_at,
+                updated_at,
+                created_by,
+                updated_by
+            )
+            values (
+                #id#,
+                #fundCode#,
+                #annDate#,
+                #recordDate#,
+                #exDate#,
+                #divEdexDate#,
+                #dividendDate#,
+                #currencyCode#,
+                #perDividend#,
+                #divDate#,
+                #batchId#,
+                #isValid#,
+                sysdate,
+                sysdate,
+                'sys',
+                'sys'
+            )
+        ]]>
+    </insert>
+
+    <select id="getJijinExDividendByFundCode" parameterClass="java.lang.String" resultClass="com.lufax.jijin.daixiao.dto.JijinExDividendDTO">
+        <![CDATA[
+            select
+                id id,
+                fund_code fundCode,
+                ann_date annDate,
+                record_date recordDate,
+                ex_date exDate,
+                div_edex_date divEdexDate,
+                dividend_date dividendDate,
+                currency_code currencyCode,
+                per_dividend perDividend,
+                div_date divDate,
+                batch_id batchId,
+                is_valid isValid,
+                created_at createdAt,
+                updated_at updatedAt,
+                created_by createdBy,
+                updated_by updatedBy
+            from bus_jijin_ex_dividend
+
+        ]]>
+        where fund_code=#fundCode#  order by dividend_date desc, id desc
+
+    </select>
+
+</sqlMap>

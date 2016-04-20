@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+        
+        
+<sqlMap namespace="BusJijinBuyAudit">
+
+    <insert id="insertBusJijinBuyAudit" parameterClass="com.lufax.jijin.fundation.dto.JijinBuyAuditDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select SEQ_BUS_JIJIN_BUY_AUDIT.nextval as id from dual
+        </selectKey>
+        <![CDATA[
+            insert into BUS_JIJIN_BUY_AUDIT (
+                id,       
+                file_id,
+                customer_id,
+                distributor_code,
+                pay_org_id,
+                receive_acct,
+                receive_acct_name,
+                rec_bank_name,
+                rec_bank_code,
+                pay_acct,
+                pay_acct_name,
+                pay_bank_name,
+                pay_bank_code,
+                txn_date,
+                txn_amount,
+                currency,
+                txn_type,
+                fund_date,
+                fund_time,
+                fund_seq_id,
+                fund_type,
+                created_at,
+                updated_at,
+                created_by,
+                updated_by
+            )
+            values (
+                #id#,
+                #fileId#,
+                #customerId#,
+                #distributorCode#,
+                #payOrgId#,
+                #receiveAcct#,
+                #receiveAcctName#,
+                #recBankName#,
+                #recBankCode#,
+                #payAcct#,
+                #payAcctName#,
+                #payBankName#,
+                #payBankCode#,
+                #txnDate#,
+                #txnAmount#,
+                #currency#,
+                #txnType#,
+                #fundDate#,
+                #fundTime#,
+                #fundSeqId#,
+                #fundType#,
+                sysdate,
+                sysdate,
+                'sys',
+                'sys'
+            )
+        ]]>
+    </insert>
+
+    <select id="findBusJijinBuyAudit" parameterClass="java.util.Map" resultClass="com.lufax.jijin.fundation.dto.JijinBuyAuditDTO">
+        <![CDATA[
+            select
+                id id,       
+                file_id fileId,
+                customer_id customerId,
+                distributor_code distributorCode,
+                pay_org_id payOrgId,
+                receive_acct receiveAcct,
+                receive_acct_name receiveAcctName,
+                rec_bank_name recBankName,
+                rec_bank_code recBankCode,
+                pay_acct payAcct,
+                pay_acct_name payAcctName,
+                pay_bank_name payBankName,
+                pay_bank_code payBankCode,
+                txn_date txnDate,
+                txn_amount txnAmount,
+                currency currency,
+                txn_type txnType,
+                fund_date fundDate,
+                fund_time fundTime,
+                fund_seq_id fundSeqId,
+                fund_type fundType,
+                created_at createdAt,
+                updated_at updatedAt,
+                created_by createdBy,
+                updated_by updatedBy
+            from BUS_JIJIN_BUY_AUDIT
+            where 1=1
+        ]]>
+        <isNotEmpty prepend="and" property="id">
+            id = #id#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="customerId">
+            customer_id = #customerId#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="distributorCode">
+            distributor_code = #distributorCode#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="payOrgId">
+            pay_org_id = #payOrgId#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="receiveAcct">
+            receive_acct = #receiveAcct#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="receiveAcctName">
+            receive_acct_name = #receiveAcctName#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="recBankName">
+            rec_bank_name = #recBankName#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="recBankCode">
+            rec_bank_code = #recBankCode#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="payAcct">
+            pay_acct = #payAcct#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="payAcctName">
+            pay_acct_name = #payAcctName#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="payBankName">
+            pay_bank_name = #payBankName#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="payBankCode">
+            pay_bank_code = #payBankCode#
+        </isNotEmpty>
+         <isNotEmpty prepend="and" property="txnDate">
+            txn_date = #txnDate#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="txnAmount">
+            txn_amount = #txnAmount#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="currency">
+            currency = #currency#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="txnType">
+            txn_type = #txnType#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="fundDate">
+            fund_date = #fundDate#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="fundTime">
+            fund_time = #fundTime#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="fundSeqId">
+            fund_seq_id = #fundSeqId#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="fundType">
+            fund_type = #fundType#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="createdAt">
+            created_at = #createdAt#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="updatedAt">
+            updated_at = #updatedAt#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="createdBy">
+            created_by = #createdBy#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="updatedBy">
+            updated_by = #updatedBy#
+        </isNotEmpty>
+    </select>
+
+
+    <update id="updateBusJijinBuyAudit" parameterClass="java.util.Map">
+        update BUS_JIJIN_BUY_AUDIT set
+        <isNotEmpty property="customerId">
+            customer_id = #customerId#,
+        </isNotEmpty>
+        <isNotEmpty property="distributorCode">
+            distributor_code = #distributorCode#,
+        </isNotEmpty>
+        <isNotEmpty property="payOrgId">
+            pay_org_id = #payOrgId#,
+        </isNotEmpty>
+        <isNotEmpty property="receiveAcct">
+            receive_acct = #receiveAcct#,
+        </isNotEmpty>
+        <isNotEmpty property="receiveAcctName">
+            receive_acct_name = #receiveAcctName#,
+        </isNotEmpty>
+        <isNotEmpty property="recBankName">
+            rec_bank_name = #recBankName#,
+        </isNotEmpty>
+        <isNotEmpty property="recBankCode">
+            rec_bank_code = #recBankCode#,
+        </isNotEmpty>
+        <isNotEmpty property="payAcct">
+            pay_acct = #payAcct#,
+        </isNotEmpty>
+        <isNotEmpty property="payAcctName">
+            pay_acct_name = #payAcctName#,
+        </isNotEmpty>
+        <isNotEmpty property="payBankName">
+            pay_bank_name = #payBankName#,
+        </isNotEmpty>
+        <isNotEmpty property="payBankCode">
+            pay_bank_code = #payBankCode#,
+        </isNotEmpty>
+         <isNotEmpty property="txnDate">
+            txn_date = #txnDate#,
+        </isNotEmpty>
+        <isNotEmpty property="txnAmount">
+            txn_amount = #txnAmount#,
+        </isNotEmpty>
+        <isNotEmpty property="currency">
+            currency = #currency#,
+        </isNotEmpty>
+        <isNotEmpty property="txnType">
+            txn_type = #txnType#,
+        </isNotEmpty>
+        <isNotEmpty property="fundDate">
+            fund_date = #fundDate#,
+        </isNotEmpty>
+        <isNotEmpty property="fundTime">
+            fund_time = #fundTime#,
+        </isNotEmpty>
+        <isNotEmpty property="fundSeqId">
+            fund_seq_id = #fundSeqId#,
+        </isNotEmpty>
+        <isNotEmpty property="fundType">
+            fund_type = #fundType#,
+        </isNotEmpty>
+        <isNotEmpty property="createdAt">
+            created_at = #createdAt#,
+        </isNotEmpty>
+        <isNotEmpty property="createdBy">
+            created_by = #createdBy#,
+        </isNotEmpty>
+        <isNotEmpty property="updatedBy">
+            updated_by = #updatedBy#,
+        </isNotEmpty>
+        updated_at=sysdate
+        where id = #id#
+    </update>
+      
+	
+</sqlMap>

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="INSURANCE_FUND_RECORD">
+    <typeAlias alias="InsuranceFundRecordDTO" type="com.lufax.jijin.ylx.fund.dto.InsuranceFundRecordDTO"/>
+
+    <sql id="fieldsMapping">
+        fifr.id as id,
+        fifr.product_id as productId,
+        fifr.from_user_id as fromUserId,
+        fifr.to_card_id as toCardId,
+        fifr.type as type,
+        fifr.amount as amount,
+        fifr.remark as remark,
+        fifr.record_id as recordId,
+        fifr.status as status,
+        fifr.version as version,
+        fifr.insurance_type as insuranceType,
+        fifr.fund_date as fundDate,
+        fifr.created_at as createdAt,
+        fifr.updated_at as updatedAt,
+        fifr.created_by as createdBy,
+        fifr.updated_by as updatedBy
+    </sql>
+
+    <insert id="insertInsuranceFundRecord" parameterClass="InsuranceFundRecordDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select seq_fa_in_fund_rcd.nextval as id from dual
+        </selectKey>
+        <![CDATA[
+            insert into fa_insurance_fund_record(
+                id,
+                product_id,
+                from_user_id,
+                to_card_id,
+                type,
+                amount,
+                remark,
+                record_id,
+                status,
+                insurance_type,
+                fund_date,
+                version,
+                created_at,
+                updated_at,
+                created_by,
+                updated_by
+            )
+            values (
+                #id#,
+                #productId#,
+                #fromUserId#,
+                #toCardId#,
+                #type#,
+                #amount#,
+                #remark#,
+                #recordId#,
+                #status#,
+                #insuranceType#,
+                #fundDate#,
+                0,
+                sysdate,
+                sysdate,
+                'SYS',
+                'SYS'
+            )
+        ]]>
+    </insert>
+
+    <select id="findInsuranceFundRecordsByStatusAndBatchNum" parameterClass="map"
+            resultClass="InsuranceFundRecordDTO">
+        select
+        <include refid="fieldsMapping"/>
+        <![CDATA[
+        from FA_INSURANCE_FUND_RECORD fifr
+        where fifr.STATUS = #status#
+        and fifr.insurance_type = #insuranceType#
+        and rownum <= #batchNumber#
+        ]]>
+    </select>
+
+    <select id="findOvertimeProcessingFundRecords" parameterClass="map"
+            resultClass="InsuranceFundRecordDTO">
+        select
+        <include refid="fieldsMapping"/>
+        <![CDATA[
+        from FA_INSURANCE_FUND_RECORD fifr
+        where fifr.STATUS in (1,11)
+        and fifr.insurance_type = #insuranceType#
+        and fifr.updated_at < #dateTime#
+        and rownum <= #batchNumber#
+        ]]>
+    </select>
+
+    <update id="updateInsuranceFundRecord" parameterClass="map">
+        update FA_INSURANCE_FUND_RECORD
+        set STATUS = #status#,
+        VERSION = #version#+1,
+        RECORD_ID = #recordId#,
+        UPDATED_AT = sysdate
+        where id = #id#
+        and version = #version#
+    </update>
+
+	<update id="updateInsuranceFundRecordByStatus" parameterClass="map">
+        update FA_INSURANCE_FUND_RECORD set 
+	        STATUS = #statusTo#,
+	        VERSION = #version#+1,
+	        UPDATED_AT = sysdate
+        where id = #id# and version = #version# and status = #statusFrom#
+    </update>
+    
+    <update id="updateInsuranceFundRecordStatusById" parameterClass="map">
+        update FA_INSURANCE_FUND_RECORD set 
+	        STATUS = #status#,
+	        UPDATED_AT = sysdate
+        where id = #id#
+    </update>
+
+    <select id="findByRecordId" parameterClass="map" resultClass="InsuranceFundRecordDTO">
+        select
+        <include refid="fieldsMapping"/>
+        from FA_INSURANCE_FUND_RECORD fifr
+        where fifr.record_id = #recordId#
+    </select>
+
+    <select id="findById" parameterClass="map" resultClass="InsuranceFundRecordDTO">
+        select
+        <include refid="fieldsMapping"/>
+        from FA_INSURANCE_FUND_RECORD fifr
+        where fifr.id = #id#
+    </select>
+
+    <select id="findByTypeFundDateProductId" parameterClass="map" resultClass="InsuranceFundRecordDTO">
+        select
+        <include refid="fieldsMapping"/>
+        from FA_INSURANCE_FUND_RECORD fifr
+        where fifr.type = #type#
+        and fifr.fund_date = #fundDate#
+        and fifr.product_id = #productId#
+    </select>
+
+
+
+</sqlMap>
+

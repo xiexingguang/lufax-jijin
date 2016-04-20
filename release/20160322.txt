@@ -1,0 +1,16 @@
+[DEP]
+
+[DB1]
+	bettle=2131
+[DB2]
+
+[NOTIFY]
+    xuneng311@pingan.com.cn
+
+[ADVICE]
+  webdev8214 收益文件继续落地
+    webdev8215 收益检验有问题，则不落地，人工干预
+    webdev7612 基金拆库
+    webdev7968 大华货基T+1赎回
+    webdev8580 赎回转账时传递appSheetNo
+

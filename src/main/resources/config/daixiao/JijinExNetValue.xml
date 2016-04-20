@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="BusJijinExNetValue">
+
+    <insert id="insertBusJijinExNetValue" parameterClass="com.lufax.jijin.daixiao.dto.JijinExNetValueDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select seq_bus_jijin_ex_net_value.nextval as id from dual
+        </selectKey>
+
+        <![CDATA[
+            insert into bus_jijin_ex_net_value (
+                id,
+                fund_code,
+                end_date,
+                net_value,
+                total_net_value,
+                batch_id,
+                status,
+                error_msg,
+                is_valid,
+                adj_net_value,
+                created_at,
+                updated_at,
+                created_by,
+                updated_by
+            )
+            values (
+                #id#,
+                #fundCode#,
+                #endDate#,
+                #netValue#,
+                #totalNetValue#,
+                #batchId#,
+                #status#,
+                #errorMsg#,
+                #isValid#,
+                #adjNetValue#,
+                sysdate,
+                sysdate,
+                'sys',
+                'sys'
+            )
+        ]]>
+    </insert>
+
+
+    <sql id="selectAll">
+        select
+        id id,
+        fund_code fundCode,
+        end_date endDate,
+        net_value netValue,
+        total_net_value totalNetValue,
+        batch_id batchId,
+        status status,
+        error_msg errorMsg,
+        is_valid isValid,
+        adj_net_value adjNetValue,
+        created_at createdAt,
+        updated_at updatedAt,
+        created_by createdBy,
+        updated_by updatedBy
+        from bus_jijin_ex_net_value
+    </sql>
+
+    <select id="getJijinExNetValueByFundCodeAndEndDate" parameterClass="java.util.Map" resultClass="com.lufax.jijin.daixiao.dto.JijinExNetValueDTO">
+        <include refid="selectAll"></include>
+        where fund_code=#fundCode# and is_valid = 1 and end_date >= #endDate# order by end_date desc
+    </select>
+
+
+    <select id="getLastJijinExNetValueByFundCode" parameterClass="java.lang.String" resultClass="com.lufax.jijin.daixiao.dto.JijinExNetValueDTO">
+        select * from (
+        <include refid="selectAll"></include>
+        where fund_code=#fundCode#   order by end_date desc,id desc) where rownum = 1
+
+    </select>
+
+    <select id="getJijinExNetValuesByStatus" parameterClass="java.util.Map" resultClass="com.lufax.jijin.daixiao.dto.JijinExNetValueDTO">
+        <include refid="selectAll"></include>
+        <![CDATA[
+            where status=#status#
+            and rownum <= #maxNum#
+        ]]>
+    </select>
+
+    <select id="getJijinExNetValueById" parameterClass="java.lang.Long" resultClass="com.lufax.jijin.daixiao.dto.JijinExNetValueDTO">
+        <include refid="selectAll"></include>
+        where id =#id#
+    </select>
+
+    <update id="updateJijinExNetValue" parameterClass="java.util.Map">
+        update bus_jijin_ex_net_value t set
+        t.status = #status#,
+        <isNotEmpty property="errorMsg">
+            t.error_msg = #errorMsg#,
+        </isNotEmpty>
+        <isNotEmpty property="isValid">
+            t.is_valid = #isValid#,
+        </isNotEmpty>
+        t.updated_at=sysdate
+        where t.id = #id#
+    </update>
+
+    <select id="getJijinExNetValuesByFundCodeAndEndDateAndBatchId" parameterClass="java.util.Map" resultClass="com.lufax.jijin.daixiao.dto.JijinExNetValueDTO">
+        <include refid="selectAll"></include>
+        <![CDATA[
+            where fund_code=#fundCode#
+            and end_date = #endDate#
+            and batch_id < #batchId#
+        ]]>
+
+    </select>
+
+    <select id="countNumberOfAfterEndDate" parameterClass="java.util.Map" resultClass="java.lang.Integer">
+        select 1 from bus_jijin_ex_net_value
+        where
+        fund_code=#fundCode#
+        and
+        end_date <![CDATA[>]]> #endDate#
+        and
+        rownum =1
+    </select>
+
+    <select id="getNetValuesByFundCodeAndEndDate" parameterClass="java.util.Map" resultClass="com.lufax.jijin.daixiao.dto.JijinExNetValueDTO">
+        <include refid="selectAll"></include>
+        where
+        fund_code=#fundCode#
+        and
+        end_date = #endDate#
+        order by end_date desc,id desc
+    </select>
+
+    <select id="getLastestNetValuesByFundCodeAndEndDate" parameterClass="java.util.Map" resultClass="com.lufax.jijin.daixiao.dto.JijinExNetValueDTO">
+        select * from (
+        <include refid="selectAll"></include>
+        where
+        fund_code=#fundCode#
+        and
+        end_date = #endDate#
+        order by end_date desc,id desc)
+        where rownum = 1
+    </select>
+
+</sqlMap>

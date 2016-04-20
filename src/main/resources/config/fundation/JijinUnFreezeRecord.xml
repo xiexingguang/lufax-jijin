@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+
+<sqlMap namespace="JijinUnFreezeRecord">
+
+
+    <insert id="insertJijinUnFreezeRecord" parameterClass="com.lufax.jijin.fundation.dto.JijinUnFreezeRecordDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select seq_bus_jijin_unFreeze_record.nextval as id from dual
+        </selectKey>
+        <![CDATA[
+            insert into bus_jijin_unFreeze_record (
+                id,
+                app_no,
+                app_sheet_no,
+                unfreeze_date,
+                unfreeze_share,
+                user_id,
+                user_balance_id,
+                fund_code,
+                status,
+                freeze_type,
+                unfreeze_msg,
+                version,
+                created_at,
+                updated_at,
+                created_by,
+                updated_by
+            )
+            values (
+                #id#,
+                #appNo#,
+                #appSheetNo#,
+                #unfreezeDate#,
+                #unfreezeShare#,
+                #userId#,
+                #userBalanceId#,
+                #fundCode#,
+                #status#,
+                #freezeType#,
+                #unfreezeMsg#,
+                #version#,
+                sysdate,
+                sysdate,
+                'sys',
+                'sys'
+            )
+        ]]>
+    </insert>
+
+    <sql id="SelectJijinUnfreezeRecordDTO">
+        <![CDATA[
+            select
+            id                 id,
+            app_no             appNo,
+            app_sheet_no       appSheetNo,
+            unfreeze_date      unfreezeDate,
+            unfreeze_share     unfreezeShare,
+            user_id            userId,
+            user_balance_id    userBalanceId,
+            fund_code          fundCode,
+            status             status,
+            freeze_type        freezeType,
+            unfreeze_msg       unfreezeMsg,
+            version            version,
+            created_at         createdAt,
+            updated_at         updatedAt,
+            created_by         createdBy,
+            updated_by         updatedBy
+            from bus_jijin_unFreeze_record
+        ]]>
+    </sql>
+
+    <select id="getJijinUnFreezeRecordByAppNo" parameterClass="java.util.Map"
+            resultClass="com.lufax.jijin.fundation.dto.JijinUnFreezeRecordDTO">
+        <include refid="SelectJijinUnfreezeRecordDTO"/>
+        <![CDATA[
+            where app_no = #appNo#
+        ]]>
+        order by id
+    </select>
+
+    <select id="getJijinUnFreezeRecordByDate" parameterClass="java.util.Map"
+            resultClass="com.lufax.jijin.fundation.dto.JijinUnFreezeRecordDTO">
+        <include refid="SelectJijinUnfreezeRecordDTO"/>
+        <![CDATA[
+            where unfreeze_date = #unfreezeDate#
+            and status = #status#
+            and rownum <= #maxNum#
+        ]]>
+    </select>
+
+    <update id="updateJijinUnFreezeRecord" parameterClass="java.util.Map">
+        update bus_jijin_unFreeze_record t set
+            t.status = #status#,
+            t.version = #version#+1,
+            t.unFreeze_Msg = #unFreezeMsg#,
+        t.updated_at=sysdate
+        where t.app_no = #appNo#
+              and t.app_Sheet_No =#appSheetNo#
+            and version = #version#
+    </update>
+
+    <select id="getJijinUnfreezeRecordCountDTO" parameterClass="java.util.Map" resultClass="com.lufax.jijin.fundation.dto.JijinUnfreezeRecordCountDTO">
+        SELECT
+            COUNT(1) count,
+            SUM(T.UNFREEZE_SHARE) totalFreezeShare
+        FROM BUS_JIJIN_UNFREEZE_RECORD T
+        WHERE T.UNFREEZE_DATE = #unfreezeDate#
+    </select>
+</sqlMap>

@@ -1,0 +1,15 @@
+[DEP]
+
+[DB1]
+	bettle=1760
+[DB2]
+
+[NOTIFY]
+    xuneng311@pingan.com.cn
+
+[ADVICE]
+   WEBDEV-6916 wind三期 
+     生成基金和处理wind增长率文件时向product增加推送【一周涨幅】字段
+     基金热门主题和人气方案增加推送memo字段
+   09文件基金基本要素成立日期改为非必填【原程序已支持，无需修改】
+  

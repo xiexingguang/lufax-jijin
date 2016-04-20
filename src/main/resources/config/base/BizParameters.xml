@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="BIZ_PARAMETERS">
+
+    <typeAlias alias="BIZ_PARAMETERS"
+               type="com.lufax.jijin.base.dto.BizParametersDTO"/>
+
+    <sql id="fieldsMapping">
+        bp.id as id,
+        bp.PARAMETER_CODE as parameterCode,
+        bp.START_DATE as startDate,
+        bp.PARAMETER_VALUE as parameterValue,
+        bp.VALUE as value,
+        bp.CREATED_BY as createdBy,
+        bp.CREATED_DATE as createdDate,
+        bp.UPDATED_BY as updatedBy,
+        bp.UPDATED_DATE as updatedDate
+    </sql>
+
+    <select id="findByCode" parameterClass="map" resultClass="BIZ_PARAMETERS">
+        select
+        <include refid="fieldsMapping"/>
+        from BIZ_PARAMETERS bp
+        where bp.PARAMETER_CODE=#parameterCode#
+    </select>
+    
+    <update id="updateValueByCode" parameterClass="java.util.Map">
+        update BIZ_PARAMETERS set
+		value=#value#,
+        updated_at=sysdate
+        where  parameter_code= #code#
+    </update>
+
+</sqlMap>

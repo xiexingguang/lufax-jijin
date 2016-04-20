@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+        
+        
+<sqlMap namespace="BusJijinUserBalanceAudit">
+
+    <insert id="insertBusJijinUserBalanceAudit" parameterClass="com.lufax.jijin.fundation.dto.JijinUserBalanceAuditDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select SEQ_BUS_JIJIN_USER_BAL_AUDIT.nextval as id from dual
+        </selectKey>
+        <![CDATA[
+            insert into BUS_JIJIN_USER_BAL_AUDIT (
+                id,       
+                file_id,
+                fund_code,
+                fee_type,
+                inst_id,
+                contract_no,
+                user_id,
+                total_share,
+                frozen_share,
+                available_share,
+                unpaied_income,
+                daily_income,
+                total_income,
+                dividend_type,
+                biz_date,
+                fund_type,
+                status,
+                version,
+                created_at,
+                updated_at,
+                created_by,
+                updated_by
+            )
+            values (
+                #id#,
+                #fileId#,
+                #fundCode#,
+                #feeType#,
+                #instId#,
+                #contractNo#,
+                #userId#,
+                #totalShare#,
+                #frozenShare#,
+                #availableShare#,
+                #unpaiedIncome#,
+                #dailyIncome#,
+                #totalIncome#,
+                #dividendType#,
+                #bizDate#,
+                #fundType#,
+                #status#,
+                0,
+                sysdate,
+                sysdate,
+                'sys',
+                'sys'
+            )
+        ]]>
+    </insert>
+
+    <select id="findBusJijinUserBalanceAudit" parameterClass="java.util.Map" resultClass="com.lufax.jijin.fundation.dto.JijinUserBalanceAuditDTO">
+        <![CDATA[
+            select
+                id id,       
+                file_id fileId,
+                fund_code fundCode,
+                fee_type feeType,
+                inst_id instId,
+                contract_no contractNo,
+                user_id userId,
+                total_share totalShare,
+                frozen_share frozenShare,
+                available_share availableShare,
+                unpaied_income unpaiedIncome,
+                daily_income dailyIncome,
+                total_income totalIncome,
+                dividend_type dividendType,
+                biz_date bizDate,
+                fund_type fundType,
+                status status,
+                version version,
+                created_at createdAt,
+                updated_at updatedAt,
+                created_by createdBy,
+                updated_by updatedBy
+            from BUS_JIJIN_USER_BAL_AUDIT
+            where 1=1
+        ]]>
+        <isNotEmpty prepend="and" property="id">
+            id = #id#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="fileId">
+            file_id = #fileId#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="fundCode">
+            fund_code = #fundCode#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="feeType">
+            fee_type = #feeType#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="instId">
+            inst_id = #instId#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="contractNo">
+            contract_no = #contractNo#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="userId">
+            user_id = #userId#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="totalShare">
+            total_share = #totalShare#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="frozenShare">
+            frozen_share = #frozenShare#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="availableShare">
+            available_share = #availableShare#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="unpaiedIncome">
+            unpaied_income = #unpaiedIncome#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="dailyIncome">
+            daily_income = #dailyIncome#
+        </isNotEmpty>
+         <isNotEmpty prepend="and" property="totalIncome">
+            total_income = #totalIncome#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="dividendType">
+            dividend_type = #dividendType#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="bizDate">
+            biz_date = #bizDate#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="fundType">
+            fund_type = #fundType#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="status">
+            status = #status#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="version">
+            version = #version#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="createdAt">
+            created_at = #createdAt#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="updatedAt">
+            updated_at = #updatedAt#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="createdBy">
+            created_by = #createdBy#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="updatedBy">
+            updated_by = #updatedBy#
+        </isNotEmpty>
+    </select>
+
+
+    <update id="updateBusJijinUserBalanceAudit" parameterClass="com.lufax.jijin.fundation.dto.JijinUserBalanceAuditDTO">
+        update BUS_JIJIN_USER_BAL_AUDIT set
+        <isNotEmpty property="fileId">
+            file_id = #fileId#,
+        </isNotEmpty>
+        <isNotEmpty property="fundCode">
+            fund_code = #fundCode#,
+        </isNotEmpty>
+        <isNotEmpty property="feeType">
+            fee_type = #feeType#,
+        </isNotEmpty>
+        <isNotEmpty property="instId">
+            inst_id = #instId#,
+        </isNotEmpty>
+        <isNotEmpty property="contractNo">
+            contract_no = #contractNo#,
+        </isNotEmpty>
+        <isNotEmpty property="userId">
+            user_id = #userId#,
+        </isNotEmpty>
+        <isNotEmpty property="totalShare">
+            total_share = #totalShare#,
+        </isNotEmpty>
+        <isNotEmpty property="frozenShare">
+            frozen_share = #frozenShare#,
+        </isNotEmpty>
+        <isNotEmpty property="availableShare">
+            available_share = #availableShare#,
+        </isNotEmpty>
+        <isNotEmpty property="unpaiedIncome">
+            unpaied_income = #unpaiedIncome#,
+        </isNotEmpty>
+        <isNotEmpty property="dailyIncome">
+            daily_income = #dailyIncome#,
+        </isNotEmpty>
+         <isNotEmpty property="totalIncome">
+            total_income = #totalIncome#,
+        </isNotEmpty>
+        <isNotEmpty property="dividendType">
+            dividend_type = #dividendType#,
+        </isNotEmpty>
+        <isNotEmpty property="bizDate">
+            biz_date = #bizDate#,
+        </isNotEmpty>
+        <isNotEmpty property="fundType">
+            fund_type = #fundType#,
+        </isNotEmpty>
+        <isNotEmpty property="status">
+            status = #status#,
+        </isNotEmpty>
+        <isNotEmpty property="createdBy">
+            created_by = #createdBy#,
+        </isNotEmpty>
+        <isNotEmpty property="updatedBy">
+            updated_by = #updatedBy#,
+        </isNotEmpty>
+        updated_at=sysdate,
+        version = #version#+1
+        where id = #id# and version=#version#
+    </update>
+    
+    
+    <update id="updateBusJijinUserBalanceAuditWithoutVersionLock" parameterClass="com.lufax.jijin.fundation.dto.JijinUserBalanceAuditDTO">
+        update BUS_JIJIN_USER_BAL_AUDIT set
+        <isNotEmpty property="fileId">
+            file_id = #fileId#,
+        </isNotEmpty>
+        <isNotEmpty property="fundCode">
+            fund_code = #fundCode#,
+        </isNotEmpty>
+        <isNotEmpty property="feeType">
+            fee_type = #feeType#,
+        </isNotEmpty>
+        <isNotEmpty property="instId">
+            inst_id = #instId#,
+        </isNotEmpty>
+        <isNotEmpty property="contractNo">
+            contract_no = #contractNo#,
+        </isNotEmpty>
+        <isNotEmpty property="userId">
+            user_id = #userId#,
+        </isNotEmpty>
+        <isNotEmpty property="totalShare">
+            total_share = #totalShare#,
+        </isNotEmpty>
+        <isNotEmpty property="frozenShare">
+            frozen_share = #frozenShare#,
+        </isNotEmpty>
+        <isNotEmpty property="availableShare">
+            available_share = #availableShare#,
+        </isNotEmpty>
+        <isNotEmpty property="unpaiedIncome">
+            unpaied_income = #unpaiedIncome#,
+        </isNotEmpty>
+        <isNotEmpty property="dailyIncome">
+            daily_income = #dailyIncome#,
+        </isNotEmpty>
+         <isNotEmpty property="totalIncome">
+            total_income = #totalIncome#,
+        </isNotEmpty>
+        <isNotEmpty property="dividendType">
+            dividend_type = #dividendType#,
+        </isNotEmpty>
+        <isNotEmpty property="bizDate">
+            biz_date = #bizDate#,
+        </isNotEmpty>
+        <isNotEmpty property="fundType">
+            fund_type = #fundType#,
+        </isNotEmpty>
+        <isNotEmpty property="status">
+            status = #status#,
+        </isNotEmpty>
+        <isNotEmpty property="createdBy">
+            created_by = #createdBy#,
+        </isNotEmpty>
+        <isNotEmpty property="updatedBy">
+            updated_by = #updatedBy#,
+        </isNotEmpty>
+        updated_at=sysdate,version=1
+        where id = #id#
+    </update>
+    
+    
+    
+    <sql id="SelectJijinUsrBalAuditDTO">
+        select
+        id id,       
+        file_id fileId,
+        fund_code fundCode,
+        fee_type feeType,
+        inst_id instId,
+        contract_no contractNo,
+        user_id userId,
+        total_share totalShare,
+        frozen_share frozenShare,
+        available_share availableShare,
+        unpaied_income unpaiedIncome,
+        daily_income dailyIncome,
+        total_income totalIncome,
+        dividend_type dividendType,
+        biz_date bizDate,
+        fund_type fundType,
+        status status,
+        version version,
+        created_at createdAt,
+        updated_at updatedAt,
+        created_by createdBy,
+        updated_by updatedBy
+    </sql>
+    
+    <select id="getUnDispatchedAuditsByType" parameterClass="map" resultClass="com.lufax.jijin.fundation.dto.JijinUserBalanceAuditDTO">
+        <include refid="SelectJijinUsrBalAuditDTO" />
+        from BUS_JIJIN_USER_BAL_AUDIT
+        where status = #status# and fund_type=#type#
+        and
+        <![CDATA[
+            rownum <= #maxNum#
+        ]]>
+    </select>
+    
+	<select id="findSumBusJijinUserBalanceAudit" parameterClass="java.util.Map" resultClass="java.math.BigDecimal">
+		select sum(daily_income) allIncomeAmount
+		from BUS_JIJIN_USER_BAL_AUDIT
+		where fund_code = #fundCode#
+		    and  
+			user_id = #userId#
+			and 
+			status = #status#
+	</select>
+</sqlMap>

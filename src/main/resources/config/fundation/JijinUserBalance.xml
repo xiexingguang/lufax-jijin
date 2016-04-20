@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+        
+        
+<sqlMap namespace="BusJijinUserBalance">
+
+
+	<select id="getSequence" parameterClass="java.util.Map" resultClass="long">
+		select SEQ_BUS_JIJIN_SN.nextval as id from dual
+	</select>
+
+    <insert id="insertBusJijinUserBalance" parameterClass="com.lufax.jijin.fundation.dto.JijinUserBalanceDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select seq_bus_jijin_user_balance.nextval as id from dual
+        </selectKey>
+        <![CDATA[
+            insert into bus_jijin_user_balance (
+                id,
+                user_id,
+                fund_code,
+                balance,
+                frozen_amount,
+                share_balance,
+                frozen_share,
+                dividend_type,
+                dividend_status,
+                applying_amount,
+                version,
+                created_at,
+                updated_at,
+                created_by,
+                updated_by
+            )
+            values (
+                #id#,
+                #userId#,
+                #fundCode#,
+                #balance#,
+                #frozenAmount#,
+                #shareBalance#,
+                #frozenShare#,
+                #dividendType#,
+                #dividendStatus#,
+                #applyingAmount#,
+                0,
+                sysdate,
+                sysdate,
+                'sys',
+                'sys'
+            )
+        ]]>
+    </insert>
+
+
+
+    <select id="findBusJijinUserBalance" parameterClass="java.util.Map" resultClass="com.lufax.jijin.fundation.dto.JijinUserBalanceDTO">
+        <![CDATA[
+            select
+                id id,
+                user_id userId,
+                fund_code fundCode,
+                balance balance,
+                frozen_amount frozenAmount,
+                share_balance shareBalance,
+                frozen_share frozenShare,
+                dividend_type dividendType,
+                dividend_status dividendStatus,
+                applying_amount applyingAmount,
+                version version,
+                created_at createdAt,
+                updated_at updatedAt,
+                created_by createdBy,
+                updated_by updatedBy
+            from bus_jijin_user_balance
+            where 1=1
+        ]]>
+        <isNotEmpty prepend="and" property="id">
+            id = #id#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="userId">
+            user_id = #userId#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="fundCode">
+            fund_code = #fundCode#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="balance">
+            balance = #balance#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="frozenAmount">
+            frozen_amount = #frozenAmount#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="shareBalance">
+            share_balance = #shareBalance#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="frozenShare">
+            frozen_share = #frozenShare#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="dividendType">
+            dividend_type = #dividendType#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="dividendStatus">
+            dividend_status = #dividendStatus#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="applyingAmount">
+            applying_amount = #applyingAmount#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="version">
+            version = #version#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="createdAt">
+            created_at = #createdAt#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="updatedAt">
+            updated_at = #updatedAt#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="createdBy">
+            created_by = #createdBy#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="updatedBy">
+            updated_by = #updatedBy#
+        </isNotEmpty>
+    </select>
+
+
+
+    <update id="updateBusJijinUserBalance" parameterClass="java.util.Map">
+        update bus_jijin_user_balance t set
+        <isNotEmpty property="id">
+            t.id = #id#,
+        </isNotEmpty>
+        <isNotEmpty property="userId">
+            t.user_id = #userId#,
+        </isNotEmpty>
+        <isNotEmpty property="fundCode">
+            t.fund_code = #fundCode#,
+        </isNotEmpty>
+        <isNotEmpty property="balance">
+            t.balance = #balance#,
+        </isNotEmpty>
+        <isNotEmpty property="frozenAmount">
+            t.frozen_amount = #frozenAmount#,
+        </isNotEmpty>
+        <isNotEmpty property="shareBalance">
+            t.share_balance = #shareBalance#,
+        </isNotEmpty>
+        <isNotEmpty property="frozenShare">
+            t.frozen_share = #frozenShare#,
+        </isNotEmpty>
+        <isNotEmpty property="dividendType">
+            t.dividend_type = #dividendType#,
+        </isNotEmpty>
+        <isNotEmpty property="dividendStatus">
+            t.dividend_status = #dividendStatus#,
+        </isNotEmpty>
+        <isNotEmpty property="applyingAmount">
+            t.applying_amount = #applyingAmount#,
+        </isNotEmpty>
+        <isNotEmpty property="version">
+            t.version = #version#+1,
+        </isNotEmpty>
+        <isNotEmpty property="createdAt">
+            t.created_at = #createdAt#,
+        </isNotEmpty>
+        <isNotEmpty property="createdBy">
+            t.created_by = #createdBy#,
+        </isNotEmpty>
+        <isNotEmpty property="updatedBy">
+            t.updated_by = #updatedBy#,
+        </isNotEmpty>
+        t.updated_at=sysdate
+        where t.id = #id# and t.version=#version#
+    </update>
+    
+    
+    
+    
+    
+    <update id="updateBusJijinUserBalanceDTO" parameterClass="com.lufax.jijin.fundation.dto.JijinUserBalanceDTO">
+        update bus_jijin_user_balance t set
+        <isNotEmpty property="id">
+            t.id = #id#,
+        </isNotEmpty>
+        <isNotEmpty property="userId">
+            t.user_id = #userId#,
+        </isNotEmpty>
+        <isNotEmpty property="fundCode">
+            t.fund_code = #fundCode#,
+        </isNotEmpty>
+        <isNotEmpty property="balance">
+            t.balance = #balance#,
+        </isNotEmpty>
+        <isNotEmpty property="frozenAmount">
+            t.frozen_amount = #frozenAmount#,
+        </isNotEmpty>
+        <isNotEmpty property="shareBalance">
+            t.share_balance = #shareBalance#,
+        </isNotEmpty>
+        <isNotEmpty property="frozenShare">
+            t.frozen_share = #frozenShare#,
+        </isNotEmpty>
+        <isNotEmpty property="dividendType">
+            t.dividend_type = #dividendType#,
+        </isNotEmpty>
+        <isNotEmpty property="dividendStatus">
+            t.dividend_status = #dividendStatus#,
+        </isNotEmpty>
+        <isNotEmpty property="applyingAmount">
+            t.applying_amount = #applyingAmount#,
+        </isNotEmpty>
+        <isNotEmpty property="version">
+            t.version = #version#+1,
+        </isNotEmpty>
+        <isNotEmpty property="createdAt">
+            t.created_at = #createdAt#,
+        </isNotEmpty>
+        <isNotEmpty property="createdBy">
+            t.created_by = #createdBy#,
+        </isNotEmpty>
+        <isNotEmpty property="updatedBy">
+            t.updated_by = #updatedBy#,
+        </isNotEmpty>
+        t.updated_at=sysdate
+        where t.id = #id# and t.version=#version#
+    </update>
+    
+    
+	<update id="updateUserBalanceDividendStatusAndType" parameterClass="java.util.Map">
+			update bus_jijin_user_balance 
+			set 
+				<isNotEmpty property="dividendType">
+		            dividend_type = #dividendType#,
+		        </isNotEmpty>
+		        <isNotEmpty property="dividendStatus">
+		        </isNotEmpty>
+		            dividend_status = #dividendStatus#,
+				updated_at  = sysdate
+			where 
+				user_id = #userId#
+				and
+           		fund_code = #fundCode#
+	
+	</update>    
+	
+	<!-- <select id="checkUserShareBalance" parameterClass="map" resultClass="int">
+		select count(1) from bus_jijin_user_balance where user_id=#userId# and share_balance>#amount#
+	</select> -->
+	
+	<!-- <select id="findFundCode" parameterClass="map" resultClass="string">
+		select fund_code fundCode
+		from bus_jijin_user_balance 
+		where user_id=#userId# 
+		and share_balance>#amount#
+	</select> -->
+	
+	<resultMap id="recordMap" class="com.lufax.jijin.fundation.dto.JijinUserBalanceDTO">
+		<result property="fundCode" column="fundCode" javaType="string"/>
+		<result property="shareBalance" column="shareBalance" javaType="java.math.BigDecimal"/>
+	</resultMap>
+	<select id="findFundCode" parameterClass="map" resultMap="recordMap">
+		select fund_code fundCode, share_balance shareBalance
+		from bus_jijin_user_balance 
+		where user_id=#userId# 
+		<!-- and share_balance>#amount# -->
+	</select>
+	
+	<select id="findFundCodeShareBalanceByPage" parameterClass="map" resultClass="com.lufax.jijin.fundation.dto.JijinUserBalanceDTO">
+		select fund_code fundCode, share_balance shareBalance 
+		from bus_jijin_user_balance 
+		where user_id=#userId# 
+		and fund_code in 
+		<iterate property="fundCodes" open="(" close=")" conjunction=",">
+			#fundCodes[]#
+		</iterate>
+		<!-- and share_balance>#amount#  -->
+		order by shareBalance desc
+	</select>
+	
+	<!-- <resultMap id="recordMap" class="com.lufax.jijin.fundation.dto.JijinUserBalanceDTO">
+		<result property="fundCode" column="fundCode" javaType="string"/>
+		<result property="shareBalance" column="shareBalance" javaType="java.math.BigDecimal"/>
+	</resultMap>
+    <select id="findFundCodeShareBalanceByPage2" parameterClass="map" resultMap="recordMap">
+		select fund_code fundCode, share_balance shareBalance 
+		from bus_jijin_user_balance 
+		where user_id=#userId# 
+		and fund_code in 
+		<iterate property="fundCodes" open="(" close=")" conjunction=",">
+			#fundCodes[]#
+		</iterate>
+		and share_balance>#amount# 
+		order by shareBalance desc
+	</select> -->
+	
+</sqlMap>

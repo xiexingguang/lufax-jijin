@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="YLX_SELL_REQUEST_DETAIL">
+
+    
+    <typeAlias alias="YLXSellRequestDetailDTO" type="com.lufax.jijin.ylx.dto.YLXSellRequestDetailDTO"/>
+
+    <insert id="insert" parameterClass="YLXSellRequestDetailDTO">
+        <selectKey keyProperty="id" resultClass="java.lang.Long">
+            SELECT SEQ_YLX_SERIAL_NUM.NEXTVAL FROM DUAL
+        </selectKey>
+        insert into YLX_SELL_REQUEST_DETAIL (
+        ID,
+        BATCH_ID,
+        INTERNAL_TRX_ID,
+        TRX_TIME,
+        TRX_DATE,
+        BANK_ACCOUNT,
+        THIRD_CUSTOMER_ACCOUNT,
+        THIRD_ACCOUNT,
+        THIRD_ACCOUNT_TYPE,     
+		PROD_CODE,
+		SELL_TYPE,
+		FUND_SHARE,
+		PRINCIPAL,
+		INTEREST,
+		CURRENCY,
+		INTERNAL_TRX_IDS,
+        INTERNAL_SELL_TYPE,
+        PRODUCT_CATEGORY,
+        PRODUCT_CODE,
+        PRODUCT_ID,
+        USER_ID,
+        STATUS,
+        MEMO,
+        RECORD_ID,
+        CREATED_AT,
+        UPDATED_AT,
+        CREATED_BY,
+        UPDATED_BY      
+        ) values (
+        #id#,
+        #batchId#,
+        #internalTrxId#,
+        #trxTime#,
+        #trxDate#,
+        #bankAccount#,
+        #thirdCustomerAccount#,
+        #thirdAccount#,
+        #thirdAccountType#,
+        #prodCode#,
+        #sellType#,
+        #fundShare#,
+        #principal#,
+        #interest#,
+        #currency#,
+        #internalTrxIds#,
+        #internalSellType#,
+        #productCategory#,
+        #productCode#,
+        #productId#,
+        #userId#,
+        #status#,
+        #memo#,
+        #recordId#,
+        sysdate,
+        sysdate,
+        'SYS',
+        'SYS')
+    </insert>
+    
+    <sql id="SelectSellRequestDTO">
+        select
+        ID as id,
+        BATCH_ID as batchId,
+        INTERNAL_TRX_ID as internalTrxId,
+        TRX_TIME as trxTime,
+        TRX_DATE as trxDate,
+        BANK_ACCOUNT as bankAccount,
+        THIRD_CUSTOMER_ACCOUNT as thirdCustomerAccount,
+        THIRD_ACCOUNT as thirdAccount,
+        THIRD_ACCOUNT_TYPE as thirdAccountType,
+        PROD_CODE as prodCode,
+        SELL_TYPE as sellType,
+        FUND_SHARE as fundShare,
+        PRINCIPAL as principal,
+        INTEREST as interest,      
+        CURRENCY as currency,
+        INTERNAL_TRX_IDS as internalTrxIds,
+        INTERNAL_SELL_TYPE as internalSellType,
+        PRODUCT_CATEGORY as productCategory,
+        PRODUCT_CODE  as productCode,
+        PRODUCT_ID as productId,
+        USER_ID    as userId,
+        STATUS     as status,
+        MEMO       as memo,
+        RECORD_ID  as recordId,
+        COMMISSION_FEE commissionFee,
+        CONFIRM_FUND_SHARE confirmFundShare,
+        CREATED_AT as createdAt,
+        UPDATED_AT as updatedAt,
+        CREATED_BY as createdBy,
+        UPDATED_BY as updatedBy
+    </sql>
+    
+    <select id="getMaxIdBybatchId" parameterClass="java.lang.Long"  resultClass="java.lang.Long">
+        select max(internal_trx_id)
+        from YLX_SELL_REQUEST_DETAIL where batch_id=#batchId#
+    </select>
+	
+	<select id="getYLXSellRequestById" parameterClass="map"  resultClass="YLXSellRequestDetailDTO">
+        <include refid="SelectSellRequestDTO"/>
+        from YLX_SELL_REQUEST_DETAIL where id = #id#
+    </select>
+
+	<select id="countSellRequestBybatchId" parameterClass="java.lang.Long"  resultClass="java.lang.Long">
+        select count(*)
+        from YLX_SELL_REQUEST_DETAIL where batch_id=#batchId#
+    </select>
+    
+    <select id="sumAmountByBatchIdAndRownum" parameterClass="map"  resultClass="java.math.BigDecimal">
+        <![CDATA[
+        select sum(principal) from (select rownum as rn,t.* from YLX_SELL_REQUEST_DETAIL t where batch_id=#batchId# and rownum >0 order by t.id)
+        where rn>=#start# and rn<=#end# 
+        ]]>
+    </select>
+    
+	<select id="getYLXSellRequestDTOsByBatchId" parameterClass="map"  resultClass="YLXSellRequestDetailDTO">
+		<include refid="SelectSellRequestDTO"/>
+		<![CDATA[
+        from (select rownum as rn,t.* from YLX_SELL_REQUEST_DETAIL t where batch_id=#batchId# and rownum >0 order by t.id)
+        where rn>=#start# and rn<#end#                                       
+	    ]]>
+     </select>
+
+	<select id="getUnfilledSellRequests" parameterClass="map"  resultClass="YLXSellRequestDetailDTO">
+		<include refid="SelectSellRequestDTO"/>
+		 <![CDATA[from YLX_SELL_REQUEST_DETAIL where batch_id=#batchId# and third_account is NULL and rownum<#size# order by id]]>
+    </select>
+
+    <select id="getYLXSellRequestDTOsByBatchIdandStatus" parameterClass="map"  resultClass="YLXSellRequestDetailDTO">
+        <include refid="SelectSellRequestDTO"/>
+        <![CDATA[from YLX_SELL_REQUEST_DETAIL where batch_id=#batchId# and status=#status# and rownum<#rowNum# order by id]]>
+    </select>
+    
+    <select id="getYLXSellRequestDTOsByRecordIdandStatus" parameterClass="map"  resultClass="YLXSellRequestDetailDTO">
+        <include refid="SelectSellRequestDTO"/>
+        <![CDATA[from YLX_SELL_REQUEST_DETAIL where record_id=#recordId# and status=#status# and rownum<#rowNum# order by id]]>
+    </select>
+    
+    <update id="updateYLXSellRequest" parameterClass="YLXSellRequestDetailDTO">
+        update YLX_SELL_REQUEST_DETAIL
+        set third_customer_account=#thirdCustomerAccount#,
+        third_account=#thirdAccount#,
+        third_account_type=#thirdAccountType#,
+        updated_at = sysdate
+        where id=#id#
+    </update>
+	
+	<update id="updateRecordIdById" parameterClass="map">
+        update YLX_SELL_REQUEST_DETAIL set 
+	        record_id=#recordId#,
+	        updated_at = sysdate
+        where id=#id#
+    </update>
+    
+    <update id="updateSellRequestStatusToSuccessById" parameterClass="java.lang.Long">
+        update YLX_SELL_REQUEST_DETAIL set 
+	        status='SUCCESS',
+	        updated_at = sysdate
+        where id=#value#
+    </update>
+
+    <update id="updateBatchId" parameterClass="map">
+        update YLX_SELL_REQUEST_DETAIL set batch_id = #toBatchId#,updated_at=sysdate
+        where batch_id = #fromBatchId# and product_category=#productCategory#
+        and trx_date = #targetDate# and internal_sell_type = #sellType#
+    </update>
+    
+    <update id="updateSellRequestStatusById" parameterClass="map">
+        update YLX_SELL_REQUEST_DETAIL set status = #status#, 
+	        updated_at = sysdate, 
+	        commission_fee = #commissionFee#, 
+	        confirm_unit_price = #confirmUnitPrice#,
+	        confirm_fund_share = #confirmFundShare#,
+	        principal = #amount#
+        where id = #id#
+    </update>
+	
+	<update id="updateSellRequestJustStatusById" parameterClass="map">
+        update YLX_SELL_REQUEST_DETAIL set status = #status#, 
+	        updated_at = sysdate
+        where id = #id#
+    </update>
+
+    <update id="updateSellRequestToNewRecordId"
+            parameterClass="map">
+        update YLX_SELL_REQUEST_DETAIL
+        set record_id = #newRecordId#,
+            updated_at = sysdate
+        where record_id = #recordId#
+    </update>
+</sqlMap>

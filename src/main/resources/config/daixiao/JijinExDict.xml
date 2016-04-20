@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+        
+<sqlMap namespace="BusJijinExDict">
+
+    <insert id="insertJijinExDict" parameterClass="com.lufax.jijin.daixiao.dto.JijinExDictDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select seq_bus_jijin_ex_dict.nextval as id from dual
+        </selectKey>
+
+        <![CDATA[
+            insert into bus_jijin_ex_dict (
+                id,
+                fund_code ,
+                status ,
+                retry_time,
+                err_msg,
+                created_at,
+                updated_at,
+                created_by,
+                updated_by
+            )
+            values (
+                #id#,
+                #fundCode#,
+                'NEW',
+                0,
+                '',
+                sysdate,
+                sysdate,
+                'sys',
+                'sys'
+            )
+        ]]>
+    </insert>
+
+    <select id="getUnDispachedJijinExDictList" parameterClass="java.lang.Integer" resultClass="com.lufax.jijin.daixiao.dto.JijinExDictDTO">
+            select
+            	id id,
+            	fund_code fundCode,
+                status status,
+	            retry_time reTryTime,
+	            err_Msg  errMsg,
+	            CREATED_AT createdAt,
+	            created_by createdBy,
+	            updated_at  updateAt,
+	            updated_by  updateBy
+            from BUS_JIJIN_EX_DICT
+        where status='NEW'
+          and rownum <![CDATA[<=]]>#limit#
+    </select>
+    
+    <update id="updateJijinExDictStatusAndErrMsg" parameterClass="java.util.Map">
+        update BUS_JIJIN_EX_DICT 
+        set
+        <isNotEmpty property="status">
+        	status =#status#,
+        </isNotEmpty>
+        <isNotEmpty property="reTryTime">
+           retry_time = #reTryTime#,
+        </isNotEmpty>
+        <isNotEmpty property="errMsg">
+        	err_msg =#errMsg#,
+        </isNotEmpty>
+            updated_at=sysdate
+        where id =#id#
+    </update>
+
+</sqlMap>

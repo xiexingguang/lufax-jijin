@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+
+<sqlMap namespace="JijinWithdrawRecord">
+
+
+    <insert id="insertJijinWithdrawRecord" parameterClass="com.lufax.jijin.fundation.dto.JijinWithdrawRecordDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select seq_bus_jijin_withdraw_record.nextval as id from dual
+        </selectKey>
+        <![CDATA[
+            insert into bus_jijin_withdraw_record (
+                id,
+                product_id,
+                trade_user_id,
+                trade_account_no,
+                type,
+                operate_date,
+                request_amount,
+                success_amount,
+                remark,
+                record_id,
+                version,
+                status,
+                created_at,
+                updated_at,
+                created_by,
+                updated_by
+            )
+            values (
+                #id#,
+                #productId#,
+                #tradeUserId#,
+                #tradeAccountNo#,
+                #type#,
+                #operateDate#,
+                #requestAmount#,
+                #successAmount#,
+                #remark#,
+                #recordId#,
+                #version#,
+                #status#,
+                sysdate,
+                sysdate,
+                'sys',
+                'sys'
+            )
+        ]]>
+    </insert>
+
+
+    <select id="getJijinWithdrawRecordByRecordId" parameterClass="java.util.Map"
+            resultClass="com.lufax.jijin.fundation.dto.JijinWithdrawRecordDTO">
+        <![CDATA[
+            select
+                id id,
+                product_id productId,
+                trade_user_id tradeUserId,
+                trade_account_no tradeAccountNo,
+                type type,
+                operate_date operateDate,
+                request_amount requestAmount,
+                success_amount successAmount,
+                remark remark,
+                record_id recordId,
+                version version,
+                status status,
+                created_at createdAt,
+                updated_at updatedAt,
+                created_by createdBy,
+                updated_by updatedBy
+            from bus_jijin_withdraw_record
+            where record_id = #recordId#
+        ]]>
+        order by id
+    </select>
+
+    <update id="updateJijinWithdrawRecord" parameterClass="java.util.Map">
+        update bus_jijin_withdraw_record t set
+        <isNotEmpty property="successAmount">
+            t.success_amount = #successAmount#,
+        </isNotEmpty>
+        <isNotEmpty property="status">
+            t.status = #status#,
+        </isNotEmpty>
+        <isNotEmpty property="version">
+            t.version = #version#+1,
+        </isNotEmpty>
+        t.updated_at=sysdate
+        where t.id = #id#
+        <isNotEmpty property="version">
+            and version = #version#
+        </isNotEmpty>
+    </update>
+
+</sqlMap>

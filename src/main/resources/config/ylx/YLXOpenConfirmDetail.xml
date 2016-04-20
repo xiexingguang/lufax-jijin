@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="YLX_OPEN_CONFIRM_DETAIL">
+
+
+	<typeAlias alias="YLXOpenConfirmDetailDTO"
+		type="com.lufax.jijin.ylx.dto.OpenConfirmDetailDTO" />
+		
+
+
+	<insert id="insert" parameterClass="YLXOpenConfirmDetailDTO">
+		<selectKey keyProperty="id" resultClass="java.lang.Long">
+			SELECT SEQ_YLX_OPEN_CONFIRM_DETAIL.NEXTVAL FROM DUAL
+		</selectKey>
+		insert into YLX_OPEN_CONFIRM_DETAIL (
+		ID,
+		BATCH_ID,
+		INTERNAL_TRX_ID,
+		RESULT_CODE,
+		RESULT_INFO,
+		BANK_ACCOUNT,
+		THIRD_CUSTOMER_ACCOUNT,
+		THIRD_ACCOUNT,
+		THIRD_ACCOUNT_TYPE,
+		NAME,
+		IDENTITY_TYPE,
+		IDENTITY_NUM,
+		CREATED_AT,
+		UPDATED_AT,
+		CREATED_BY,
+		UPDATED_BY
+		) values (
+		#id#,
+		#batchId#,
+		#internalTrxId#,
+		#resultCode#,
+		#resultInfo#,
+		#bankAccount#,
+		#thirdCustomerAccount#,
+		#thirdAccount#,
+		#thirdAccountType#,
+		#name#,
+		#identityType#,
+		#identityNum#,
+		sysdate,
+		sysdate,
+		'SYS',
+		'SYS')
+	</insert>
+
+    <sql id="SelectOpenConfirmDTO">
+        id id,
+        batch_id batchId,
+        internal_trx_id internalTrxId,
+        result_code resultCode,
+        result_info resultInfo,
+        bank_account bankAccount,
+        third_customer_account thirdCustomerAccount,
+        third_account thirdAccount,
+        third_account_type thirdAccountType,
+        name name,
+        identity_type identityType,
+        identity_num identityNum,
+        created_at createdAt,
+        updated_at updatedAt,
+        created_by createdBy,
+        updated_by updatedBy
+    </sql>
+
+	 <select id="getYlxOpenConfirmsByInternalTrxId"  parameterClass="java.util.Map" resultClass="YLXOpenConfirmDetailDTO">
+        select
+        <include refid= "SelectOpenConfirmDTO"/>
+        from ylx_open_confirm_detail
+        where
+        <iterate property="ids" open="(" close=")"	conjunction="or">
+            INTERNAL_TRX_ID = #ids[]#
+        </iterate>
+    </select>
+
+</sqlMap>

@@ -1,0 +1,10 @@
+[DEP]
+
+[DB1]
+   bettle=555
+[DB2]
+   bettle=555
+[NOTIFY]
+    chenzhiqiang288@pingan.com.cn
+[ADVICE]
+    webdev5452

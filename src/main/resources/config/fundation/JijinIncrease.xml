@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+        
+<sqlMap namespace="BusJijinIncrease">
+
+    <insert id="insertBusJijinIncrease" parameterClass="com.lufax.jijin.fundation.dto.JijinIncreaseDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select SEQ_BUS_JIJIN_INCREASE.nextval as id from dual
+        </selectKey>
+        <![CDATA[
+            insert into busdata.bus_jijin_increase (
+                id,
+                fund_code,
+                increase_date,
+                day_increase,
+                month_increase,
+                three_month_increase,
+                six_month_increase,
+                year_increase,
+                this_year_increase,
+                total_increase,
+                created_at,
+                updated_at,
+                created_by,
+                updated_by
+            )
+            values (
+                #id#,
+                #fundCode#,
+                #increaseDate#,
+                #dayIncrease#,
+                #monthIncrease#,
+                #threeMonthIncrease#,
+                #sixMonthIncrease#,
+                #yearIncrease#,
+                #thisYearIncrease#,
+                #totalIncrease#,
+                sysdate,
+                sysdate,
+                'sys',
+                'sys'
+            )
+        ]]>
+    </insert>
+
+
+
+    <select id="findBusJijinIncrease" parameterClass="java.util.Map" resultClass="com.lufax.jijin.fundation.dto.JijinIncreaseDTO">
+        <![CDATA[
+            select
+                id id,
+                fund_code fundCode,
+                increase_date increaseDate,
+                day_increase dayIncrease,
+                month_increase monthIncrease,
+                three_month_increase threeMonthIncrease,
+                six_month_increase sixMonthIncrease,
+                year_increase yearIncrease,
+                this_year_increase thisYearIncrease,
+                total_increase totalIncrease,
+                created_at createdAt,
+                updated_at updatedAt,
+                created_by createdBy,
+                updated_by updatedBy
+            from busdata.bus_jijin_increase
+            where 1=1
+        ]]>
+        <isNotEmpty prepend="and" property="id">
+            id = #id#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="fundCode">
+            fund_code = #fundCode#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="increaseDate">
+            increase_date = #increaseDate#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="dayIncrease">
+            day_increase = #dayIncrease#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="monthIncrease">
+            month_increase = #monthIncrease#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="threeMonthIncrease">
+            three_month_increase = #threeMonthIncrease#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="sixMonthIncrease">
+            six_month_increase = #sixMonthIncrease#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="yearIncrease">
+            year_increase = #yearIncrease#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="thisYearIncrease">
+            this_year_increase = #thisYearIncrease#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="totalIncrease">
+            total_increase = #totalIncrease#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="createdAt">
+            created_at = #createdAt#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="updatedAt">
+            updated_at = #updatedAt#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="createdBy">
+            created_by = #createdBy#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="updatedBy">
+            updated_by = #updatedBy#
+        </isNotEmpty>
+    </select>
+
+
+
+    <update id="updateBusJijinIncrease" parameterClass="java.util.Map">
+        update busdata.bus_jijin_increase t set
+        <isNotEmpty property="id">
+            t.id = #id#,
+        </isNotEmpty>
+        <isNotEmpty property="fundCode">
+            t.fund_code = #fundCode#,
+        </isNotEmpty>
+        <isNotEmpty property="increaseDate">
+            t.increase_date = #increaseDate#,
+        </isNotEmpty>
+        <isNotEmpty property="dayIncrease">
+            t.day_increase = #dayIncrease#,
+        </isNotEmpty>
+        <isNotEmpty property="monthIncrease">
+            t.month_increase = #monthIncrease#,
+        </isNotEmpty>
+        <isNotEmpty property="threeMonthIncrease">
+            t.three_month_increase = #threeMonthIncrease#,
+        </isNotEmpty>
+        <isNotEmpty property="sixMonthIncrease">
+            t.six_month_increase = #sixMonthIncrease#,
+        </isNotEmpty>
+        <isNotEmpty property="yearIncrease">
+            t.year_increase = #yearIncrease#,
+        </isNotEmpty>
+        <isNotEmpty property="thisYearIncrease">
+            t.this_year_increase = #thisYearIncrease#,
+        </isNotEmpty>
+        <isNotEmpty property="totalIncrease">
+            t.total_increase = #totalIncrease#,
+        </isNotEmpty>
+        <isNotEmpty property="createdAt">
+            t.created_at = #createdAt#,
+        </isNotEmpty>
+        <isNotEmpty property="updatedAt">
+            t.updated_at = #updatedAt#,
+        </isNotEmpty>
+        <isNotEmpty property="createdBy">
+            t.created_by = #createdBy#,
+        </isNotEmpty>
+        <isNotEmpty property="updatedBy">
+            t.updated_by = #updatedBy#,
+        </isNotEmpty>
+        t.updated_at=sysdate
+        where t.id = #id#
+    </update>
+
+</sqlMap>

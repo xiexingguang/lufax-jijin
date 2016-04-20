@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="AUDIT_LOG">
+
+    <typeAlias alias="AuditLogDTO" type="com.lufax.fa.audit.dto.AuditLogDTO"/>
+
+    <insert id="insertLog" parameterClass="AuditLogDTO">
+        <selectKey keyProperty="id" resultClass="java.lang.Long">
+            SELECT SEQ_AUDIT_LOG.NEXTVAL FROM DUAL
+        </selectKey>
+			insert into AUDIT_LOG (
+			REF_ID,
+			REF_TYPE,
+			ACTION,
+			REMARK,
+			CREATED_AT 
+			ID
+			) values (
+			#refId#,
+    		#refType#,
+    		#action#,
+    		#remark#,
+    		sysdate,
+			#id#
+			)
+	</insert>
+
+</sqlMap>

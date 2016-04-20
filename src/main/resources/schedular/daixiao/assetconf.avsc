@@ -1,0 +1,23 @@
+{
+ "namespace": "com.lufax.jijin.daixiao.schedular",
+ "type": "record",
+ "name": "资产配置",
+ "target":"com.lufax.jijin.daixiao.dto.JijinExAssetConfDTO",
+ "repository":"jijinExAssetConfRepository",
+ "titlelinenumber":"2",
+ "title":"序号|基金代码|截止日期|资产净值(元)|持有股票市值占资产净值比例(%)|持有债券市值总计占资产净值比例(%)|持有现金占资产净值比例(%)|持有其他资产占资产净值比例(%)|持有国债市值占资产净值比例(%)|持有金融债市值占资产净值比例(%)|持有企债市值占资产净值比例(%)|持有央行票据市值占资产净值比例(%)|OPDATE",
+ "fields": [
+     {"name": "fundCode", "type": "string", "index":"1", "required":"true"},
+     {"name": "endDate", "type": "string", "index":"2", "required":"false"},
+     {"name": "assetValue", "type": "string", "index":"3", "required":"false"},
+     {"name": "stockPer", "type": "string", "index":"4", "required":"false"},
+     {"name": "bondPer", "type": "string", "index":"5", "required":"false"},
+     {"name": "cashPer", "type": "string", "index":"6", "required":"false"},
+     {"name": "otherPer", "type": "string", "index":"7", "required":"false"},
+     {"name": "nationalDebtPer", "type": "string", "index":"8", "required":"false"},
+     {"name": "finanicialBondPer", "type": "string", "index":"9", "required":"false"},
+     {"name": "enterpriseBondPer", "type": "string", "index":"10", "required":"false"},
+     {"name": "centralBankBillPer", "type": "string", "index":"11", "required":"false"}
+
+ ]
+}

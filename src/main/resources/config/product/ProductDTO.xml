@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Product">
+    <sql id="fieldsMapping">
+        p.id as id,
+        p.product_type as productType,
+        <!--p.loan_request_id as loanRequestId,-->
+        <!--p.product_status as productStatus,-->
+        <!--p.created_at as createdAt,-->
+        <!--p.version as version,-->
+        <!--p.expired_at as expiredAt,-->
+        <!--p.updated_at as updatedAt,-->
+        <!--p.buyer_user_id as buyerUserId,-->
+        p.price as price,
+        <!--p.principal as principal,-->
+        p.interest_rate as interestRate,
+        <!--p.num_of_instalments as numOfInstalments,-->
+        p.source_id as sourceId,
+        <!--p.preview_at as previewAt,-->
+        p.published_at as publishedAt,
+        <!--p.previous_product_id as previousProductId,-->
+        p.root_product_id as rootProductId,
+        p.code as code,
+        <!--p.collection_mode as collectionMode,-->
+        <!--p.product_name as productName,-->
+        <!--p.trading_mode as tradingMode,-->
+        <!--p.mgmt_fee_rate as mgmtFeeRate,-->
+        <!--p.fee_display_flag as feeDisplayFlag,-->
+        p.source_type as sourceType,
+        <!--p.buyer_transaction_fee as buyerTransactionFee,-->
+        p.product_category as productCategory,
+        <!--p.min_collect_amount as minCollectAmount,-->
+        <!--p.max_invest_amount as maxInvestAmount,-->
+        p.min_invest_amount as minInvestAmount,
+        p.increase_invest_amount as increaseInvestAmount,
+        <!--p.remaining_amount as remainingAmount,-->
+        p.raised_amount as raisedAmount,
+        p.invest_period as investPeriod,
+        p.invest_period_unit as investPeriodUnit,
+        p.interest_rate_display as interestRateDisplay,
+        p.display_name as displayName,
+        p.trx_end_at as trxEndAt,
+        p.value_date as valueDate,
+        p.online_status_flag as onlineStatusFlag,
+        p.opening_date as openingDate
+    </sql>
+    <typeAlias alias="productDTO" type="com.lufax.jijin.product.dto.ProductDTO"/>
+    <select id="getProductBySourceId" parameterClass="map" resultClass="productDTO">
+        select
+        <include refid="fieldsMapping"/>
+        from products p
+        where p.source_type = #sourceType#
+        and p.source_id = #sourceId#
+        and p.product_type = #productType#
+    </select>
+
+    <select id="getProductByRequestCode" parameterClass="map" resultClass="productDTO">
+        select
+        <include refid="fieldsMapping"/>
+        from products p
+        where p.code = #code#
+    </select>
+
+
+    <select id="getProductById" parameterClass="long" resultClass="productDTO">
+        select
+        <include refid="fieldsMapping"/>
+        from products p
+        where p.id = #productId#
+    </select>
+
+    <select id="getProductBySourceCode" parameterClass="map" resultClass="productDTO">
+        select
+        <include refid="fieldsMapping"/>
+        from products p
+        where p.source_type = #sourceType#
+        and p.code = #code#
+    </select>
+
+
+    <select id="getProductId" parameterClass="map" resultClass="productDTO">
+        select
+        <include refid="fieldsMapping"/>
+        from products p
+        where p.id = #id#
+        and p.source_type = #sourceType#
+    </select>
+
+	<select id="getProductByIds" parameterClass="map" resultClass="productDTO">
+        select 
+        <include refid="fieldsMapping"/>
+        from products p
+        where 
+        <iterate property="ids" open="(" close=")" conjunction="or">
+            p.id = #ids[]#
+        </iterate>
+    </select>
+    
+    <select id="getProductByCodes" parameterClass="map" resultClass="productDTO">
+        select 
+        /*+ index(p IDX_PRODUCTS_CODE) */
+        <include refid="fieldsMapping"/>
+        from products p
+        where p.code in 
+        <iterate property="codes" open="(" close=")" conjunction=",">
+            #codes[]#
+        </iterate>
+    </select>
+</sqlMap>
+

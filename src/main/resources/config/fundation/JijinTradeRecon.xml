@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+        
+        
+<sqlMap namespace="BusJijinTradeRecon">
+
+    <insert id="insertBusJijinTradeRecon" parameterClass="com.lufax.jijin.fundation.dto.JijinTradeReconDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select SEQ_BUS_JIJIN_TRADE_RECON.nextval as id from dual
+        </selectKey>
+        <![CDATA[
+            insert into BUS_JIJIN_TRADE_RECON (
+                id,       
+                record_id,
+                buy_audit_id,
+                status,
+                remark,
+                created_at,
+                updated_at,
+                created_by,
+                updated_by
+            )
+            values (
+                #id#,
+                #recordId#,
+                #buyAuditId#,
+                #status#,
+                #remark#,
+                sysdate,
+                sysdate,
+                'sys',
+                'sys'
+            )
+        ]]>
+    </insert>
+
+	
+</sqlMap>

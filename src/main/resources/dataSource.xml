@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <bean id="dataSource" destroy-method="close"
+          class="com.lufax.kernel.dal.LufaxDataSource">
+        <property name="driverClassName" value="${jijin.jdbc.driver}"/>
+        <property name="url" value="${jijin.jdbc.url}"/>
+        <property name="username" value="${jijin.jdbc.username}"/>
+        <property name="password" value="${jijin.jdbc.password}"/>
+        <!-- 对空闲DB连接是否进行有效验证 -->
+        <property name="testWhileIdle" value="true"/>
+        <!-- 在取出DB连接时是否进行有效验证 -->
+        <property name="testOnBorrow" value="false"/>
+        <!-- 在使用完返回DB连接时是否进行有效验证 -->
+        <property name="testOnReturn" value="false"/>
+        <property name="validationQuery">
+            <value>select sysdate from dual</value>
+        </property>
+        <!--每隔一段多少毫秒跑一次检测空閑DB连接的線程-->
+        <property name="timeBetweenEvictionRunsMillis" value="30000"/>
+        <!--每次驗證空閑連接的連接數目-->
+        <property name="numTestsPerEvictionRun" value="3"/>
+        <property name="maxActive" value="${jijin.jdbc.max.active}"/>
+        <property name="maxIdle" value="${jijin.jdbc.max.idle}"/>
+        <property name="maxWait" value="5000"/>
+    </bean>
+
+    <bean id="dataSource_trddata" destroy-method="close" class="com.lufax.kernel.dal.LufaxDataSource">
+        <!--数据库连接信息-->
+        <property name="driverClassName" value="${trd.jdbc.driver}"/>
+        <property name="url" value="${trd.jdbc.url}"/>
+        <property name="username" value="${trd.jdbc.username}"/>
+        <property name="password" value="${trd.jdbc.password}"/>
+
+        <!--连接数配置，根据不同应用实际连接数调整 -->
+        <!--初始化连接数：默认为0，启动时创建的连接数,1.2版本之后才支持，建议初始1-->
+        <property name="initialSize" value="1"/>
+        <!--最大活跃连接数：默认为8，连接池同时可分配的最大连接数，如果设负数为无限制（不建议），建议15-->
+        <property name="maxActive" value="15"/>
+        <!--最大空闲连接数：默认为8，连接池允许保留的的最大空闲连接数，如果设负数为无限制（不建议），建议接近maxActive-->
+        <property name="maxIdle" value="15"/>
+        <!--最小空闲连接数：默认为0，连接池允许保留的的最小空闲连接数，建议5-->
+        <property name="minIdle" value="5"/>
+        <!--获取连接时的最大等待时间，默认无限制，单位milliseconds，建议5000/1000=5秒-->
+        <property name="maxWait" value="5000"/>
+
+        <!-- 是否被空闲连接回收器(如果有)进行检验.如果检测失败,则连接将被从池中去除。建议开启 -->
+        <property name="testWhileIdle" value="true"/>
+        <!-- 是否从连接池中取出连接前进行检验,如果检验失败, 则从池中去除连接并尝试取出另一个。建议开启-->
+        <property name="testOnBorrow" value="false"/>
+        <!-- 是否在归还到连接池中前进行检验，建议开启上一项关闭此项 -->
+        <property name="testOnReturn" value="false"/>
+        <!-- 检测用SQL，验证从连接池取出的连接,在将连接返回给调用者之前，以上三项有一项为true时必须指定，mysql改用select 1-->
+        <property name="validationQuery">
+            <value>select 1 from dual</value>
+        </property>
+        <!--空闲连接回收器线程运行期间休眠的时间值，默认-1(不运行)，单位milliseconds(毫秒)，建议间隔10000/1000=10秒-->
+        <property name="timeBetweenEvictionRunsMillis" value="10000"/>
+        <!--每次空闲连接回收器线程(如果有)运行时检查的连接数量，默认3，建议3-->
+        <property name="numTestsPerEvictionRun" value="3"/>
+        <!--连接在池中保持空闲而不被空闲连接回收器线程(如果有)回收的最小时间值，默认1000 * 60 * 30，单位milliseconds(毫秒)，建议使用默认值（可以不配此项）-->
+        <property name="minEvictableIdleTimeMillis" value="1800000"/>
+
+        <!--是否自动回收超时连接，建议开启-->
+        <property name="removeAbandoned" value="true"/>
+        <!--超时时间,默认300，单位seconds，建议60秒，如果有特殊需求的可以增加-->
+        <property name="removeAbandonedTimeout" value="60"/>
+    </bean>
+
+    <bean id="dataSource_cfgdata" destroy-method="close" class="com.lufax.kernel.dal.LufaxDataSource">
+        <!--数据库连接信息-->
+        <property name="driverClassName" value="${cfg.jdbc.driver}"/>
+        <property name="url" value="${cfg.jdbc.url}"/>
+        <property name="username" value="${cfg.jdbc.username}"/>
+        <property name="password" value="${cfg.jdbc.password}"/>
+
+        <!--连接数配置，根据不同应用实际连接数调整 -->
+        <!--初始化连接数：默认为0，启动时创建的连接数,1.2版本之后才支持，建议初始1-->
+        <property name="initialSize" value="1"/>
+        <!--最大活跃连接数：默认为8，连接池同时可分配的最大连接数，如果设负数为无限制（不建议），建议15-->
+        <property name="maxActive" value="15"/>
+        <!--最大空闲连接数：默认为8，连接池允许保留的的最大空闲连接数，如果设负数为无限制（不建议），建议接近maxActive-->
+        <property name="maxIdle" value="15"/>
+        <!--最小空闲连接数：默认为0，连接池允许保留的的最小空闲连接数，建议5-->
+        <property name="minIdle" value="5"/>
+        <!--获取连接时的最大等待时间，默认无限制，单位milliseconds，建议5000/1000=5秒-->
+        <property name="maxWait" value="5000"/>
+
+        <!-- 是否被空闲连接回收器(如果有)进行检验.如果检测失败,则连接将被从池中去除。建议开启 -->
+        <property name="testWhileIdle" value="true"/>
+        <!-- 是否从连接池中取出连接前进行检验,如果检验失败, 则从池中去除连接并尝试取出另一个。建议开启-->
+        <property name="testOnBorrow" value="false"/>
+        <!-- 是否在归还到连接池中前进行检验，建议开启上一项关闭此项 -->
+        <property name="testOnReturn" value="false"/>
+        <!-- 检测用SQL，验证从连接池取出的连接,在将连接返回给调用者之前，以上三项有一项为true时必须指定，mysql改用select 1-->
+        <property name="validationQuery">
+            <value>select 1 from dual</value>
+        </property>
+        <!--空闲连接回收器线程运行期间休眠的时间值，默认-1(不运行)，单位milliseconds(毫秒)，建议间隔10000/1000=10秒-->
+        <property name="timeBetweenEvictionRunsMillis" value="10000"/>
+        <!--每次空闲连接回收器线程(如果有)运行时检查的连接数量，默认3，建议3-->
+        <property name="numTestsPerEvictionRun" value="3"/>
+        <!--连接在池中保持空闲而不被空闲连接回收器线程(如果有)回收的最小时间值，默认1000 * 60 * 30，单位milliseconds(毫秒)，建议使用默认值（可以不配此项）-->
+        <property name="minEvictableIdleTimeMillis" value="1800000"/>
+
+        <!--是否自动回收超时连接，建议开启-->
+        <property name="removeAbandoned" value="true"/>
+        <!--超时时间,默认300，单位seconds，建议60秒，如果有特殊需求的可以增加-->
+        <property name="removeAbandonedTimeout" value="60"/>
+    </bean>
+    
+    <bean id="dataSource_userdata" destroy-method="close" class="com.lufax.kernel.dal.LufaxDataSource">
+        <!--数据库连接信息-->
+        <property name="driverClassName" value="${user.jdbc.driver}"/>
+        <property name="url" value="${user.jdbc.url}"/>
+        <property name="username" value="${user.jdbc.username}"/>
+        <property name="password" value="${user.jdbc.password}"/>
+
+        <!--连接数配置，根据不同应用实际连接数调整 -->
+        <!--初始化连接数：默认为0，启动时创建的连接数,1.2版本之后才支持，建议初始1-->
+        <property name="initialSize" value="1"/>
+        <!--最大活跃连接数：默认为8，连接池同时可分配的最大连接数，如果设负数为无限制（不建议），建议15-->
+        <property name="maxActive" value="15"/>
+        <!--最大空闲连接数：默认为8，连接池允许保留的的最大空闲连接数，如果设负数为无限制（不建议），建议接近maxActive-->
+        <property name="maxIdle" value="15"/>
+        <!--最小空闲连接数：默认为0，连接池允许保留的的最小空闲连接数，建议5-->
+        <property name="minIdle" value="5"/>
+        <!--获取连接时的最大等待时间，默认无限制，单位milliseconds，建议5000/1000=5秒-->
+        <property name="maxWait" value="5000"/>
+
+        <!-- 是否被空闲连接回收器(如果有)进行检验.如果检测失败,则连接将被从池中去除。建议开启 -->
+        <property name="testWhileIdle" value="true"/>
+        <!-- 是否从连接池中取出连接前进行检验,如果检验失败, 则从池中去除连接并尝试取出另一个。建议开启-->
+        <property name="testOnBorrow" value="false"/>
+        <!-- 是否在归还到连接池中前进行检验，建议开启上一项关闭此项 -->
+        <property name="testOnReturn" value="false"/>
+        <!-- 检测用SQL，验证从连接池取出的连接,在将连接返回给调用者之前，以上三项有一项为true时必须指定，mysql改用select 1-->
+        <property name="validationQuery">
+            <value>select 1 from dual</value>
+        </property>
+        <!--空闲连接回收器线程运行期间休眠的时间值，默认-1(不运行)，单位milliseconds(毫秒)，建议间隔10000/1000=10秒-->
+        <property name="timeBetweenEvictionRunsMillis" value="10000"/>
+        <!--每次空闲连接回收器线程(如果有)运行时检查的连接数量，默认3，建议3-->
+        <property name="numTestsPerEvictionRun" value="3"/>
+        <!--连接在池中保持空闲而不被空闲连接回收器线程(如果有)回收的最小时间值，默认1000 * 60 * 30，单位milliseconds(毫秒)，建议使用默认值（可以不配此项）-->
+        <property name="minEvictableIdleTimeMillis" value="1800000"/>
+
+        <!--是否自动回收超时连接，建议开启-->
+        <property name="removeAbandoned" value="true"/>
+        <!--超时时间,默认300，单位seconds，建议60秒，如果有特殊需求的可以增加-->
+        <property name="removeAbandonedTimeout" value="60"/>
+    </bean>
+    
+    <bean id="dataSource_busdata" destroy-method="close" class="com.lufax.kernel.dal.LufaxDataSource">
+        <!--数据库连接信息-->
+        <property name="driverClassName" value="${yeb.jdbc.driver}"/>
+        <property name="url" value="${yeb.jdbc.url}"/>
+        <property name="username" value="${yeb.jdbc.username}"/>
+        <property name="password" value="${yeb.jdbc.password}"/>
+       	<property name="kmsService" ref="kmsService"/>  
+        <!--连接数配置，根据不同应用实际连接数调整 -->
+        <!--初始化连接数：默认为0，启动时创建的连接数,1.2版本之后才支持，建议初始1-->
+        <property name="initialSize" value="1"/>
+        <!--最大活跃连接数：默认为8，连接池同时可分配的最大连接数，如果设负数为无限制（不建议），建议15-->
+        <property name="maxActive" value="15"/>
+        <!--最大空闲连接数：默认为8，连接池允许保留的的最大空闲连接数，如果设负数为无限制（不建议），建议接近maxActive-->
+        <property name="maxIdle" value="15"/>
+        <!--最小空闲连接数：默认为0，连接池允许保留的的最小空闲连接数，建议5-->
+        <property name="minIdle" value="5"/>
+        <!--获取连接时的最大等待时间，默认无限制，单位milliseconds，建议5000/1000=5秒-->
+        <property name="maxWait" value="5000"/>
+
+        <!-- 是否被空闲连接回收器(如果有)进行检验.如果检测失败,则连接将被从池中去除。建议开启 -->
+        <property name="testWhileIdle" value="true"/>
+        <!-- 是否从连接池中取出连接前进行检验,如果检验失败, 则从池中去除连接并尝试取出另一个。建议开启-->
+        <property name="testOnBorrow" value="false"/>
+        <!-- 是否在归还到连接池中前进行检验，建议开启上一项关闭此项 -->
+        <property name="testOnReturn" value="false"/>
+        <!-- 检测用SQL，验证从连接池取出的连接,在将连接返回给调用者之前，以上三项有一项为true时必须指定，mysql改用select 1-->
+        <property name="validationQuery">
+            <value>select 1 from dual</value>
+        </property>
+        <!--空闲连接回收器线程运行期间休眠的时间值，默认-1(不运行)，单位milliseconds(毫秒)，建议间隔10000/1000=10秒-->
+        <property name="timeBetweenEvictionRunsMillis" value="10000"/>
+        <!--每次空闲连接回收器线程(如果有)运行时检查的连接数量，默认3，建议3-->
+        <property name="numTestsPerEvictionRun" value="3"/>
+        <!--连接在池中保持空闲而不被空闲连接回收器线程(如果有)回收的最小时间值，默认1000 * 60 * 30，单位milliseconds(毫秒)，建议使用默认值（可以不配此项）-->
+        <property name="minEvictableIdleTimeMillis" value="1800000"/>
+
+        <!--是否自动回收超时连接，建议开启-->
+        <property name="removeAbandoned" value="true"/>
+        <!--超时时间,默认300，单位seconds，建议60秒，如果有特殊需求的可以增加-->
+        <property name="removeAbandonedTimeout" value="60"/>
+    </bean>
+    
+</beans>

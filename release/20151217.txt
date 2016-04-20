@@ -1,0 +1,13 @@
+[DEP]
+
+[DB1]
+	bettle=1557
+[DB2]
+
+[NOTIFY]
+    chenzhiqiang288@pingan.com.cn
+[ADVICE]
+    webdev7163
+    webdev7121 增加认购、定投起点限额
+    WEBDEV-6979
+

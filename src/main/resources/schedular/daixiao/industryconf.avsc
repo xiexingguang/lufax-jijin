@@ -1,0 +1,16 @@
+{
+ "namespace": "com.lufax.jijin.daixiao.schedular",
+ "type": "record",
+ "name": "行业配置",
+ "target":"com.lufax.jijin.daixiao.dto.JijinExIndustryConfDTO",
+ "repository":"jijinExIndustryConfRepository",
+ "titlelinenumber":"2",
+ "title":"序号|基金代码|截止日期|证监会行业编号|行业名称|持有行业市值占基金净值比例(%)|OPDATE",
+ "fields": [
+     {"name": "fundCode", "type": "string", "index":"1", "required":"true"},
+     {"name": "endDate", "type": "string", "index":"2", "required":"false"},
+     {"name": "industryCode", "type": "string", "index":"3", "required":"false"},
+     {"name": "industryName", "type": "string", "index":"4", "required":"false"},
+     {"name": "industryPer", "type": "string", "index":"5", "required":"false"}
+ ]
+}

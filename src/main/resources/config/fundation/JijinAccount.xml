@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+        
+<sqlMap namespace="BusJijinAccount">
+
+    <insert id="insertBusJijinAccount" parameterClass="com.lufax.jijin.fundation.dto.JijinAccountDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select seq_bus_jijin_account.nextval as id from dual
+        </selectKey>
+        <![CDATA[
+            insert into bus_jijin_account (
+                id,
+                user_id,
+                inst_id,
+                pay_no,
+                channel,
+                cust_no,
+                contract_no,
+                deleted,
+                created_at,
+                updated_at,
+                created_by,
+                updated_by
+            )
+            values (
+                #id#,
+                #userId#,
+                #instId#,
+                #payNo#,
+                #channel#,
+                #custNo#,
+                #contractNo#,
+                #deleted#,
+                sysdate,
+                sysdate,
+                'sys',
+                'sys'
+            )
+        ]]>
+    </insert>
+
+
+
+    <select id="findBusJijinAccount" parameterClass="java.util.Map" resultClass="com.lufax.jijin.fundation.dto.JijinAccountDTO">
+        <![CDATA[
+            select
+                id id,
+                user_id userId,
+                inst_id instId,
+                pay_no payNo,
+                channel channel,
+                cust_no custNo,
+                contract_no contractNo,
+                deleted deleted,
+                created_at createdAt,
+                updated_at updatedAt,
+                created_by createdBy,
+                updated_by updatedBy
+            from bus_jijin_account
+            where 1=1
+        ]]>
+        <isNotEmpty prepend="and" property="id">
+            id = #id#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="userId">
+            user_id = #userId#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="instId">
+            inst_id = #instId#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="payNo">
+            pay_no = #payNo#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="channel">
+            channel = #channel#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="custNo">
+            cust_no = #custNo#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="contractNo">
+            contract_no = #contractNo#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="deleted">
+            deleted = #deleted#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="createdAt">
+            created_at = #createdAt#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="updatedAt">
+            updated_at = #updatedAt#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="createdBy">
+            created_by = #createdBy#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="updatedBy">
+            updated_by = #updatedBy#
+        </isNotEmpty>
+    </select>
+
+
+
+    <update id="updateBusJijinAccountById" parameterClass="java.util.Map">
+        update bus_jijin_account t set
+        <isNotEmpty property="userId">
+            t.user_id = #userId#,
+        </isNotEmpty>
+        <isNotEmpty property="instId">
+            t.inst_id = #instId#,
+        </isNotEmpty>
+        <isNotEmpty property="payNo">
+            t.pay_no = #payNo#,
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="channel">
+            channel = #channel#
+        </isNotEmpty>
+        <isNotEmpty property="custNo">
+            t.cust_no = #custNo#,
+        </isNotEmpty>
+        <isNotEmpty property="contractNo">
+            t.contract_no = #contractNo#,
+        </isNotEmpty>
+        <isNotEmpty property="deleted">
+            t.deleted = #deleted#,
+        </isNotEmpty>
+        <isNotEmpty property="createdAt">
+            t.created_at = #createdAt#,
+        </isNotEmpty>
+        <isNotEmpty property="updatedAt">
+            t.updated_at = #updatedAt#,
+        </isNotEmpty>
+        <isNotEmpty property="createdBy">
+            t.created_by = #createdBy#,
+        </isNotEmpty>
+        <isNotEmpty property="updatedBy">
+            t.updated_by = #updatedBy#,
+        </isNotEmpty>
+        t.updated_at=sysdate
+        where t.id = #id#
+    </update>
+
+    <select id="findValidAccountByUserId" parameterClass="java.lang.Long" resultClass="com.lufax.jijin.fundation.dto.JijinAccountDTO">
+        <![CDATA[
+            select
+                id id,
+                user_id userId,
+                inst_id instId,
+                pay_no payNo,
+                channel channel,
+                cust_no custNo,
+                contract_no contractNo,
+                deleted deleted,
+                created_at createdAt,
+                updated_at updatedAt,
+                created_by createdBy,
+                updated_by updatedBy
+            from bus_jijin_account
+            where user_id = #userId#
+            and deleted = 0
+        ]]>
+    </select>
+
+ 	<select id="findJijinAccountByInstIdAndContractNo" parameterClass="java.util.Map" resultClass="com.lufax.jijin.fundation.dto.JijinAccountDTO">
+ 		select
+           id id,
+           user_id userId,
+           inst_id instId,
+           pay_no payNo,
+           channel channel,
+           cust_no custNo,
+           contract_no contractNo,
+           deleted deleted,
+           created_at createdAt,
+           updated_at updatedAt,
+           created_by createdBy,
+           updated_by updatedBy
+       from bus_jijin_account
+       where
+        inst_id =#instId#
+       and
+        contract_no=#contractNo# 
+       and 
+       	deleted = 0
+ 	</select>
+</sqlMap>

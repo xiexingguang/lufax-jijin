@@ -1,0 +1,208 @@
+// java and war plugins are applied by applying plugin jetty
+apply plugin: "java"
+apply plugin: 'jetty'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+
+def env = System.getProperty("env") == null ? System.getenv("ENVIRONMENT") : System.getProperty("env");
+
+println "current module[jijin-app] env=" + env
+
+sourceSets {
+    main {
+        resources.srcDirs += 'src/main/webapp'
+    }
+    test {
+        resources.srcDirs += 'src/test/webapp'
+    }
+}
+
+repositories {
+    mavenRepo urls: ["http://maven.lujs.cn/nexus/content/groups/public/"]
+    mavenCentral()
+}
+
+ideaProject {
+    javaVersion = '1.6'
+    languageLevel = '1.6'
+}
+
+configurations {
+    emma
+    all*.exclude group: 'com.google.collections', module: 'google-collections'
+}
+
+dependencies {
+    spring_version = "3.0.5.RELEASE"
+    spring = ["org.springframework:spring-core:$spring_version",
+            "org.springframework:spring-expression:$spring_version",
+            "org.springframework:spring-beans:$spring_version",
+            "org.springframework:spring-aop:$spring_version",
+            "org.springframework:spring-context:$spring_version",
+            "org.springframework:spring-tx:$spring_version",
+            "org.springframework:spring-orm:$spring_version",
+            "org.springframework:spring-web:$spring_version",
+            "org.springframework:spring-asm:$spring_version",
+            "org.springframework:spring-jdbc:$spring_version",
+            "org.springframework:spring-webmvc:$spring_version",
+            "org.springframework:spring-test:$spring_version",
+            "aopalliance:aopalliance:1.0"]
+
+    jersey_version = "1.8"
+    jersey = ["javax.ws.rs:jsr311-api:1.1-ea",
+            "com.sun.jersey:jersey-core:$jersey_version",
+            "com.sun.jersey:jersey-server:$jersey_version",
+            "com.sun.jersey.contribs:jersey-spring:$jersey_version",
+            "com.sun.jersey:jersey-client:$jersey_version",
+            "javax.servlet:servlet-api:2.5"]
+
+    apache = ["org.apache.velocity:velocity:1.7",
+            "org.apache.velocity:velocity-tools:2.0",
+            "commons-logging:commons-logging:1.1.1",
+            "commons-io:commons-io:2.0.1",
+            "commons-codec:commons-codec:1.5",
+            "commons-dbcp:commons-dbcp:1.4",
+            "commons-lang:commons-lang:2.6",
+            "org.apache.ant:ant:1.9.4"]
+
+
+    gson = ["com.google.code.gson:gson:1.7.2"]
+    quartz = ["opensymphony:quartz:1.6.1"]
+
+    jersey_test = ["com.sun.jersey:jersey-client:$jersey_version",
+            "com.sun.jersey.jersey-test-framework:jersey-test-framework-core:$jersey_version",
+            "com.sun.jersey.jersey-test-framework:jersey-test-framework-grizzly:$jersey_version",
+            "com.sun.jersey:jersey-grizzly:$jersey_version"]
+
+    junit = ["junit:junit:4.8.2", "org.mockito:mockito-all:1.8.5", "org.hamcrest:hamcrest-all:1.1", "org.unitils:unitils-core:3.3.2-lufax", "org.unitils:unitils-dbunit:3.3.2-lufax","org.unitils:unitils-spring:3.3.2-lufax","org.unitils:unitils-database:3.3.2-lufax", "org.apache.poi:poi:3.9"]
+
+    log4j = ["log4j:log4j:1.2.16"]
+    slf4j = ["org.slf4j:slf4j-log4j12:1.6.1"]
+
+    jxl = ["net.sourceforge.jexcelapi:jxl:2.6.10"]
+
+    jdom = ["jdom:jdom:1.0"]
+    joda = ["joda-time:joda-time:1.6.2"]
+    cglib = ["cglib:cglib:2.2"]
+
+    activemq = ["org.apache.activemq:activemq-core:5.6.0",
+            "org.apache.activemq:activemq-pool:5.6.0",
+            "commons-pool:commons-pool:1.5.6",
+            "org.apache.geronimo.specs:geronimo-j2ee-management_1.1_spec:1.0.1",
+            "org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1.1"]
+
+    ibatis = ["com.ibatis:ibatis:2.3.4.726"]
+	
+	lufax = ["com.lufax:lufax-client-service:2.2.12"]
+    
+    hibernate_validator = ["org.hibernate:hibernate-validator:4.3.2.Final"]
+
+    emma = ["emma:emma:2.0.5312", "emma:emma_ant:2.0.5312"]
+	
+
+	opencsvLib = ["net.sf.opencsv:opencsv:2.3"]
+
+	kernel = ["com.lufax:kernel-core:0.3.13", "com.lufax:kernel-cache-redis:0.2.23"]
+	
+	cat = ["com.dianping.cat:cat-client:1.0.18"]
+	
+	mqNewClient  = compile("com.lufax:mq-client:1.1.1")
+
+    activeMqCore = compile("org.apache.activemq:activemq-core:5.6.0") {
+		transitive = false
+	}
+	activeMqPool = compile("org.apache.activemq:activemq-pool:5.6.0") {
+		transitive = false
+	}
+	jackson = ["org.codehaus.jackson:jackson-mapper-asl:1.9.2"]
+
+    ojdbcLib = ["com.oracle:ojdbc:6.0"]
+	
+	ojdbcLib = ["com.oracle:ojdbc:6.0"]
+	
+	avro = ['org.apache.avro:avro:1.7.7']
+	guava = ['com.google.guava:guava:18.0']
+	
+    compile jackson,mqNewClient, activeMqCore,activeMqPool, spring, jersey, apache, gson, quartz, jersey_test, junit, log4j, slf4j, jxl, jdom, joda, cglib, hibernate_validator,ibatis,lufax,opencsvLib,kernel,cat,ojdbcLib,avro,guava
+
+    testCompile jackson, junit, jersey_test, log4j, quartz, joda, cglib,hibernate_validator,ibatis,lufax,opencsvLib,kernel,cat,ojdbcLib
+
+    emma emma
+}
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+test {
+    jvmArgs "-Demma.coverage.out.file=build/tmp/emma/metadata.emma", "-Demma.coverage.out.merge=true"
+
+    excludes = ["**/support/*Test.*", "**/*ResourceTest.*"]
+
+    doFirst {
+        ant.taskdef(name: "emma", classname: "com.vladium.emma.emmaTask", classpath: configurations.emma.asPath)
+        ant.path(id: "run.classpath") {
+            pathelement(location: sourceSets.main.classesDir.absolutePath)
+        }
+        ant.emma(verbosity: 'info') {
+            instr(merge: "true", destdir: 'build/tmp/emma/instr', instrpathref: "run.classpath", metadatafile: 'build/tmp/emma/metadata.emma') {
+                instrpath {
+                    fileset(dir: sourceSets.main.classesDir.absolutePath, includes: "*.class")
+                }
+            }
+        }
+        setClasspath(files("$buildDir/tmp/emma/instr") + configurations.emma + getClasspath())
+    }
+    doLast {
+        ant.emma(enabled: "true") {
+            report(sourcepath: "src/main/java") {
+                fileset(dir: "build/tmp/emma") {
+                    include(name: "*.emma")
+                }
+                txt(outfile: "build/reports/emma/coverage.txt")
+                html(outfile: "build/reports/emma/coverage.html")
+                xml(outfile: "build/reports/emma/coverage.xml")
+            }
+        }
+    }
+}
+
+jar {
+    enabled = true
+    baseName = 'jijin-app'
+    exclude "WEB-INF"
+    exclude 'int', 'production', 'stage'
+    exclude '**/log4j.properties', '**/jijin-app.properties', '**/jijin-app-env.properties', '**/dataSource.xml'
+}
+
+processResources << {
+	copy {
+		from 'src/main/java/com/lufax/fa/ylx/job/common/xml/def/jaxb.index'
+		into 'build/classes/main/com/lufax/fa/ylx/job/common/xml/def'
+	}
+
+}
+
+war {
+    baseName = 'jijin-app'
+
+    war.classpath = configurations.runtime.filter {
+        !it.name.contains("ojdbc")
+    }
+
+    configurations.all*.exclude group: 'javax.servlet', module: 'servlet-api'
+    configurations.all*.exclude group: 'org.apache.hadoop', module: 'hadoop-core'
+
+    war.webInf {
+        into('classes') {
+            from sourceSets.main.classes
+            exclude 'int', 'production', 'stage', 'WEB-INF'
+            exclude '**/log4j.properties', '**/jijin-app.properties', '**/jijin-app-env.properties'
+        }
+    }
+}
+
+
+stopKey = 'stop-jetty'
+stopPort = 17778
+httpPort = 17777
+
+println "current module[jijin-app] httpPort=" + httpPort

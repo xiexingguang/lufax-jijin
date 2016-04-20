@@ -1,0 +1,12 @@
+[DEP]
+
+[DB1]
+   
+[DB2]
+
+[NOTIFY]
+    xuneng311@pingan.com.cn
+    chenzhiqiang288@pingan.com.cn
+[ADVICE]
+    WEBDEV-5346
+    WEBDEV-5394

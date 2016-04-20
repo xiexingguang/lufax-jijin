@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+        
+<sqlMap namespace="BusJijinExGrade">
+
+    <insert id="insertJijinExGrade" parameterClass="com.lufax.jijin.daixiao.dto.JijinExGradeDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select seq_bus_jijin_ex_grade.nextval as id from dual
+        </selectKey>
+
+        <![CDATA[
+            insert into bus_jijin_ex_grade (
+                id,
+                fund_code,
+                rate_date,
+                star_level,
+                fund_type,
+                rating_interval,
+                rating_gagency,
+                batch_id,
+                status,
+                error_msg,
+                is_valid,
+                created_at,
+                updated_at,
+                created_by,
+                updated_by
+            )
+            values (
+                #id#,
+                #fundCode#,
+                #rateDate#,
+                #starLevel#,
+                #fundType#,
+                #ratingInterval#,
+                #ratingGagency#,
+                #batchId#,
+                #status#,
+                #errorMsg#,
+                #isValid#,
+                sysdate,
+                sysdate,
+                'sys',
+                'sys'
+            )
+        ]]>
+    </insert>
+
+    <sql id="selectAll">
+        select
+        id id,
+        fund_code fundCode,
+        rate_date rateDate,
+        star_level starLevel,
+        fund_type fundType,
+        rating_interval ratingInterval,
+        rating_gagency  ratingGagency,
+        batch_id batchId,
+        status status,
+        error_msg errorMsg,
+        is_valid isValid,
+        created_at createdAt,
+        updated_at updatedAt,
+        created_by createdBy,
+        updated_by updatedBy
+        from bus_jijin_ex_grade
+    </sql>
+
+
+    <select id="getJijinExGradeByFundCode" parameterClass="java.lang.String" resultClass="com.lufax.jijin.daixiao.dto.JijinExGradeDTO">
+        <include refid="selectAll"></include>
+        where fund_code=#fundCode# order by batch_id desc
+
+    </select>
+
+    <update id="updateJijinExGrade" parameterClass="java.util.Map">
+        update bus_jijin_ex_grade t set
+        t.status = #status#,
+        <isNotEmpty property="errorMsg">
+            t.error_msg = #errorMsg#,
+        </isNotEmpty>
+        <isNotEmpty property="isValid">
+            t.is_valid = #isValid#,
+        </isNotEmpty>
+        t.updated_at=sysdate
+        where t.id = #id#
+    </update>
+
+    <select id="getJijinExGradeById" parameterClass="java.lang.Long" resultClass="com.lufax.jijin.daixiao.dto.JijinExGradeDTO">
+        <include refid="selectAll"></include>
+        where id=#id#
+    </select>
+
+    <select id="getJijinExGradesByStatusAndMaxNumAndRatingInterval" parameterClass="java.util.Map" resultClass="com.lufax.jijin.daixiao.dto.JijinExGradeDTO">
+        <include refid="selectAll"></include>
+        <![CDATA[
+            where status=#status#
+            and rating_interval = #ratingInterval#
+            and rownum <= #maxNum#
+        ]]>
+    </select>
+
+    <select id="getLatestJijinExGradeByFundCodeAndRatingGagency" parameterClass="java.util.Map" resultClass="com.lufax.jijin.daixiao.dto.JijinExGradeDTO">
+    	 select * from(
+    	 <include refid="selectAll"></include> 
+    	 where fund_code =#fundCode# 
+    	 and rating_gagency =#ratingGagency# 
+    	 and rating_interval = #ratingInterval# 
+    	 <isNotNull property="isValid">
+    	 and is_valid =#isValid#
+    	 </isNotNull>
+    	 order by rate_date desc,id desc) where rownum =1
+    </select>
+
+    <select id="getJijinExGradeByFundCodeAndRatingInterval" parameterClass="java.util.Map" resultClass="com.lufax.jijin.daixiao.dto.JijinExGradeDTO">
+        <include refid="selectAll"></include>
+        <![CDATA[
+            where fund_code = #fundCode#
+            and is_valid = 1
+            and rating_gagency =#ratingGagency#
+            and rating_interval = #ratingInterval#
+        ]]>
+        order by rate_date desc,id desc
+    </select>
+
+
+    <select id="countNumberOfAfterRateDate" parameterClass="java.util.Map" resultClass="java.lang.Integer">
+        select 1 from bus_jijin_ex_grade
+        where
+            fund_code=#fundCode#
+        and
+            rate_date <![CDATA[>]]> #rateDate#
+        and
+            rating_interval = #ratingInterval#
+        and
+            rating_gagency = #ratingGagency#
+        and
+            rownum =1
+    </select>
+
+
+    <update id="updateSameFundCodeDateIntervalRecordToNotVaild" parameterClass="java.util.Map">
+        update bus_jijin_ex_grade
+        set
+        is_valid = 0,
+        updated_at =sysdate
+        where
+        id <![CDATA[<>]]> #id#
+        and
+        fund_code=#fundCode#
+        and
+        rate_date=#rateDate#
+        and
+        rating_interval=#ratingInterval#
+        and
+        rating_gagency =#ratingGagency#
+        and
+        is_valid=1
+    </update>
+
+</sqlMap>

@@ -1,0 +1,16 @@
+[DEP]
+
+[DB1]
+	bettle=1660,1582
+[DB2]
+
+[NOTIFY]
+    chenzhiqiang288@pingan.com.cn
+	chenqunhui168@pingan.con.cn
+[ADVICE]
+    webdev6449 基金退币
+    WEBDEV6846 基金退币for fund
+    webdev7053 港澳台申购基金
+    WEBDEV6648 基金代申购  
+    
+

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="BusJijinFreezeRecord">
+    <insert id="insertBusJijinFreezeRecord" parameterClass="com.lufax.jijin.fundation.dto.JijinFreezeRecordDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select SEQ_BUS_JIJIN_FREEZE_RECORD.nextval as id from dual
+        </selectKey>
+        <![CDATA[
+            INSERT INTO BUS_JIJIN_FREEZE_RECORD (
+                ID,
+                APP_NO,
+                APP_SHEET_NO,
+                FREEZE_SHARE,
+                BUY_CONFIRM_DATE,
+                UNFREEZE_DATE,
+                USER_ID,
+                FREEZE_TYPE,
+                FREEZE_MSG,
+                USER_BALANCE_ID,
+                FUND_CODE,
+                CREATED_AT,
+                CREATED_BY,
+                UPDATED_AT,
+                UPDATED_BY
+            )
+            VALUES (
+                #id#,
+                #appNo#,
+                #appSheetNo#,
+                #freezeShare#,
+                #buyConfirmDate#,
+                #unfreezeDate#,
+                #userId#,
+                #freezeType#,
+                #freezeMsg#,
+                #userBalanceId#,
+                #fundCode#,
+                sysdate,
+                'SYS',
+                sysdate,
+                'SYS'
+            )
+        ]]>
+    </insert>
+    <sql id="SelectJijinFreezeRecordDTO">
+        <![CDATA[
+            select
+                id id,
+                APP_NO appNo,
+                APP_SHEET_NO appSheetNo,
+                FREEZE_SHARE freezeShare,
+                BUY_CONFIRM_DATE buyConfirmDate,
+                UNFREEZE_DATE unfreezeDate,
+                USER_ID userId,
+                FREEZE_TYPE freezeType,
+                FREEZE_MSG freezeMsg,
+                USER_BALANCE_ID userBalanceId,
+                FUND_CODE fundCode,
+                created_at createdAt,
+                updated_at updatedAt,
+                created_by createdBy,
+                updated_by updatedBy
+            from bus_jijin_freeze_record
+        ]]>
+    </sql>
+    
+    <select id="getJijinFreezeRecordByAppNo" parameterClass="java.util.Map" resultClass="com.lufax.jijin.fundation.dto.JijinFreezeRecordDTO">
+        <include refid="SelectJijinFreezeRecordDTO"/>
+        where app_no = #appNo#
+    </select>
+</sqlMap>

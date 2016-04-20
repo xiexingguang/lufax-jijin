@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="YLX_BATCH">
+
+   
+    <typeAlias alias="YLXBatchDTO" type="com.lufax.jijin.ylx.batch.dto.YLXBatchDTO"/>
+
+    <insert id="insertYLXBatchDTO" parameterClass="YLXBatchDTO">
+        <selectKey keyProperty="id" resultClass="java.lang.Long">
+            SELECT SEQ_YLX_BATCH.NEXTVAL FROM DUAL
+        </selectKey>
+        insert into YLX_BATCH (
+        ID,
+        TYPE,
+        TARGET_DATE,
+        STATUS,
+        SUB_NEXT_STEP,
+        CUT_OFF_ID,
+        ERROR_MSG,
+        RETRY_TIMES,
+        FAIL_TOKEN,
+        TRIGGER_DATE,
+        RUN_STATUS,
+        REQ_BATCH_ID,
+        CREATED_AT,
+        UPDATED_AT,
+        CREATED_BY,
+        UPDATED_BY
+        ) values (
+        #id#,
+        #type#,
+        #targetDate#,
+        #status#,
+        #subNextStep#,
+        #cutOffId#,
+        #errorMsg#,
+        #retryTimes#,
+        #failToken#,
+        #triggerDate#,
+        'IDLE',
+        #reqBatchId#,
+        sysdate,
+        sysdate,
+        #createdBy#,
+        #updatedBy#)
+    </insert>
+  
+   
+    <sql id="SelectBatchDTO">
+        select
+        ID as id,
+        TYPE as type,
+        TARGET_DATE as targetDate,
+        STATUS as status,
+        SUB_NEXT_STEP as subNextStep,
+        CUT_OFF_ID as cutOffId,
+        ERROR_MSG as errorMsg,
+        RETRY_TIMES as retryTimes,
+        FAIL_TOKEN as failToken,
+        TRIGGER_DATE as triggerDate,
+        RUN_STATUS as runStatus,
+        REQ_BATCH_ID as reqBatchId,
+        CREATED_AT as createdAt,
+        UPDATEd_AT as updatedAt,
+        CREATED_BY as createdBy,
+        UPDATED_BY as updatedBy
+    </sql>
+
+    <select id="getYLXBatchDTOByStatusAndType" parameterClass="map" resultClass="YLXBatchDTO">
+        <include refid="SelectBatchDTO"/> 
+        from YLX_BATCH where status=#status# and type=#type#
+    </select>
+
+    <select id="getYLXBatchDTOByTypeAndStatusAndRunStatus" parameterClass="map" resultClass="YLXBatchDTO">
+        <include refid="SelectBatchDTO"/>
+        from YLX_BATCH where status=#status# and type=#type# and run_status=#runStatus#
+    </select>
+    
+    <select id="getYLXBatchDTOByTypeAndTargetDate" parameterClass="map" resultClass="YLXBatchDTO">
+        <include refid="SelectBatchDTO"/> 
+        from YLX_BATCH where target_date=#targetDate# and type=#type#
+    </select>
+
+	<select id="getYLXBatchDTOByTriggerDateAndType" parameterClass="map" resultClass="YLXBatchDTO">
+        <include refid="SelectBatchDTO"/>
+        <![CDATA[
+        	from YLX_BATCH where TRIGGER_DATE < #triggerDate#
+        ]]>
+        and type=#type#
+        <dynamic prepend="and">
+	         <iterate property="statusList" open="(" close=")" conjunction="or">
+	            status = #statusList[]#
+	        </iterate>
+        </dynamic>
+    </select>
+
+    <select id="getYLXBatchDTOByTriggerDateAndTypeAndRunStatus" parameterClass="map" resultClass="YLXBatchDTO">
+        <include refid="SelectBatchDTO"/>
+        <![CDATA[
+        	from YLX_BATCH where TRIGGER_DATE < #triggerDate#
+        ]]>
+        and type=#type#
+        and run_status=#runStatus#
+        <dynamic prepend="and">
+            <iterate property="statusList" open="(" close=")" conjunction="or">
+                status = #statusList[]#
+            </iterate>
+        </dynamic>
+        order by id
+    </select>
+
+
+    <update id="updateYLXBatchDTOSuccessById" parameterClass="map">
+        update YLX_BATCH
+        set status=#status#,
+        sub_next_step=#subStep#,
+        run_status=#runStatus#,
+        updated_at = sysdate
+        where id=#batchId#
+    </update>
+   
+    <update id="updateYLXBatchDTOFailById" parameterClass="map">
+        update YLX_BATCH
+        set status=#status#,
+        error_msg=#errMsg#,
+        fail_token=#failToken#,
+        retry_times=#retryTimes#,
+        run_status=#runStatus#,
+        updated_at = sysdate
+        where id=#id#
+    </update>
+
+    <update id="updateYLXBatchRetryTimes" parameterClass="map">
+        update YLX_BATCH
+        set
+        error_msg=#errMsg#,
+        retry_times=retry_times+1,
+        run_status=#runStatus#,
+        updated_at = sysdate
+        where id=#id#
+    </update>
+   
+    <update id="updateBatchStatusById" parameterClass="map">
+        update YLX_BATCH
+        set status=#status#,
+        updated_at = sysdate
+        where id=#batchId#
+    </update>
+
+	<select id="getYLXBatchDTOByCutoffId" parameterClass="map" resultClass="YLXBatchDTO">
+        <include refid="SelectBatchDTO"/>
+        from YLX_BATCH where cut_off_id = #cutoffId# and type='BUY_CONFIRM'
+        <dynamic prepend="and">
+	         <iterate property="statusList" open="(" close=")" conjunction="or">
+	            status = #statusList[]#
+	        </iterate>
+        </dynamic>
+        order by id desc
+    </select>
+
+	 <update id="updateBatchRunStatusById" parameterClass="map">
+        update YLX_BATCH
+        set
+        RUN_STATUS = #runStatus#, 
+        updated_at = sysdate
+        where id=#batchId#
+    </update>
+    
+    <update id="updateBatchRunStatusByIds" parameterClass="map">
+        update YLX_BATCH set
+	        RUN_STATUS = #runStatus#, 
+	        updated_at = sysdate
+	    where
+        <iterate property="batchIds" open="(" close=")" conjunction="or">
+	            id = #batchIds[]#
+	    </iterate>
+    </update>
+
+	<select id="getById" parameterClass="map" resultClass="YLXBatchDTO">
+        <include refid="SelectBatchDTO"/>
+        from YLX_BATCH where id = #batchId#
+    </select>
+
+    <select id="getYLXBatchDTOByTypeAndStatus" parameterClass="map" resultClass="YLXBatchDTO">
+        <include refid="SelectBatchDTO"/>
+        from YLX_BATCH where status = #status#
+        and type=#type#
+    </select>
+
+
+</sqlMap>

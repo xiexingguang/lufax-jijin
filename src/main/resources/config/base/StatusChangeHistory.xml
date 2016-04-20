@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="STATUS_CHANGE_HISTORY">
+    <insert id="insertStatusChangeHistory" parameterClass="com.lufax.fa.base.dto.StatusChangeHistoryDTO">
+        <selectKey keyProperty="id" resultClass="java.lang.Long">
+            select seq_status_change_history.nextval from dual
+        </selectKey>
+        insert into status_change_history
+        (
+        id,
+        change_type,
+        loan_request_code,
+        investment_request_id,
+        status,
+        investment_id,
+        loan_code,
+        change_at
+        ) values (
+        #id#,
+        #statusChangeType#,
+        #loanRequestCode#,
+        #investmentRequestId#,
+        #status#,
+        #investmentId#,
+        #loanCode#,
+        #changeAt#
+        )
+    </insert>
+</sqlMap>

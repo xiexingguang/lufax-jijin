@@ -1,0 +1,110 @@
+<!DOCTYPE web-app PUBLIC
+        "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+        "http://java.sun.com/dtd/web-app_2_3.dtd" >
+<web-app>
+	<context-param>
+		<param-name>ServiceName</param-name>
+		<param-value>JIJIN APP SYSTEM</param-value>
+	</context-param>
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/applicationContext.xml;classpath:dataSource.xml;</param-value>
+	</context-param>
+
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	</filter>
+	<filter>
+		<filter-name>cat-filter</filter-name>
+		<filter-class>com.dianping.cat.servlet.CatFilter</filter-class>
+		<init-param>
+			<param-name>pattern</param-name>
+			<param-value>
+				/{2}/{3}/{4}/{0,number}/{5}/{1,number}:??#id#,#num#；
+				/{1}/{2}/{3}/{4}/{0,number}/{5}:??#id#;
+				/{1}/{2}/{3}/{0,number}/{4}/{5}:??#id#;
+				/{1}/{2}/{3}/{0,number}/{4}:??#id#;
+				/{1}/{2}/{3}/{0,number}:??#id#
+			</param-value>
+		</init-param>
+		<init-param>
+			<param-name>logHeaders</param-name>
+			<param-value>x-lufax-trace-id</param-value> <!--usually use x-lufax-trace-id is enough, if app has more headers need 
+				to trace, just add it -->
+		</init-param>
+	</filter>
+	<filter>
+		<filter-name>userContextFilter</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>userContextFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>cat-filter</filter-name>
+		<url-pattern>/*</url-pattern>
+		<!-- <dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher> -->
+	</filter-mapping>
+
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<servlet>
+		<servlet-name>rest</servlet-name>
+		<servlet-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</servlet-class>
+		<init-param>
+			<param-name>com.sun.jersey.config.property.resourceConfigClass</param-name>
+			<param-value>com.sun.jersey.api.core.PackagesResourceConfig</param-value>
+		</init-param>
+		<init-param>
+			<param-name>com.sun.jersey.config.property.packages</param-name>
+			<param-value>com.lufax</param-value>
+		</init-param>
+		<init-param>
+			<param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+			<param-value>true</param-value>
+		</init-param>
+		<init-param>
+			<param-name>com.sun.jersey.spi.container.ContainerResponseFilters</param-name>
+			<param-value>com.lufax.jersey.filter.ConvertJSONPFilter</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet>
+		<servlet-name>admin-internals</servlet-name>
+		<servlet-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</servlet-class>
+		<init-param>
+			<param-name>com.sun.jersey.config.property.resourceConfigClass</param-name>
+			<param-value>com.sun.jersey.api.core.PackagesResourceConfig</param-value>
+		</init-param>
+		<init-param>
+			<param-name>com.sun.jersey.config.property.packages</param-name>
+			<param-value>com.lufax.kernel.admin</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>admin-internals</servlet-name>
+		<url-pattern>/admin-internals/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>rest</servlet-name>
+		<url-pattern>/service/*</url-pattern>
+	</servlet-mapping>
+
+</web-app>

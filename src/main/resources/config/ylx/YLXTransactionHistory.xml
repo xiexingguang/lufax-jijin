@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="ylxOpTransactionHistory">
+ <typeAlias alias="YLXTransactionHistoryDTO" type="com.lufax.jijin.ylx.dto.YLXTransactionHistoryDTO"/>
+    <insert id="insertYlxOpTransactionHistory" parameterClass="YLXTransactionHistoryDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select seq_YLX_FUND_TRX_HISTORY.nextval as id from dual
+        </selectKey>
+        <![CDATA[
+            insert into YLX_FUND_TRANSACTION_HISTORY (
+                id,
+                serial_no,
+                transaction_type,
+                user_id,
+                product_code,
+                transaction_amount,
+                fund_share,
+                remark,
+                created_at,
+                updated_at,
+                created_by,
+                updated_by,
+                version
+            )
+            values (
+                #id#,
+                #serialNo#,
+                #transactionType#,
+                #userId#,
+                #productCode#,
+                #transactionAmount#,
+                #fundShare#,
+                #remark#,
+                #createdAt#,
+                #updatedAt#,
+                #createdBy#,
+                #updatedBy#,
+                #version#
+            )
+        ]]>
+    </insert>
+
+</sqlMap>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="YLX_OPERATION_LOG">
+
+
+	<typeAlias alias="OperationLogDTO"
+		type="com.lufax.fa.ylx.operation.dto.OperationLogDTO" />
+
+
+	<insert id="insert" parameterClass="OperationLogDTO">
+		<selectKey keyProperty="id" resultClass="java.lang.Long">
+			SELECT SEQ_YLX_OPERATION_LOG.NEXTVAL FROM DUAL
+		</selectKey>
+		insert into YLX_OPERATION_LOG (
+		ID,
+		INSTRUCTION_ID,
+		RESULT,
+		CREATED_AT,
+		UPDATED_AT,
+		CREATED_BY,
+		UPDATED_BY
+		) values (
+		#id#,
+		#instructionId#,
+		#result#,
+		sysdate,
+		sysdate,
+		'SYS',
+		'SYS'
+		)
+	</insert>
+
+	
+</sqlMap>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+        
+<sqlMap namespace="BusJijinExIncomeMode">
+
+    <insert id="insertJijinExIncomeMode" parameterClass="com.lufax.jijin.daixiao.dto.JijinExIncomeModeDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select seq_bus_jijin_ex_income_mode.nextval as id from dual
+        </selectKey>
+
+        <![CDATA[
+            insert into bus_jijin_ex_income_mode (
+                id,
+                fund_code ,
+                income_mode ,
+                min_hold_share_count ,
+                batch_id ,
+                status ,
+                created_at,
+                updated_at,
+                created_by,
+                updated_by
+            )
+            values (
+                #id#,
+                #fundCode#,
+                #incomeMode#,
+                #minHoldShareCount#,
+                #batchId#,
+                #status#,
+                sysdate,
+                sysdate,
+                'sys',
+                'sys'
+            )
+        ]]>
+    </insert>
+
+    <sql id="selectAll">
+        select
+            id  id,
+            created_at  createdAt,
+            created_by  createdBy,
+            updated_at  updatedAt,
+            updated_by  updatedBy,
+            fund_code  fundCode,
+            income_mode  incomeMode,
+            min_hold_share_count  minHoldShareCount,
+            batch_id  batchId,
+            status  status,
+            is_valid isValid
+        from bus_jijin_ex_income_mode
+    </sql>
+
+    <select id="getJijinExIncomeMode" parameterClass="java.util.Map" resultClass="com.lufax.jijin.daixiao.dto.JijinExIncomeModeDTO">
+        <include refid="selectAll"></include>
+        where 1=1
+        <isNotEmpty property="id" prepend="and">
+            id = #id#
+        </isNotEmpty>
+        <isNotEmpty property="fundCode" prepend="and">
+            fund_code = #fundCode#
+        </isNotEmpty>
+        <isNotEmpty property="status" prepend="and">
+            status = #status#
+        </isNotEmpty>
+        <isNotEmpty property="batchId" prepend="and">
+            batch_id = #batchId#
+        </isNotEmpty>
+        <isNotEmpty property="limit" prepend="and">
+            rownum <![CDATA[<=]]>#limit#
+        </isNotEmpty>
+    </select>
+
+    <select id="getJijinExIncomeModeByFundCode" parameterClass="java.lang.String" resultClass="com.lufax.jijin.daixiao.dto.JijinExIncomeModeDTO">
+        <include refid="selectAll"></include>
+        where fund_code=#fundCode# order by batch_id desc
+    </select>
+
+    <select id="getLastestJijinExIncomeModeByFundCode" parameterClass="java.lang.String" resultClass="com.lufax.jijin.daixiao.dto.JijinExIncomeModeDTO">
+        select * from(
+        <include refid="selectAll"></include>
+        where fund_code=#fundCode#
+        order by batch_id desc) where rownum =1
+    </select>
+
+    <update id="updateJijinExIncomeMode" parameterClass="java.util.Map">
+        update bus_jijin_ex_income_mode t set
+        <isNotEmpty property="errMsg">
+            t.err_msg = #errMsg#,
+        </isNotEmpty>
+        t.status = #status#,
+        t.updated_at=sysdate
+        where t.id = #id#
+    </update>
+
+    <select id="getLatestBatchIdByFundCode" parameterClass="java.util.Map" resultClass="java.lang.Long">
+        <![CDATA[
+        select max(batch_id) from bus_jijin_ex_income_mode
+        where
+        fund_code=#fundCode#
+        ]]>
+    </select>
+
+</sqlMap>

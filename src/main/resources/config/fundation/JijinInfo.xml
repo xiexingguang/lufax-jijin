@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+        
+<sqlMap namespace="BusJijinInfo">
+    
+     <insert id="insertBusJijinInfo" parameterClass="com.lufax.jijin.fundation.dto.JijinInfoDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select seq_bus_jijin_info.nextval as id from dual
+        </selectKey>
+        <![CDATA[
+            insert into bus_jijin_info (
+                id,
+                fund_code,
+                inst_id,
+                fund_brand,
+                fund_name,
+                is_first_publish,
+                fund_type,
+                risk_level,
+                is_buy_daily_limit,
+                buy_daily_limit,
+                buy_fee_rate_desc,
+                buy_fee_discount_desc,
+                min_invest_amount,
+                redemption_fee_rate_desc,
+                charge_type,
+                redemption_arrival_day,
+                fund_opening_type,
+                established_date,
+                dividend_type,
+                trustee,
+                foreign_id,
+                product_category,
+                source_type,
+                product_code,
+                product_id,
+                applied_amount,
+                buy_status,
+                redemption_status,
+                collection_mode,
+                created_at,
+                updated_at,
+                created_by,
+                updated_by
+            )
+            values (
+                #id#,
+                #fundCode#,
+                #instId#,
+                #fundBrand#,
+                #fundName#,
+                #isFirstPublish#,
+                #fundType#,
+                #riskLevel#,
+                #isBuyDailyLimit#,
+                #buyDailyLimit#,
+                #buyFeeRateDesc#,
+                #buyFeeDiscountDesc#,
+                #minInvestAmount#,
+                #redemptionFeeRateDesc#,
+                #chargeType#,
+                #redemptionArrivalDay#,
+                #fundOpeningType#,
+                #establishedDate#,
+                #dividendType#,
+                #trustee#,
+                #foreignId#,
+                #productCategory#,
+                #sourceType#,
+                #productCode#,
+                #productId#,
+                #appliedAmount#,
+                #buyStatus#,
+                #redemptionStatus#,
+                #collectionMode#,
+                sysdate,
+                sysdate,
+                #createdBy#,
+                #updatedBy#
+            )
+        ]]>
+    </insert>
+
+
+
+   <select id="findJijinInfo" parameterClass="java.util.Map" resultClass="com.lufax.jijin.fundation.dto.JijinInfoDTO">
+        <![CDATA[
+            select
+                id id,
+                fund_code fundCode,
+                inst_id instId,
+                fund_brand fundBrand,
+                fund_name fundName,
+                is_first_publish isFirstPublish,
+                fund_type fundType,
+                risk_level riskLevel,
+                is_buy_daily_limit isBuyDailyLimit,
+                buy_daily_limit buyDailyLimit,
+                buy_fee_rate_desc buyFeeRateDesc,
+                buy_fee_discount_desc buyFeeDiscountDesc,
+                min_invest_amount minInvestAmount,
+                redemption_fee_rate_desc redemptionFeeRateDesc,
+                charge_type chargeType,
+                redemption_arrival_day redemptionArrivalDay,
+                fund_opening_type fundOpeningType,
+                established_date establishedDate,
+                dividend_type dividendType,
+                trustee trustee,
+                foreign_id foreignId,
+                product_category productCategory,
+                source_type sourceType,
+                product_code productCode,
+                product_id productId,
+                applied_amount appliedAmount,
+                buy_status buyStatus,
+                redemption_status redemptionStatus,
+                collection_mode collectionMode,
+                created_at createdAt,
+                updated_at updatedAt,
+                created_by createdBy,
+                updated_by updatedBy
+            from bus_jijin_info
+            where 1=1
+        ]]>
+        <isNotEmpty prepend="and" property="id">
+            id = #id#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="fundCode">
+            fund_code = #fundCode#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="instId">
+            inst_id = #instId#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="fundBrand">
+            fund_brand = #fundBrand#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="fundName">
+            fund_name = #fundName#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="isFirstPublish">
+            is_first_publish = #isFirstPublish#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="fundType">
+            fund_type = #fundType#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="riskLevel">
+            risk_level = #riskLevel#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="isBuyDailyLimit">
+            is_buy_daily_limit = #isBuyDailyLimit#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="buyDailyLimit">
+            buy_daily_limit = #buyDailyLimit#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="buyFeeRateDesc">
+            buy_fee_rate_desc = #buyFeeRateDesc#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="buyFeeDiscountDesc">
+            buy_fee_discount_desc = #buyFeeDiscountDesc#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="minInvestAmount">
+            min_invest_amount = #minInvestAmount#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="redemptionFeeRateDesc">
+            redemption_fee_rate_desc = #redemptionFeeRateDesc#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="chargeType">
+            charge_type = #chargeType#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="redemptionArrivalDay">
+            redemption_arrival_day = #redemptionArrivalDay#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="fundOpeningType">
+            fund_opening_type = #fundOpeningType#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="establishedDate">
+            established_date = #establishedDate#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="dividendType">
+            dividend_type = #dividendType#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="trustee">
+            trustee = #trustee#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="foreignId">
+            foreign_id = #foreignId#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="productCategory">
+            product_category = #productCategory#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="sourceType">
+            source_type = #sourceType#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="productCode">
+            product_code = #productCode#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="appliedAmount">
+            applied_amount = #appliedAmount#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="buyStatus">
+            buy_status = #buyStatus#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="redemptionStatus">
+            redemption_status = #redemptionStatus#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="createdAt">
+            created_at = #createdAt#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="updatedAt">
+            updated_at = #updatedAt#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="createdBy">
+            created_by = #createdBy#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="updatedBy">
+            updated_by = #updatedBy#
+        </isNotEmpty>
+    </select>
+
+
+    <select id="findJijinInfoByFundCode" parameterClass="java.lang.String" resultClass="com.lufax.jijin.fundation.dto.JijinInfoDTO">
+            select
+                id id,
+                fund_code fundCode,
+                inst_id instId,
+                fund_brand fundBrand,
+                fund_name fundName,
+                is_first_publish isFirstPublish,
+                fund_type fundType,
+                risk_level riskLevel,
+                is_buy_daily_limit isBuyDailyLimit,
+                buy_daily_limit buyDailyLimit,
+                buy_fee_rate_desc buyFeeRateDesc,
+                buy_fee_discount_desc buyFeeDiscountDesc,
+                min_invest_amount minInvestAmount,
+                redemption_fee_rate_desc redemptionFeeRateDesc,
+                charge_type chargeType,
+                redemption_arrival_day redemptionArrivalDay,
+                fund_opening_type fundOpeningType,
+                established_date establishedDate,
+                dividend_type dividendType,
+                trustee trustee,
+                foreign_id foreignId,
+                product_category productCategory,
+                source_type sourceType,
+                product_code productCode,
+                product_id productId,
+                applied_amount appliedAmount,
+                buy_status buyStatus,
+                redemption_status redemptionStatus,
+                collection_mode collectionMode,
+                created_at createdAt,
+                updated_at updatedAt,
+                created_by createdBy,
+                updated_by updatedBy
+            from bus_jijin_info
+            where fund_code = #fundCode#
+    </select>
+
+
+    <select id="getDistinctInstId" parameterClass="java.util.Map" resultClass="java.lang.String">
+            select distinct(inst_id)  from bus_jijin_info
+
+    </select>
+
+    <update id="updateJijinInfo" parameterClass="java.util.Map">
+        update bus_jijin_info t set
+        <isNotEmpty property="isBuyDailyLimit">
+            t.is_buy_daily_limit = #isBuyDailyLimit#,
+        </isNotEmpty>
+        <isNotEmpty property="buyDailyLimit">
+            t.buy_daily_limit = #buyDailyLimit#,
+        </isNotEmpty>
+        <isNotEmpty property="buyFeeRateDesc">
+            t.buy_fee_rate_desc = #buyFeeRateDesc#,
+        </isNotEmpty>
+        <isNotEmpty property="buyFeeDiscountDesc">
+            t.buy_fee_discount_desc = #buyFeeDiscountDesc#,
+        </isNotEmpty>
+        <isNotEmpty property="minInvestAmount">
+            t.min_invest_amount = #minInvestAmount#,
+        </isNotEmpty>
+        <isNotEmpty property="redemptionFeeRateDesc">
+            t.redemption_fee_rate_desc = #redemptionFeeRateDesc#,
+        </isNotEmpty>
+        <isNotEmpty property="buyStatus">
+            t.buy_status = #buyStatus#,
+        </isNotEmpty>
+        <isNotEmpty  property="redemptionStatus">
+            t.redemption_status = #redemptionStatus#,
+        </isNotEmpty>
+        <isNotEmpty  property="productId">
+        	t.product_id =#productId#,
+        </isNotEmpty>
+        <isNotEmpty property="updatedBy">
+            t.updated_by = #updatedBy#,
+        </isNotEmpty>
+        <isNotEmpty property="fundBrand">
+            t.fund_Brand = #fundBrand#,
+        </isNotEmpty>
+        <isNotEmpty property="fundName">
+            t.fund_Name = #fundName#,
+        </isNotEmpty>
+        <isNotEmpty property="isFirstPublish">
+            t.is_First_Publish = #isFirstPublish#,
+        </isNotEmpty>
+        <isNotEmpty property="fundType">
+            t.fund_Type = #fundType#,
+        </isNotEmpty>
+        <isNotEmpty property="riskLevel">
+            t.risk_Level = #riskLevel#,
+        </isNotEmpty>
+        <isNotEmpty property="chargeType">
+            t.charge_Type = #chargeType#,
+        </isNotEmpty>
+        <isNotEmpty property="redemptionArrivalDay">
+            t.redemption_Arrival_Day = #redemptionArrivalDay#,
+        </isNotEmpty>
+        <isNotEmpty property="fundOpeningType">
+            t.fund_Opening_Type = #fundOpeningType#,
+        </isNotEmpty>
+        <isNotEmpty property="establishedDate">
+            t.established_Date = #establishedDate#,
+        </isNotEmpty>
+        <isNotEmpty property="dividendType">
+            t.dividend_Type = #dividendType#,
+        </isNotEmpty>
+        <isNotEmpty property="trustee">
+            t.trustee = #trustee#,
+        </isNotEmpty>
+        <isNotEmpty property="appliedAmount">
+            t.applied_Amount = #appliedAmount#,
+        </isNotEmpty>
+        t.updated_at=sysdate
+        where t.fund_code = #fundCode#
+    </update>
+    
+     <update id="updateJijinStatusByProductCode" parameterClass="java.util.Map">
+        update bus_jijin_info t set
+        <isNotEmpty property="buyStatus">
+            t.buy_status = #buyStatus#,
+        </isNotEmpty>
+        <isNotEmpty  property="redemptionStatus">
+            t.redemption_status = #redemptionStatus#,
+        </isNotEmpty>
+        <isNotEmpty property="updatedBy">
+            t.updated_by = #updatedBy#,
+        </isNotEmpty>
+        t.updated_at=sysdate
+        where t.product_code = #productCode#
+    </update>
+
+    <select id="findJijinInfoByProductId" parameterClass="java.lang.Long" resultClass="com.lufax.jijin.fundation.dto.JijinInfoDTO">
+        select
+        id id,
+        fund_code fundCode,
+        inst_id instId,
+        fund_brand fundBrand,
+        fund_name fundName,
+        is_first_publish isFirstPublish,
+        fund_type fundType,
+        risk_level riskLevel,
+        is_buy_daily_limit isBuyDailyLimit,
+        buy_daily_limit buyDailyLimit,
+        buy_fee_rate_desc buyFeeRateDesc,
+        buy_fee_discount_desc buyFeeDiscountDesc,
+        min_invest_amount minInvestAmount,
+        redemption_fee_rate_desc redemptionFeeRateDesc,
+        charge_type chargeType,
+        redemption_arrival_day redemptionArrivalDay,
+        fund_opening_type fundOpeningType,
+        established_date establishedDate,
+        dividend_type dividendType,
+        trustee trustee,
+        foreign_id foreignId,
+        product_category productCategory,
+        source_type sourceType,
+        product_code productCode,
+        product_id productId,
+        applied_amount appliedAmount,
+        buy_status buyStatus,
+        redemption_status redemptionStatus,
+        collection_mode collectionMode,
+        created_at createdAt,
+        updated_at updatedAt,
+        created_by createdBy,
+        updated_by updatedBy
+        from bus_jijin_info
+        where product_id = #productId#
+    </select>
+
+     <select id="findZhixiaoFundCodeList" resultClass="java.lang.String">
+        select fund_code from bus_jijin_info where inst_id <![CDATA[<>]]> 'lfx201'
+     </select>
+     
+     <select id="findFundCodeListByFundType" parameterClass="java.lang.String" resultClass="java.lang.String">
+        select fund_code from bus_jijin_info where fund_type = #fundType#
+     </select>
+     
+     <resultMap id="recordMap" class="com.lufax.jijin.fundation.dto.JijinInfoDTO">
+     	<result property="fundCode" column="fundCode" javaType="string"/>
+     	<result property="fundName" column="fundName" javaType="string"/>
+     	<result property="productId" column="productId" javaType="long"/>
+     </resultMap>
+     
+     <select id="findByFundCodesAsOut" parameterClass="map" resultMap="recordMap">
+        select fund_code fundCode, fund_name fundName, product_id productId from bus_jijin_info where fund_code in 
+		<iterate property="fundCodes" open="(" close=")" conjunction=",">
+			#fundCodes[]#
+		</iterate>
+		and fund_type = #fundType#
+		and inst_id=#instId#
+		and REDEMPTION_STATUS='RED_OPEN'
+     </select>
+	
+</sqlMap>

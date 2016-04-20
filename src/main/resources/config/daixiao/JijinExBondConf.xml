@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="JijinExBondConf">
+
+    <insert id="insert" parameterClass="com.lufax.jijin.daixiao.dto.JijinExBondConfDTO">
+        <selectKey resultClass="long" keyProperty="id">
+            select seq_bus_jijin_ex_bond_conf.nextval from dual
+        </selectKey>
+        insert into bus_jijin_ex_bond_conf (
+        id,
+        created_at,
+        created_by,
+        updated_at,
+        updated_by
+        , fund_code
+        , end_date
+        , bond_code
+        , bond_name
+        , bond_value
+        , bond_per
+        , batch_id
+        , status
+        , is_valid
+        ) values (
+        #id#,
+        sysdate,
+        'SYS',
+        sysdate,
+        'SYS'
+        , #fundCode#
+        , #endDate#
+        , #bondCode#
+        , #bondName#
+        , #bondValue#
+        , #bondPer#
+        , #batchId#
+        , #status#
+        , #isValid#
+        )
+    </insert>
+
+    <update id="update" parameterClass="com.lufax.jijin.daixiao.dto.JijinExBondConfDTO">
+        update bus_jijin_ex_bond_conf
+        set
+        <isNotEmpty property="fundCode">
+            fund_code = #fundCode#,
+        </isNotEmpty>
+        <isNotEmpty property="endDate">
+            end_date = #endDate#,
+        </isNotEmpty>
+        <isNotEmpty property="bondCode">
+            bond_code = #bondCode#,
+        </isNotEmpty>
+        <isNotEmpty property="bondName">
+            bond_name = #bondName#,
+        </isNotEmpty>
+        <isNotEmpty property="bondValue">
+            bond_value = #bondValue#,
+        </isNotEmpty>
+        <isNotEmpty property="bondPer">
+            bond_per = #bondPer#,
+        </isNotEmpty>
+        <isNotEmpty property="batchId">
+            batch_id = #batchId#,
+        </isNotEmpty>
+        <isNotEmpty property="status">
+            status = #status#,
+        </isNotEmpty>
+        <isNotEmpty property="isValid">
+            is_valid = #isValid#,
+        </isNotEmpty>
+        updated_at = sysdate
+        where
+        id = #id#
+    </update>
+
+    <sql id="allFields">
+        id,
+        created_at createdAt,
+        created_by createdBy,
+        updated_at updatedAt,
+        updated_by updatedBy
+        , fund_code fundCode
+        , end_date endDate
+        , bond_code bondCode
+        , bond_name bondName
+        , bond_value bondValue
+        , bond_per bondPer
+        , batch_id batchId
+        , status status
+        , is_valid isValid
+    </sql>
+
+    <select id="getByID" parameterClass="long" resultClass="com.lufax.jijin.daixiao.dto.JijinExBondConfDTO">
+        select <include refid="allFields"/>
+        from bus_jijin_ex_bond_conf
+        where id = #id#
+    </select>
+
+
+	<select id="getBondConfLastEndDateAndBatchIdByFundCode" parameterClass="java.lang.String" resultClass="com.lufax.jijin.daixiao.dto.JijinExBondConfDTO">
+		select batch_id batchId, end_date endDate
+	      from (select batch_id, end_date
+	              from bus_jijin_ex_bond_conf
+	             where fund_code = #fundCode#
+	               and is_valid = 1
+	             order by end_date desc, batch_id desc)
+	     where rownum = 1
+	</select>
+	
+	<select id="getBondConfListByFundCodeAndEndDateAndBatchId" parameterClass="java.util.Map" resultClass="com.lufax.jijin.daixiao.dto.JijinExBondConfDTO">
+		select <include refid = "allFields" />
+		  from bus_jijin_ex_bond_conf
+		 where fund_code = #fundCode#
+		   and batch_id = #batchId#
+		   and end_date = #endDate#
+		   and is_valid = 1
+		 order by to_number(bond_value) desc
+	</select>
+
+</sqlMap>

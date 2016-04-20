@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="YLX_BUY_REQUEST_DETAIL">
+
+    
+    <typeAlias alias="YLXBuyRequestDetailDTO" type="com.lufax.jijin.ylx.dto.YLXBuyRequestDetailDTO"/>
+
+    <insert id="insert" parameterClass="YLXBuyRequestDetailDTO">
+        <selectKey keyProperty="id" resultClass="java.lang.Long">
+            SELECT SEQ_YLX_SERIAL_NUM.NEXTVAL FROM DUAL
+        </selectKey>
+        insert into YLX_BUY_REQUEST_DETAIL (
+        ID,
+        BATCH_ID,
+        INTERNAL_TRX_ID,
+        TRX_TIME,
+        TRX_DATE,
+        BANK_ACCOUNT,
+		PROD_CODE,
+		BUY_TYPE,
+		FUND_SHARE,
+		AMOUNT,
+		CURRENCY,
+        PRODUCT_CODE,
+        PRODUCT_CATEGORY,
+        PRODUCT_ID,
+        USER_ID,
+        INTERNAL_BUY_TYPE,
+        STATUS,
+        CREATED_AT,
+        UPDATED_AT,
+        CREATED_BY,
+        UPDATED_BY      
+        ) values (
+        #id#,
+        #batchId#,
+        #internalTrxId#,
+        #trxTime#,
+        #trxDate#,
+        #bankAccount#,
+        #prodCode#,
+        #buyType#,
+        #fundShare#,
+        #amount#,
+        #currency#,
+        #productCode#,
+        #productCategory#,
+        #productId#,
+        #userId#,
+        #internalBuyType#,
+        #status#,
+        sysdate,
+        sysdate,
+        'sys',
+        'sys')
+    </insert>
+    
+    <sql id="SelectBuyRequestDTO">
+        select
+        ID as id,
+        BATCH_ID as batchId,
+        INTERNAL_TRX_ID as internalTrxId,
+        TRX_TIME as trxTime,
+        TRX_DATE as trxDate,
+        BANK_ACCOUNT as bankAccount,
+        PROD_CODE as prodCode,
+        BUY_TYPE as buyType,
+        FUND_SHARE as fundShare,
+        AMOUNT as amount,
+        CURRENCY as currency,
+        PRODUCT_CODE as productCode,
+        PRODUCT_CATEGORY as productCategory,
+        PRODUCT_ID as productId,
+        USER_ID as userId,
+        INTERNAL_BUY_TYPE as internalBuyType,
+        STATUS as status,
+        purchase_fee purchaseFee,
+        confirm_unit_price confirmUnitPrice,
+        CREATED_AT as createdAt,
+        UPDATEd_AT as updatedAt,
+        CREATED_BY as createdBy,
+        UPDATED_BY as updatedBy
+    </sql>
+
+
+    <select id="getByBatchId" parameterClass="java.lang.Long"  resultClass="YLXBuyRequestDetailDTO">
+        <include refid="SelectBuyRequestDTO"/>
+        from YLX_BUY_REQUEST_DETAIL where batch_id=#batchId#
+    </select>
+    
+    <select id="getMaxInternalTrxIdsBybatchId" parameterClass="java.lang.Long"  resultClass="java.lang.Long">
+        select max(internal_trx_id)
+        from YLX_BUY_REQUEST_DETAIL where batch_id=#batchId#
+    </select>
+
+
+	<select id="countBuyRequestBybatchId" parameterClass="java.lang.Long"  resultClass="java.lang.Long">
+        select count(*)
+        from YLX_BUY_REQUEST_DETAIL where batch_id=#batchId#
+    </select>
+
+    <select id="countBuyRequestBybatchIdAndBuyType" parameterClass="map"  resultClass="java.lang.Long">
+        select count(*)
+        from YLX_BUY_REQUEST_DETAIL where batch_id=#batchId# and internal_buy_type=#buyType#
+    </select>
+    
+    <select id="sumAmountByBatchIdAndRownum" parameterClass="map"  resultClass="java.math.BigDecimal">
+        <![CDATA[
+        select sum(AMOUNT)  from (select rownum as rn,t.* from YLX_BUY_REQUEST_DETAIL t where batch_id=#batchId# and rownum >0 order by t.id)
+        where rn>=#start# and rn<=#end#       
+        ]]>
+    </select>
+
+    <select id="sumAmountByBatchIdAndBuyTypeAndRownum" parameterClass="map"  resultClass="java.math.BigDecimal">
+        <![CDATA[
+        select sum(AMOUNT)  from (select rownum as rn,t.* from YLX_BUY_REQUEST_DETAIL t where batch_id=#batchId# and INTERNAL_BUY_TYPE=#buyType# and rownum >0 order by t.id)
+        where rn>=#start# and rn<=#end#
+        ]]>
+    </select>
+
+	<select id="getYLXBuyRequestDTOsByBatchId" parameterClass="map"  resultClass="YLXBuyRequestDetailDTO">
+		<include refid="SelectBuyRequestDTO"/>
+        <![CDATA[
+   	   from (select rownum as rn,t.* from YLX_BUY_REQUEST_DETAIL t where batch_id=#batchId# and rownum >0 order by t.id) where rn>=#start# and rn<#end#]]>
+     </select>
+
+    <select id="getYLXBuyRequestDTOsByBatchIdAndBuyType" parameterClass="map"  resultClass="YLXBuyRequestDetailDTO">
+        <include refid="SelectBuyRequestDTO"/>
+        <![CDATA[
+   	   from (select rownum as rn,t.* from YLX_BUY_REQUEST_DETAIL t where batch_id=#batchId# and INTERNAL_BUY_TYPE=#buyType# and rownum >0 order by t.id) where rn>=#start# and rn<#end#]]>
+    </select>
+
+     
+      <select id="getYLXBuyRequestDTOsByBatchIdAndPK" parameterClass="map"  resultClass="YLXBuyRequestDetailDTO">
+		<include refid="SelectBuyRequestDTO"/>
+        <![CDATA[
+        from (select * from YLX_BUY_REQUEST_DETAIL where batch_id=#batchId#
+        									  and id>#maxSerialNum#
+        									  order by id)
+  	                                          where rownum<#rowNum#]]>
+     </select>
+
+    <select id="getYLXBuyRequestDetailDTOByTrxId" parameterClass="map"  resultClass="YLXBuyRequestDetailDTO">
+        <include refid="SelectBuyRequestDTO"/>
+        from YLX_BUY_REQUEST_DETAIL where INTERNAL_TRX_ID = #trxId#
+    </select>
+
+    <select id="getYLXBuyRequestDTOsByTargetDateAndProductCategory" parameterClass="map"  resultClass="YLXBuyRequestDetailDTO">
+        <include refid="SelectBuyRequestDTO"/>
+        <![CDATA[
+   	   from (select rownum as rn,t.* from YLX_BUY_REQUEST_DETAIL t where t.batch_id=#batchId# and t.TRX_DATE=#targetDate# and product_category=#productCategory# order by t.id) where rn>=#start# and rn<#end#]]>
+    </select>
+
+    <select id="getProductCodeByBatchId" parameterClass="java.lang.Long"  resultClass="YLXBuyRequestDetailDTO">
+        select distinct PRODUCT_CODE as productCode from YLX_BUY_REQUEST_DETAIL t where t.batch_id = #batchId#;
+    </select>
+
+    <update id="updateBatchId" parameterClass="map">
+        update YLX_BUY_REQUEST_DETAIL set batch_id = #toBatchId#,updated_at=sysdate
+        where batch_id = #fromBatchId# and product_category=#productCategory#
+        and trx_date = #targetDate# and internal_buy_type = #buyType#
+    </update>
+
+    <select id="getYLXBuyRequestDTOsByBatchIdandStatus" parameterClass="map"  resultClass="YLXBuyRequestDetailDTO">
+       <include refid="SelectBuyRequestDTO"/>
+		 <![CDATA[from YLX_BUY_REQUEST_DETAIL where batch_id=#batchId# and status=#status# and rownum<#rowNum# order by id]]>
+    </select>
+    
+    <update id="updateBuyRequestStatusById" parameterClass="map">
+        update YLX_BUY_REQUEST_DETAIL set status = #status#, updated_at = sysdate
+        where id = #id# 
+    </update>
+    <update id="updateBuyRequestById" parameterClass="map">
+        update YLX_BUY_REQUEST_DETAIL set 
+	        status = #status#, 
+	        updated_at = sysdate, 
+	        purchase_fee = #purchaseFee#,
+	        confirm_unit_price = #confirmUnitPrice#,
+	        fund_share = #fundShare#
+        where id = #id# 
+    </update>
+    
+    <select id="getYLXBuyRequestDTOsByStatus" parameterClass="map"  resultClass="YLXBuyRequestDetailDTO">
+       <include refid="SelectBuyRequestDTO"/>
+		 <![CDATA[from YLX_BUY_REQUEST_DETAIL where status=#status# and rownum<#rowNum# and PRODUCT_ID = #productId# order by id]]>
+    </select>
+
+    <select id="getYLXBuyRequestDTOsByBatchIdandStatusAndRowNum" parameterClass="map"  resultClass="YLXBuyRequestDetailDTO">
+		<include refid="SelectBuyRequestDTO"/>
+        <![CDATA[
+   	   from (select rownum as rn,t.* from YLX_BUY_REQUEST_DETAIL t where t.status=#status# and t.PRODUCT_ID = #productId# and rownum >0 order by t.id) where rn>=#start# and rn<#end#]]>
+     </select>
+</sqlMap>

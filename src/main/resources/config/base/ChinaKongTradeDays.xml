@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="CFG_CHINAKONG_TRADE_DAYS">
+
+    <sql id="SelectTradeDaysDTO">
+        id id,
+        trade_date   tradeDate,
+        is_tradeday  isTradeday
+    </sql>
+
+    <select id="getTradeDay" parameterClass="date" resultClass="com.lufax.jijin.base.dto.TradeDaysDTO">
+        select
+        <include refid= "SelectTradeDaysDTO"/>
+        from CFG_CHINAKONG_TRADE_DAYS td
+        where td.trade_date = #date#
+    </select>
+
+    <select id="getTradeDayByDate" parameterClass="date" resultClass="com.lufax.jijin.base.dto.TradeDaysDTO">
+        select
+        <include refid= "SelectTradeDaysDTO"/>
+        from CFG_CHINAKONG_TRADE_DAYS td
+        where td.trade_date > #date# and td.is_tradeday = 'Y' order by td.trade_date
+    </select>
+    
+    
+    <select id="getLastTradeDay" parameterClass="date" resultClass="com.lufax.jijin.base.dto.TradeDaysDTO">
+        <![CDATA[
+        select
+         id id,
+        trade_date   tradeDate,
+        is_tradeday  isTradeday
+        from(
+        	select
+        		id,
+        		trade_date,
+        		is_tradeday
+        	from CFG_CHINAKONG_TRADE_DAYS td
+        	where td.trade_date < #date# and td.is_tradeday = 'Y' order by td.trade_date desc) 
+        where rownum=1 ]]>
+    </select>
+
+</sqlMap>

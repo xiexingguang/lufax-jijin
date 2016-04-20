@@ -1,0 +1,22 @@
+{
+ "namespace": "com.lufax.jijin.daixiao.schedular",
+ "type": "record",
+ "name": "持股配置",
+ "target":"com.lufax.jijin.daixiao.dto.JijinExStockConfDTO",
+ "repository":"jijinExStockConfRepository",
+ "titlelinenumber":"2",
+ "title":"序号|基金代码|截止日期|持有股票代码|持有股票名称|持有股票市值占基金净值比例(%)|公告日期|占股票市值比例|占流通股本比例|持有股票市值(元)|持有股票数量(股)|OPDATE",
+ "fields": [
+     {"name": "fundCode", "type": "string", "index":"1", "required":"true"},
+     {"name": "endDate", "type": "string", "index":"2", "required":"false"},
+     {"name": "stockCode", "type": "string", "index":"3", "required":"false"},
+     {"name": "stockName", "type": "string", "index":"4", "required":"false"},
+     {"name": "stockPer", "type": "string", "index":"5", "required":"false"},
+     {"name": "announceDate", "type": "string", "index":"6", "required":"false"},
+     {"name": "stockValuePer", "type": "string", "index":"7", "required":"false"},
+     {"name": "capitalStockPer", "type": "string", "index":"8", "required":"false"},
+     {"name": "stockValue", "type": "string", "index":"9", "required":"false"},
+     {"name": "stockShare", "type": "string", "index":"10", "required":"false"}
+
+ ]
+}

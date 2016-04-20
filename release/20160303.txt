@@ -1,0 +1,14 @@
+[DEP]
+
+[DB1]
+	bettle=1853
+[DB2]
+
+[NOTIFY]
+    xuneng311@pingan.com.cn
+
+[ADVICE]
+    webdev7783 大华货基申购流程改造
+    webdev7625 陆金宝大华货基T0支付
+    product-change消息加try catch
+          

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+        
+<sqlMap namespace="BusJijinRedeemBalHis">
+
+    <insert id="insertBusJijinRedeemBalHis" parameterClass="com.lufax.jijin.fundation.dto.JijinRedeemBalHisDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select SEQ_BUS_JIJIN_REDEEM_BAL_HIS.nextval as id from dual
+        </selectKey>
+        <![CDATA[
+            insert into BUS_JIJIN_REDEEM_BAL_HIS  (
+                id,
+				amount,
+				remark,
+                created_at,
+                updated_at,
+                created_by,
+                updated_by
+            )
+            values (
+                #id#,
+                #amount#,
+                #remark#,
+                sysdate,
+                sysdate,
+                'sys',
+                'sys'
+            )
+        ]]>
+    </insert>
+    
+    <select id="findBusJijinRedeemBalHisById" parameterClass="java.lang.Long" resultClass="com.lufax.jijin.fundation.dto.JijinRedeemBalHisDTO">
+        <![CDATA[
+            select
+                id id,
+                amount amount,
+                remark remark,
+                created_at createdAt,
+                updated_at updatedAt
+            from BUS_JIJIN_REDEEM_BAL_HIS
+            where id=#id#
+        ]]>
+    </select>
+
+    <select id="findBusJijinRedeemBalHisAfterTime" parameterClass="java.lang.String" resultClass="com.lufax.jijin.fundation.dto.JijinRedeemBalHisDTO">
+        <![CDATA[
+            select
+                id id,
+                amount amount,
+                remark remark,
+                created_at createdAt
+            from BUS_JIJIN_REDEEM_BAL_HIS
+            where updated_at>to_date(#snapshotTime#,'yyyymmddhh24miss')
+        ]]>
+    </select>
+
+    <select id="findBusJijinRedeemBalHisBetweenStartEnd" parameterClass="java.util.Map" resultClass="java.math.BigDecimal">
+        <![CDATA[
+            select
+                sum(amount)
+            from BUS_JIJIN_REDEEM_BAL_HIS
+            where updated_at>to_date(#startTime#,'yyyymmddhh24miss') and updated_at<=to_date(#endTime#,'yyyymmddhh24miss')
+        ]]>
+    </select>
+    
+    
+</sqlMap>

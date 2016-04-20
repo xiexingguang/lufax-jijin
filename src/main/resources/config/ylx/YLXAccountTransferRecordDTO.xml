@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="YLX_ACCOUNT_TRANSFER_RECORD">
+
+    <sql id="fieldsMapping">
+        fiatr.id 					as id,
+        fiatr.record_id 			as recordId,
+        fiatr.from_user_id 			as fromUserId,
+        fiatr.to_user_id 			as toUserId,
+        fiatr.from_transaction_type as fromTransactionType,
+        fiatr.to_transaction_type 	as toTransactionType,
+        fiatr.total_amount 			as totalAmount,
+        fiatr.from_remark 			as fromRemark,
+        fiatr.to_remark 			as toRemark,
+        fiatr.status 				as status,
+        fiatr.version 				as version,
+        fiatr.request_id 			as sellRequestId,
+        fiatr.created_at 			as createdAt,
+        fiatr.updated_at 			as updatedAt,
+        fiatr.created_by 			as createdBy,
+        fiatr.updated_by 			as updatedBy
+    </sql>
+
+    <insert id="insertYLXAccountTransferRecord" parameterClass="com.lufax.jijin.ylx.dto.YLXAccountTransferRecordDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select SEQ_YLX_ACC_TRAN_RECORD.nextval as id from dual
+        </selectKey>
+        <![CDATA[
+            insert into YLX_ACC_TRAN_RECORD (
+                id,
+                record_id,
+                from_user_id,
+                to_user_id,
+                from_transaction_type,
+                to_transaction_type,
+                total_amount,
+                from_remark,
+                to_remark,
+                status,
+                version,
+                request_id,
+                created_at,
+                updated_at,
+                created_by,
+                updated_by
+            )
+            values (
+                #id#,
+                #recordId#,
+                #fromUserId#,
+                #toUserId#,
+                #fromTransactionType#,
+                #toTransactionType#,
+                #totalAmount#,
+                #fromRemark#,
+                #toRemark#,
+                #status#,
+                0,
+                #sellRequestId#,
+                sysdate,
+                sysdate,
+                'SYS',
+                'SYS'
+            )
+        ]]>
+    </insert>
+	
+	<insert id="insertYLXAccountTransferRecordHis" parameterClass="com.lufax.jijin.ylx.dto.YLXAccountTransferRecordDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select SEQ_YLX_ACC_TRAN_RECORD_HIS.nextval as id from dual
+        </selectKey>
+        <![CDATA[
+            insert into YLX_ACC_TRAN_RECORD_HIS (
+                id,
+                record_id,
+                from_user_id,
+                to_user_id,
+                from_transaction_type,
+                to_transaction_type,
+                total_amount,
+                from_remark,
+                to_remark,
+                status,
+                request_id,
+                created_at,
+                updated_at,
+                created_by,
+                updated_by
+            )
+            values (
+                #id#,
+                #recordId#,
+                #fromUserId#,
+                #toUserId#,
+                #fromTransactionType#,
+                #toTransactionType#,
+                #totalAmount#,
+                #fromRemark#,
+                #toRemark#,
+                #status#,
+                #sellRequestId#,
+                sysdate,
+                sysdate,
+                'SYS',
+                'SYS'
+            )
+        ]]>
+    </insert>
+    
+    <select id="findYLXAccountTransferRecordsByStatus" parameterClass="map" resultClass="com.lufax.jijin.ylx.dto.YLXAccountTransferRecordDTO">
+        select
+        <include refid="fieldsMapping"/>
+        <![CDATA[
+        from YLX_ACC_TRAN_RECORD fiatr
+        where fiatr.STATUS = #status#
+        and rownum <= #batchNumber#
+        ]]>
+    </select>
+
+    <select id="getUnTransferRecordsByFundRecordId" parameterClass="map" resultClass="com.lufax.jijin.ylx.dto.YLXAccountTransferRecordDTO">
+        select
+        <include refid="fieldsMapping"/>
+        <![CDATA[
+        from YLX_ACC_TRAN_RECORD fiatr
+        where fiatr.STATUS in (0,2)
+        and fiatr.record_id = #recordId#
+        ]]>
+    </select>
+
+    <update id="updateYLXAccountTransferRecord" parameterClass="map">
+        update YLX_ACC_TRAN_RECORD set
+	        STATUS = #status#,
+	        version = version + 1,
+	        <isNotEmpty property="remark">
+            	to_remark = #remark#,
+        	</isNotEmpty>
+	        UPDATED_AT = sysdate
+        where id = #id# and version = #version#
+    </update>
+    
+	<update id="updateYLXAccountTransferRecordWithoutVersion" parameterClass="map">
+        update YLX_ACC_TRAN_RECORD set
+	        STATUS = #status#,
+	        UPDATED_AT = sysdate
+        where id = #id#
+    </update>
+
+</sqlMap>
+

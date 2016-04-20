@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="INSURANCE_FUND_RECORD_HIS">
+
+    <insert id="insertInsuranceFundRecordHis" parameterClass="com.lufax.jijin.ylx.fund.dto.InsuranceFundRecordHisDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select seq_fa_in_fund_rcd_his.nextval as id from dual
+        </selectKey>
+        <![CDATA[
+            insert into fa_insurance_fund_record_his(
+                id,
+                product_id,
+                from_user_id,
+                to_card_id,
+                type,
+                amount,
+                remark,
+                record_id,
+                fund_date,
+                status,
+                insurance_type,
+                created_at,
+                created_by
+            )
+            values (
+                #id#,
+                #productId#,
+                #fromUserId#,
+                #toCardId#,
+                #type#,
+                #amount#,
+                #remark#,
+                #recordId#,
+                #fundDate#,
+                #status#,
+                #insuranceType#,
+                sysdate,
+                'SYS'
+            )
+        ]]>
+    </insert>
+
+</sqlMap>
+

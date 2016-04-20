@@ -1,0 +1,27 @@
+{
+ "namespace": "com.lufax.jijin.daixiao.schedular",
+ "type": "record",
+ "name": "基金特性",
+ "target":"com.lufax.jijin.daixiao.dto.JijinExCharacterDTO",
+ "repository":"jijinExCharacterRepository",
+ "titlelinenumber":"2",
+ "title":"序号|基金代码|是否支持港籍人士购买|是否支持澳籍人士购买|是否支持台籍人士购买|是否支持外籍人士购买|是否支持定投模式1|是否支持定投模式2|是否支持定投模式3|是否支持预约赎回|是否支持预约申购|是否支持实时赎回|是否支持货转股转购出|是否支持货转股转购入|是否支持股转货转购出|是否支持股转货转购入|所属TA代码|OPDATE",
+ "fields": [
+     {"name": "fundCode", "type": "string", "index":"1", "required":"true"},
+     {"name": "isHongkong", "type": "string", "index":"2", "required":"false"},
+     {"name": "isMacao", "type": "string", "index":"3", "required":"false"},
+     {"name": "isTaiwan", "type": "string", "index":"4", "required":"false"},
+     {"name": "isForeign", "type": "string", "index":"5", "required":"false"},
+     {"name": "isPlan1", "type": "string", "index":"6", "required":"false"},
+     {"name": "isPlan2", "type": "string", "index":"7", "required":"false"},
+     {"name": "isPlan3", "type": "string", "index":"8", "required":"false"},
+     {"name": "isPreRedeem", "type": "string", "index":"9", "required":"false"},
+     {"name": "isPreSub", "type": "string", "index":"10", "required":"false"},
+     {"name": "isRealRedeem", "type": "string", "index":"11", "required":"false"},
+     {"name": "isMtsRedeem", "type": "string", "index":"12", "required":"false"},
+     {"name": "isMtsSub", "type": "string", "index":"13", "required":"false"},
+     {"name": "isStmRedeem", "type": "string", "index":"14", "required":"false"},
+     {"name": "isStmSub", "type": "string", "index":"15", "required":"false"},
+     {"name": "taCode", "type": "string", "index":"16", "required":"false"}
+ ]
+}

@@ -1,0 +1,17 @@
+{
+ "namespace": "com.lufax.jijin.daixiao.schedular",
+ "type": "record",
+ "name": "持劵配置",
+ "target":"com.lufax.jijin.daixiao.dto.JijinExBondConfDTO",
+ "repository":"jijinExBondConfRepository",
+ "titlelinenumber":"2",
+ "title":"序号|基金代码|截止日期|持有债券代码|持有债券名称|持有债券市值(元)|持有债券市值占基金净值比例(%)|OPDATE",
+ "fields": [
+     {"name": "fundCode", "type": "string", "index":"1", "required":"true"},
+     {"name": "endDate", "type": "string", "index":"2", "required":"false"},
+     {"name": "bondCode", "type": "string", "index":"3", "required":"false"},
+     {"name": "bondName", "type": "string", "index":"4", "required":"false"},
+     {"name": "bondValue", "type": "string", "index":"5", "required":"false"},
+     {"name": "bondPer", "type": "string", "index":"6", "required":"false"}
+ ]
+}

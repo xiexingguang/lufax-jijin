@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="BusJijinRegisteRecord">
+
+    <insert id="insertBusJijinRegisteRecord" parameterClass="com.lufax.jijin.fundation.dto.JijinRegisteRecordDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select SEQ_BUS_JIJIN_REGISTE_RECORD.nextval as id from dual
+        </selectKey>
+        <![CDATA[
+            insert into busdata.bus_jijin_registe_record (
+                id,
+                user_id,
+                inst_id,
+                pay_no,
+                channel,
+                cust_no,
+                contract_no,
+                status,
+                app_no,
+                error_code,
+                error_msg,
+                created_at,
+                updated_at,
+                created_by,
+                updated_by
+            )
+            values (
+                #id#,
+                #userId#,
+                #instId#,
+                #payNo#,
+                #channel#,
+                #custNo#,
+                #contractNo#,
+                #status#,
+                #appNo#,
+                #errorCode#,
+                #errorMsg#,
+                sysdate,
+                sysdate,
+                'sys',
+                'sys'
+            )
+        ]]>
+    </insert>
+
+   <sql id="jijinRegisterColumn">
+                id id,
+                user_id userId,
+                inst_id instId,
+                pay_no payNo,
+                channel channel,
+                cust_no custNo,
+                contract_no contractNo,
+                status status,
+                app_no appNo,
+                error_code errorCode,
+                error_msg errorMsg,
+                created_at createdAt,
+                updated_at updatedAt,
+                created_by createdBy,
+                updated_by updatedBy
+   </sql>
+
+
+    <select id="findBusJijinRegisteRecord" parameterClass="java.util.Map" resultClass="com.lufax.jijin.fundation.dto.JijinRegisteRecordDTO">
+        <![CDATA[
+            select
+                id id,
+                user_id userId,
+                inst_id instId,
+                pay_no payNo,
+                channel channel,
+                cust_no custNo,
+                contract_no contractNo,
+                status status,
+                app_no appNo,
+                error_code errorCode,
+                error_msg errorMsg,
+                created_at createdAt,
+                updated_at updatedAt,
+                created_by createdBy,
+                updated_by updatedBy
+            from bus_jijin_registe_record
+            where 1=1
+        ]]>
+        <isNotEmpty prepend="and" property="id">
+            id = #id#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="userId">
+            user_id = #userId#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="instId">
+            inst_id = #instId#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="payNo">
+            pay_no = #payNo#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="channel">
+            channel = #channel#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="custNo">
+            cust_no = #custNo#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="contractNo">
+            contract_no = #contractNo#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="status">
+            status = #status#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="appNo">
+            app_no = #appNo#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="errorCode">
+            error_code = #errorCode#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="errorMsg">
+            error_msg = #errorMsg#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="createdAt">
+            created_at = #createdAt#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="updatedAt">
+            updated_at = #updatedAt#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="createdBy">
+            created_by = #createdBy#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="updatedBy">
+            updated_by = #updatedBy#
+        </isNotEmpty>
+    </select>
+    
+    <select id="batchFindRegisteList" parameterClass="java.util.Map" resultClass="com.lufax.jijin.fundation.dto.JijinRegisteRecordDTO">
+           select *
+			  from (select rownum as rn, a.*
+			          from (select <include refid = "jijinRegisterColumn"/>
+			                  	from bus_jijin_registe_record reg
+			                 	where reg.created_at <![CDATA[<]]> cast(#createTo# as date)
+			                      and reg.created_at <![CDATA[>=]]> cast(#createFrom# as date)
+			                      and reg.inst_id = #instId#
+			                      and reg.pay_no is not null
+			                 order by id asc) a
+			         where rownum <![CDATA[<=]]> #end#) b
+			 where b.rn <![CDATA[>]]> #start#
+    </select>
+
+	<select id="countRegisteRecord" parameterClass="java.util.Map" resultClass="java.lang.Integer">
+		select count(1)
+		from bus_jijin_registe_record reg
+       	where reg.created_at <![CDATA[<]]> cast(#createTo# as date)
+            and reg.created_at <![CDATA[>=]]>  cast(#createFrom# as date)
+            and reg.inst_id = #instId#
+            and reg.pay_no is not null
+	</select>
+</sqlMap>

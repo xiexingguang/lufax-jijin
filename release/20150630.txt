@@ -1,0 +1,54 @@
+[DEP]
+    account-app 各自的基金直连版本
+    fund-app 各自的基金直连版本
+    list-app 各自的基金直连版本
+    jijin-gw 20150630
+    ljb-gw 20150630
+
+[DB1]
+    bettle=256
+	busdata/rel_20150623_jijin/001***
+	busdata/rel_20150623_jijin/002***
+	busdata/rel_20150623_jijin/003***
+	busdata/rel_20150623_jijin/004***
+	busdata/rel_20150623_jijin/005***
+	busdata/rel_20150623_jijin/006***
+	busdata/rel_20150623_jijin/007***
+	busdata/rel_20150623_jijin/008***
+	busdata/rel_20150623_jijin/009***
+	busdata/rel_20150623_jijin/010***
+	busdata/rel_20150623_jijin/011***
+	busdata/rel_20150623_jijin/012***
+	busdata/rel_20150623_jijin/013***
+	busdata/rel_20150623_jijin/014***
+	busdata/rel_20150623_jijin/015***
+	busdata/rel_20150623_jijin/016***
+	busdata/rel_20150623_jijin/017***
+	busdata/rel_20150623_jijin/018***
+	busdata/rel_20150623_jijin/019***
+	busdata/rel_20150623_jijin/020***
+	busdata/rel_20150623_jijin/021***
+	busdata/rel_20150623_jijin/022***
+	busdata/rel_20150623_jijin/023***
+	busdata/rel_20150623_jijin/024***
+	busdata/rel_20150623_jijin/025***
+	busdata/rel_20150623_jijin/026***
+	busdata/rel_20150623_jijin/027***
+	busdata/rel_20150623_jijin/028***
+
+[DB2]
+    mqdata/rel_20150623_jijin/001***
+    acmsdata/rel_20150623_jijin/001***
+    acmsdata/rel_20150623_jijin/002***
+
+[NOTIFY]
+	xuneng311@pingan.com.cn
+	chenzhiqiang288@pingan.com.cn
+	chenguang451@pingan.com.cn
+	chenqunhui168@pingan.com.cn
+
+[ADVICE]
+	prd3157: 基金直连
+
+
+alter table bus_jijin_trade_record add (inst_id varchar2(32));

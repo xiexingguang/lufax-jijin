@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+
+<sqlMap namespace="JijinFrozenDetail">
+
+
+    <insert id="insertJijinFrozenDetail" parameterClass="com.lufax.jijin.fundation.dto.JijinFrozenDetailDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select seq_bus_jijin_frozen_detail.nextval as id from dual
+        </selectKey>
+        <![CDATA[
+            insert into bus_jijin_frozen_detail (
+                id,
+                transaction_type,
+                user_balance_id,
+                frozen_amount,
+                un_frozen_amount,
+                total_frozen_amount,
+                remark,
+                created_at,
+                updated_at,
+                created_by,
+                updated_by
+            )
+            values (
+                #id#,
+                #transactionType#,
+                #userBalanceId#,
+                #frozenAmount#,
+                #unFrozenAmount#,
+                #totalFrozenAmount#,
+                #remark#,
+                sysdate,
+                sysdate,
+                'sys',
+                'sys'
+            )
+        ]]>
+    </insert>
+
+    <sql id="SelectJijinFrozenDetailDTO">
+        id id,
+        transaction_type transactionType,
+        user_balance_id userBalanceId,
+        frozen_amount frozenAmount,
+        un_frozen_amount unFrozenAmount,
+        total_frozen_amount totalFrozenAmount,
+        remark remark,
+        created_at createdAt,
+        updated_at updatedAt,
+        created_by createdBy,
+        updated_by updatedBy
+    </sql>
+
+
+    <select id="findFrozenDetailByIdAndType" parameterClass="map" resultClass="com.lufax.jijin.fundation.dto.JijinFrozenDetailDTO">
+        select 
+        <include refid="SelectJijinFrozenDetailDTO"/>
+        from bus_jijin_frozen_detail
+        where user_balance_id = #userBalanceId#
+        and TRANSACTION_TYPE in
+        <iterate property="types" open="(" close=")" conjunction=",">
+            #types[]#
+        </iterate>
+        order by id desc
+    </select>
+    
+    <select id="countByUserIdAndType" parameterClass="map" resultClass="com.lufax.jijin.fundation.dto.BaseNumDTO">
+        select count(1) num
+        from bus_jijin_frozen_detail
+        where user_balance_id = #userBalanceId#
+        and TRANSACTION_TYPE in
+        <iterate property="types" open="(" close=")" conjunction=",">
+            #types[]#
+        </iterate>
+    </select>
+
+</sqlMap>

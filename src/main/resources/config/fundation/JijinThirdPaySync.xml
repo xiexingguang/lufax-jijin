@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+        
+<sqlMap namespace="BusJijinThirdPaySync">
+
+    <insert id="insertBusJijinThirdPaySync" parameterClass="com.lufax.jijin.fundation.dto.JijinThirdPaySyncDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select seq_bus_jijin_third_pay_sync.nextval as id from dual
+        </selectKey>
+        <![CDATA[
+            insert into bus_jijin_third_pay_sync (
+                id,
+                file_id,
+                pay_no,
+                pay_serial_no,
+                app_sheet_no,
+                amount,
+                currency,
+                pay_type,
+                trx_time,
+                trx_result,
+                status,
+                channel,
+                inst_id,
+                created_at,
+                updated_at,
+                created_by,
+                updated_by
+            )
+            values (
+                #id#,
+                #fileId#,
+                #payNo#,
+                #paySerialNo#,
+                #appSheetNo#,
+                #amount#,
+                #currency#,
+                #payType#,
+                #trxTime#,
+                #trxResult#,
+                #status#,
+                #channel#,
+                #instId#,
+                sysdate,
+                sysdate,
+                'sys',
+                'sys'
+            )
+        ]]>
+    </insert>
+
+
+	<sql id="SelectJijinThirdPaySyncDTO">
+        select
+                id id,
+                file_id fileId,
+                pay_no payNo,
+                pay_serial_no paySerialNo,
+                app_sheet_no appSheetNo,
+                amount amount,
+                currency currency,
+                pay_type payType,
+                trx_time trxTime,
+                trx_result trxResult,
+                status status,
+                channel channel,
+                inst_id instId,
+                created_at createdAt,
+                updated_at updatedAt,
+                created_by createdBy,
+                updated_by updatedBy
+    </sql>
+
+
+    <select id="findBusJijinThirdPaySync" parameterClass="java.util.Map" resultClass="com.lufax.jijin.fundation.dto.JijinThirdPaySyncDTO">
+        <![CDATA[
+            select
+                id id,
+                file_id fileId,
+                pay_no payNo,
+                pay_serial_no paySerialNo,
+                app_sheet_no appSheetNo,
+                amount amount,
+                currency currency,
+                pay_type payType,
+                trx_time trxTime,
+                trx_result trxResult,
+                status status,
+                channel channel,
+                inst_id instId,
+                created_at createdAt,
+                updated_at updatedAt,
+                created_by createdBy,
+                updated_by updatedBy
+            from bus_jijin_third_pay_sync
+            where 1=1
+        ]]>
+        <isNotEmpty prepend="and" property="id">
+            id = #id#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="fileId">
+            file_id = #fileId#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="payNo">
+            pay_no = #payNo#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="paySerialNo">
+            pay_serial_no = #paySerialNo#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="appSheetNo">
+            app_sheet_no = #appSheetNo#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="amount">
+            amount = #amount#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="currency">
+            currency = #currency#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="payType">
+            pay_type = #payType#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="trxTime">
+            trx_time = #trxTime#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="trxResult">
+            trx_result = #trxResult#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="status">
+            status = #status#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="channel">
+            channel = #channel#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="instId">
+            inst_id = #instId#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="createdAt">
+            created_at = #createdAt#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="updatedAt">
+            updated_at = #updatedAt#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="createdBy">
+            created_by = #createdBy#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="updatedBy">
+            updated_by = #updatedBy#
+        </isNotEmpty>
+    </select>
+
+
+
+    <update id="updateBusJijinThirdPaySync" parameterClass="java.util.Map">
+        update bus_jijin_third_pay_sync t set
+        <isNotEmpty property="id">
+            t.id = #id#,
+        </isNotEmpty>
+        <isNotEmpty property="fileId">
+            t.file_id = #fileId#,
+        </isNotEmpty>
+        <isNotEmpty property="payNo">
+            t.pay_no = #payNo#,
+        </isNotEmpty>
+        <isNotEmpty property="paySerialNo">
+            t.pay_serial_no = #paySerialNo#,
+        </isNotEmpty>
+        <isNotEmpty property="appSheetNo">
+            t.app_sheet_no = #appSheetNo#,
+        </isNotEmpty>
+        <isNotEmpty property="amount">
+            t.amount = #amount#,
+        </isNotEmpty>
+        <isNotEmpty property="currency">
+            t.currency = #currency#,
+        </isNotEmpty>
+        <isNotEmpty property="payType">
+            t.pay_type = #payType#,
+        </isNotEmpty>
+        <isNotEmpty property="trxTime">
+            t.trx_time = #trxTime#,
+        </isNotEmpty>
+        <isNotEmpty property="trxResult">
+            t.trx_result = #trxResult#,
+        </isNotEmpty>
+        <isNotEmpty property="status">
+            t.status = #status#,
+        </isNotEmpty>
+        <isNotEmpty property="channel">
+            t.channel = #channel#,
+        </isNotEmpty>
+        <isNotEmpty property="instId">
+            t.inst_id= #instId#,
+        </isNotEmpty>
+        <isNotEmpty property="createdAt">
+            t.created_at = #createdAt#,
+        </isNotEmpty>
+        <isNotEmpty property="createdBy">
+            t.created_by = #createdBy#,
+        </isNotEmpty>
+        <isNotEmpty property="updatedBy">
+            t.updated_by = #updatedBy#,
+        </isNotEmpty>
+        t.updated_at=sysdate
+        where t.id = #id#
+    </update>
+    
+    <select id="getUnDispatchRecords" parameterClass="map" resultClass="com.lufax.jijin.fundation.dto.JijinThirdPaySyncDTO">
+        <include refid="SelectJijinThirdPaySyncDTO" />
+        from bus_jijin_third_pay_sync
+        where status = #status# and channel=#channel# and pay_type = #type#
+        <![CDATA[
+            and rownum <= #maxNum#
+        ]]>
+    </select>
+
+	<update id="updateBusJijinThirdPaySyncWithMemo" parameterClass="java.util.Map">
+		update bus_jijin_third_pay_sync t set
+		t.status = #status#,
+		t.memo = #memo#,
+		t.updated_at=sysdate
+		where t.id = #id#
+    </update>
+
+</sqlMap>

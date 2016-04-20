@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="ylxProfit">
+	
+	<insert id="insertYlxFundProdProfitHis" parameterClass="com.lufax.jijin.ylx.dto.YlxFundProdProfitDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select seq_ylx_fund_prod_profit.nextval from dual
+        </selectKey>
+        <![CDATA[
+            insert into ylx_fund_prod_profit (
+                id,
+                prod_code,
+                prod_name,
+                profit_day,
+                unit_price,
+                interestrate_per_sevenday,
+                benefit_per_tenthousand,
+                total_amount,
+                product_code,
+                product_category,
+                product_id,
+                created_at,
+                updated_at,
+                created_by,
+                updated_by
+            )
+            values (
+                #id#,
+                #prodCode#,
+                #prodName#,
+                #profitDay#,
+                #unitPrice#,
+                #interestratePerSevenday#,
+                #benefitPerTenthousand#,
+                #totalAmount#,
+                #productCode#,
+                #productCategory#,
+                #productId#,
+                sysdate,
+                sysdate,
+                'SYS',
+                'SYS'
+            )
+        ]]>
+    </insert>
+    
+    <select id="selectYlxFundProdProfitHis" parameterClass="java.util.Map" resultClass="com.lufax.jijin.ylx.dto.YlxFundProdProfitDTO">
+    	<![CDATA[
+	           select * from (
+		           select
+		               id id,
+		               prod_code prodCode,
+		               prod_name prodName,
+		               profit_day profitDay,
+		               unit_price unitPrice,
+		               interestrate_per_sevenday interestratePerSevenday,
+		               benefit_per_tenthousand benefitPerTenthousand,
+		               total_amount totalAmount,
+		               created_at createdAt,
+		               updated_at updatedAt,
+		               created_by createdBy,
+		               updated_by updatedBy,
+		               product_code productCode
+		           from ylx_fund_prod_profit
+		           		where product_code = #productCode#
+		           order by profit_day desc
+		       )where rownum <= 1
+	       ]]>
+    </select>
+        
+     <select id="selectYlxFundInvestorProfitHis" parameterClass="java.util.Map" resultClass="com.lufax.jijin.ylx.dto.YlxFundInvestorProfitDTO">
+        <![CDATA[
+            select
+                id id,
+                prod_code prodCode,
+                profit_day profitDay,
+                total_amount totalAmount,
+                created_at createdAt,
+                updated_at updatedAt,
+                created_by createdBy,
+                updated_by updatedBy,
+                investor_name investorName,
+                investor_fund_account investorFundAccount,
+                investor_trade_account investorTradeAccount,
+                total_share totalShare,
+                available_share availableShare,
+                frozen_share frozenShare,
+                yestoday_income yestodayIncome,
+                total_income totalIncome
+            from ylx_fund_investor_profit
+            where 1=1
+        ]]>
+        <isNotEmpty prepend="and" property="prodCode">
+            prod_code = #prodCode#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="investorFundAccount">
+            investor_fund_account = #investorFundAccount#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="investorTradeAccount">
+            investor_trade_account = #investorTradeAccount#
+        </isNotEmpty>
+    </select>
+    
+    <insert id="insertYlxFundInvestorProfitHis" parameterClass="com.lufax.jijin.ylx.dto.YlxFundInvestorProfitDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select seq_ylx_fund_investor_profit.nextval from dual
+        </selectKey>
+        <![CDATA[
+            insert into ylx_fund_investor_profit (
+                id,
+                prod_code,
+                profit_day,
+                total_amount,
+                created_at,
+                updated_at,
+                created_by,
+                updated_by,
+                investor_name,
+                investor_fund_account,
+                investor_trade_account,
+                total_share,
+                available_share,
+                frozen_share,
+                yestoday_income,
+                total_income
+            )
+            values (
+                #id#,
+                #prodCode#,
+                #profitDay#,
+                #totalAmount#,
+                sysdate,
+                sysdate,
+                'SYS',
+                'SYS',
+                #investorName#,
+                #investorFundAccount#,
+                #investorTradeAccount#,
+                #totalShare#,
+                #availableShare#,
+                #frozenShare#,
+                #yestodayIncome#,
+                #totalIncome#
+            )
+        ]]>
+    </insert>
+</sqlMap>

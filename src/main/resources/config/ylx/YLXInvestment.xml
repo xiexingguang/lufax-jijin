@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="YLXINVESTMENT">
+                                             
+    <typeAlias alias="YLXInvestmentDTO" type="com.lufax.jijin.ylx.request.dto.YLXInvestmentDTO"/>
+	
+    <select id="findYLXInvestmentsByTargetDate" parameterClass="map" resultClass="YLXInvestmentDTO">
+       select id id, product_code prodCode,loaner_id loanerId, principal principal, interest interest
+       from(
+        select i.id, i.product_code,i.loaner_id, c.principal, c.interest
+        from investments i,collection_plans c
+        where i.product_last_collection_date = #targetDate#
+        and i.product_category='401'
+        and i.id = c.investment_id
+        and i.id <![CDATA[>]]>#internalTrxId#
+        and i.product_code in  
+        <iterate property="prodCodes" open="(" close=")" conjunction=",">
+        	#prodCodes[]#
+        </iterate>
+        order by i.id) 
+        where rownum<![CDATA[<]]>#rownum#
+      
+    </select>
+       
+    <select id="findYLXInvestmentsByTargetDateGroupbyProductCodeLoanerId" parameterClass="java.util.Date" resultClass="YLXInvestmentDTO">
+   		 <![CDATA[
+   		select i.product_code prodCode,i.loaner_id loanerId
+        from investments i
+        where i.product_last_collection_date = #targetDate#
+        and i.product_category='401'
+        group by i.product_code, i.loaner_id having count(*)>1
+        ]]>
+    </select>
+    
+    <select id="findYLXInvestmentsByTargetDateProductCodeLoanerId" parameterClass="map" resultClass="YLXInvestmentDTO">
+   		select i.id id, i.product_code prodCode,i.loaner_id loanerId, c.principal principal, c.interest interest
+        from investments i,collection_plans c
+        where i.product_last_collection_date = #targetDate#
+        and i.product_category='401'
+        and i.product_code=#prodCode#
+        and i.loaner_id=#loanerId#
+        and i.id = c.investment_id
+    </select>
+              
+    <select id="getDistinctProdCodeByTargetDate" parameterClass="java.util.Date"  resultClass="YLXInvestmentDTO">
+		<![CDATA[select distinct(product_code) as prodCode from investments 
+		         where product_last_collection_date = #targetDate#
+ 				 and product_category = '401']]>
+    </select>                                                        
+
+</sqlMap>

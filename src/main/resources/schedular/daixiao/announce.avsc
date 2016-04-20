@@ -1,0 +1,20 @@
+{
+ "namespace": "com.lufax.jijin.daixiao.schedular",
+ "type": "record",
+ "name": "基金公告",
+ "target":"com.lufax.jijin.daixiao.dto.JijinExAnnounceDTO",
+ "repository":"jijinExAnnounceRepository",
+ "titlelinenumber":"2",
+ "title":"序号|OBJECT_ID|基金代码|证券ID|公司ID|公告日期|标题|栏目代码|摘要|公告链接|OPDATE",
+ "fields": [
+ 	 {"name": "objectId", "type": "string", "index":"1", "required":"true"},
+     {"name": "fundCode", "type": "string", "index":"2", "required":"true"},
+     {"name": "securityId", "type": "string", "index":"3", "required":"false"},
+     {"name": "companyId", "type": "string", "index":"4", "required":"false"},
+     {"name": "pubDate", "type": "string", "index":"5", "required":"false"},
+     {"name": "title", "type": "string", "index":"6", "required":"false"},
+     {"name": "colCode", "type": "string", "index":"7", "required":"false"},
+     {"name": "abstractInfo", "type": "string", "index":"8", "required":"false"},
+     {"name": "pubLink", "type": "string", "index":"9", "required":"false"}
+ ]
+}

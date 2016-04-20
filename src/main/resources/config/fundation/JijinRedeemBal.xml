@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+        
+<sqlMap namespace="BusJijinRedeemBal">
+
+    <insert id="insertBusJijinRedeemBal" parameterClass="com.lufax.jijin.fundation.dto.JijinRedeemBalDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select SEQ_BUS_JIJIN_REDEEM_BAL.nextval as id from dual
+        </selectKey>
+        <![CDATA[
+            insert into BUS_JIJIN_REDEEM_BAL (
+                id,
+				fund_code,
+				amount,
+				version,
+				snapshot_time,
+                created_at,
+                updated_at,
+                created_by,
+                updated_by
+            )
+            values (
+                #id#,
+                #fundCode#,
+                #amount#,
+                #version#,
+                #snapshotTime#,
+                sysdate,
+                sysdate,
+                'sys',
+                'sys'
+            )
+        ]]>
+    </insert>
+
+    <select id="findBusJijinRedeemBalByFundCode" parameterClass="java.lang.String" resultClass="com.lufax.jijin.fundation.dto.JijinRedeemBalDTO">
+        <![CDATA[
+            select
+                id id,
+                fund_code fundCode,
+                amount amount,
+                version version,
+                snapshot_time snapshotTime,
+                created_at createdAt,
+                updated_at updatedAt,
+                created_by createdBy,
+                updated_by updatedBy
+            from BUS_JIJIN_REDEEM_BAL
+            where fund_code = #fundCode#
+        ]]>
+    </select>
+
+    <update id="updateBusJijinRedeemBalById" parameterClass="java.util.Map">
+        update BUS_JIJIN_REDEEM_BAL t set
+        <isNotEmpty property="fundCode">
+            t.fund_code = #fundCode#,
+        </isNotEmpty>
+        <isNotEmpty property="amount">
+            t.amount = #amount#,
+        </isNotEmpty>
+        <isNotEmpty property="version">
+            t.version = #version#+1,
+        </isNotEmpty>
+        <isNotEmpty property="snapshotTime">
+            t.snapshot_time = #snapshotTime#,
+        </isNotEmpty>
+        t.updated_at=sysdate
+        where t.id = #id# and t.version=#version#
+    </update>
+
+</sqlMap>

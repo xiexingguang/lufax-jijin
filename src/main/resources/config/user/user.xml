@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="USERS">
+
+    <sql id="userSelectAs">
+        select
+        id as id,
+        party_no as partyNo,
+        username as userName,
+        identity_type as identityType,
+        identity_number as identityNo,
+        mobile_no as mobileNo,
+        name as name,
+        user_role as userRole
+    </sql>
+
+    <select id="getUserById" parameterClass="java.lang.Long" resultClass="com.lufax.jijin.user.dto.UserDTO">
+        <include refid="userSelectAs"/>
+        from p2pusers pu where pu.id=#id#
+    </select>
+
+    <select id="getFASysUserId" resultClass="long">
+        select id from p2pusers where user_role='SYS' and username='FA_SYS'
+    </select>
+
+    <select id="getSMEUserId" resultClass="long">
+        select id from p2pusers where user_role='ENTERPRISE' and username='SME'
+    </select>
+
+    <select id="getP2pUserId" resultClass="long">
+        select id from p2pusers where user_role='P2P'
+    </select>
+    
+    <select id="getUserInfoByIds" parameterClass="java.util.Map" resultClass="com.lufax.jijin.user.dto.UserDTO">
+        <include refid="userSelectAs"/>
+        from p2pusers pu where 1=1
+        <isNotEmpty  property="userIdList">
+            <iterate prepend="and" property="userIdList" conjunction="or" open="(" close=")">
+                pu.id=#userIdList[]#
+            </iterate>
+        </isNotEmpty>
+    </select>
+
+</sqlMap>

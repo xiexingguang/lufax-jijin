@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+        
+<sqlMap namespace="JijinTradeConfirm">
+
+    <insert id="insertJijinTradeConfirm" parameterClass="com.lufax.jijin.fundation.dto.JijinTradeConfirmDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select seq_bus_jijin_trade_confirm.nextval as id from dual
+        </selectKey>
+        <![CDATA[
+            insert into bus_jijin_trade_confirm (
+                id,
+                file_id,
+                pay_no,
+                contract_no,
+                apply_date,
+                lufax_request_no,
+                app_sheet_no,
+                biz_type,
+                fund_code,
+                confirm_date,
+                amount,
+                confirm_share,
+                company_confirm_no,
+                trade_res_code,
+                trade_res_memo,
+                status,
+                created_at,
+                updated_at,
+                created_by,
+                updated_by
+            )
+            values (
+                #id#,
+                #fileId#,
+                #payNo#,
+                #contractNo#,
+                #applyDate#,
+                #lufaxRequestNo#,
+                #appSheetNo#,
+                #bizType#,
+                #fundCode#,
+                #confirmDate#,
+                #amount#,
+                #confirmShare#,
+                #companyConfirmNo#,
+                #tradeResCode#,
+                #tradeResMemo#,
+                #status#,
+                sysdate,
+                sysdate,
+                'sys',
+                'sys'
+            )
+        ]]>
+    </insert>
+
+    <sql id="SelectJijinTradeConfirmDTO">
+        select
+        id id,
+        file_id fileId,
+        pay_no payNo,
+        contract_no contractNo,
+        apply_date applyDate,
+        lufax_request_no lufaxRequestNo,
+        app_sheet_no appSheetNo,
+        biz_type bizType,
+        fund_code fundCode,
+        confirm_date confirmDate,
+        amount amount,
+        confirm_share confirmShare,
+        company_confirm_no companyConfirmNo,
+        trade_res_code tradeResCode,
+        trade_res_memo tradeResMemo,
+        status status,
+        created_at createdAt,
+        updated_at updatedAt,
+        created_by createdBy,
+        updated_by updatedBy
+    </sql>
+
+    <select id="getUnDispatchConfirms" parameterClass="map" resultClass="com.lufax.jijin.fundation.dto.JijinTradeConfirmDTO">
+        <include refid="SelectJijinTradeConfirmDTO" />
+        from bus_jijin_trade_confirm
+        where status = #status# and biz_type in
+        <iterate property="bizTypes" open="(" close=")" conjunction=",">
+            #bizTypes[]#
+        </iterate>
+        <![CDATA[
+            and rownum <= #maxNum#
+        ]]>
+    </select>
+
+    <update id="updateJijinTradeConfirmStatusById" parameterClass="map">
+        update     bus_jijin_trade_confirm
+        set
+        status=#status#,
+        updated_at=sysdate
+        where
+        id=#id#
+    </update>
+
+</sqlMap>

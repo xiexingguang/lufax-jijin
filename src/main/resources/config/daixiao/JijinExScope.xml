@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+        
+<sqlMap namespace="BusJijinExScope">
+
+    <insert id="insertJijinExScope" parameterClass="com.lufax.jijin.daixiao.dto.JijinExScopeDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select SEQ_BUS_JIJIN_EX_SCOPE.nextval as id from dual
+        </selectKey>
+
+        <![CDATA[
+            insert into bus_jijin_ex_scope (
+                id,
+                fund_code,
+                start_date,
+                report_date,
+                fund_share,
+                purchase_share,
+                redeem_share,
+                batch_id,
+                status,
+                error_msg,
+                is_valid,
+                created_at,
+                updated_at,
+                created_by,
+                updated_by
+            )
+            values (
+                #id#,
+                #fundCode#,
+                #startDate#,
+                #reportDate#,
+                #fundShare#,
+                #purchaseShare#,
+                #redeemShare#,
+                #batchId#,
+                #status#,
+                #errorMsg#,
+                #isValid#,
+                sysdate,
+                sysdate,
+                'sys',
+                'sys'
+            )
+        ]]>
+    </insert>
+
+    <sql id="selectAll">
+        select
+        id id,
+        fund_code fundCode,
+        start_date startDate,
+        report_date reportDate,
+        fund_share fundShare,
+        purchase_share purchaseShare,
+        redeem_share redeemShare,
+        batch_id batchId,
+        status status,
+        error_msg errorMsg,
+        is_valid isValid,
+        created_at createdAt,
+        updated_at updatedAt,
+        created_by createdBy,
+        updated_by updatedBy
+        from bus_jijin_ex_scope
+    </sql>
+
+
+
+    <select id="getJijinExScopeByFundCode" parameterClass="java.util.Map" resultClass="com.lufax.jijin.daixiao.dto.JijinExScopeDTO">
+        <include refid="selectAll"></include>
+        where fund_code=#fundCode# 
+        <isNotNull property="isValid">
+        and is_valid = #isValid#
+        </isNotNull>
+        order by report_date desc,id desc
+
+    </select>
+
+    <select id="getLastestJijinExScopeByFundCode" parameterClass="java.util.Map" resultClass="com.lufax.jijin.daixiao.dto.JijinExScopeDTO">
+        select * from (
+        <include refid="selectAll"></include>
+        where fund_code=#fundCode#
+        <isNotNull property="isValid">
+            and is_valid = #isValid#
+        </isNotNull>
+        order by report_date desc,id desc)
+        where rownum =1
+    </select>
+
+
+    <update id="updateJijinExScope" parameterClass="java.util.Map">
+        update bus_jijin_ex_scope t set
+        t.status = #status#,
+        <isNotEmpty property="errorMsg">
+            t.error_msg = #errorMsg#,
+        </isNotEmpty>
+        <isNotEmpty property="isValid">
+            t.is_valid = #isValid#,
+        </isNotEmpty>
+        t.updated_at=sysdate
+        where t.id = #id#
+    </update>
+
+
+    <select id="getJijinExScopeByStatusAndMaxNum" parameterClass="java.util.Map" resultClass="com.lufax.jijin.daixiao.dto.JijinExScopeDTO">
+        <include refid="selectAll"></include>
+        <![CDATA[
+            where status=#status#
+            and rownum <= #maxNum#
+        ]]>
+
+    </select>
+
+
+    <select id="getJijinExScopeById" parameterClass="java.lang.Long" resultClass="com.lufax.jijin.daixiao.dto.JijinExScopeDTO">
+        <include refid="selectAll"></include>
+        where id=#id#
+
+    </select>
+
+    <select id="countNumberOfAfterReportDate" parameterClass="java.util.Map" resultClass="java.lang.Integer">
+        select 1 from bus_jijin_ex_scope where fund_code=#fundCode# and report_date <![CDATA[>]]> #reportDate# and rownum =1
+    </select>
+
+
+    <update id="updateSameFundCodeReportDateRecordToNotVaild" parameterClass="java.util.Map">
+        update bus_jijin_ex_scope
+        set
+        is_valid = 0,
+        updated_at =sysdate
+        where
+        id <![CDATA[<>]]> #id#
+        and
+        fund_code=#fundCode#
+        and
+        report_date=#reportDate#
+        and
+        is_valid=1
+    </update>
+
+</sqlMap>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+
+<sqlMap namespace="JijinUnFreezeSchedule">
+
+
+    <insert id="insertJijinUnFreezeSchedule" parameterClass="com.lufax.jijin.fundation.dto.JijinUnFreezeScheduleDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select SEQ_BUS_JIJIN_UNFREEZE_SCHEDUL.nextval as id from dual
+        </selectKey>
+        <![CDATA[
+            insert into BUS_JIJIN_UNFREEZE_SCHEDUL (
+                id,
+                unfreeze_date,
+                total_count,
+                total_unfreeze_count,
+                total_freeze_share,
+                total_unfreeze_share,
+                version,
+                created_at,
+                updated_at,
+                created_by,
+                updated_by
+            )
+            values (
+                #id#,
+                #unfreezeDate#,
+                #totalCount#,
+                #totalUnfreezeCount#,
+                #totalFreezeShare#,
+                #totalUnFreezeShare#,
+                #version#,
+                sysdate,
+                sysdate,
+                'sys',
+                'sys'
+            )
+        ]]>
+    </insert>
+
+
+    <select id="getJijinUnFreezeScheduleByUnFreezeDate" parameterClass="java.util.Map"
+            resultClass="com.lufax.jijin.fundation.dto.JijinUnFreezeScheduleDTO">
+        <![CDATA[
+            select
+                id                    id                   ,
+                unfreeze_date         unfreezeDate         ,
+                total_count           totalCount           ,
+                total_unfreeze_count  totalUnfreezeCount           ,
+                total_freeze_share    totalFreezeShare    ,
+                total_unfreeze_share  totalUnFreezeShare  ,
+                version               version               ,
+                created_at            createdAt            ,
+                updated_at            updatedAt            ,
+                created_by            createdBy            ,
+                updated_by            updatedBy
+            from BUS_JIJIN_UNFREEZE_SCHEDUL
+            where unfreeze_date = #unfreezeDate#
+        ]]>
+    </select>
+
+    <update id="updateJijinUnFreezeSchedule" parameterClass="java.util.Map">
+        update BUS_JIJIN_UNFREEZE_SCHEDUL t set
+            t.total_count = #totalCount#,
+            t.total_unfreeze_count = #totalUnfreezeCount#,
+            t.total_freeze_share = #totalFreezeShare#,
+            t.total_unfreeze_share = #totalUnFreezeShare#,
+            t.version = #version#+1,
+        t.updated_at=sysdate
+        where t.unfreeze_date = #unFreezeDate#
+            and version = #version#
+    </update>
+
+</sqlMap>

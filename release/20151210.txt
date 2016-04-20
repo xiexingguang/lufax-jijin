@@ -1,0 +1,12 @@
+[DEP]
+
+[DB1]
+
+[DB2]
+
+[NOTIFY]
+    chenzhiqiang288@pingan.com.cn
+	chenqunhui168@pingan.con.cn
+[ADVICE]
+    webdev7027
+          强赎创建tradeRecord时reqShare为0bug fix

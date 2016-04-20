@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+        
+        
+<sqlMap namespace="JijinTradeSync">
+
+    <insert id="insertJijinTradeSync" parameterClass="com.lufax.jijin.fundation.dto.JijinTradeSyncDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select SEQ_BUS_JIJIN_TRADE_SYNC.nextval as id from dual
+        </selectKey>
+        <![CDATA[
+            insert into bus_jijin_trade_sync (
+                id,
+                file_id,
+                contract_no,
+                ta_no,
+                app_sheet_no,
+                lufax_request_no,
+                fund_company_code,
+                trx_date,
+                trx_time,
+                trx_confirm_date,
+                business_code,
+                fund_code,
+                charge_type,
+                net_value,
+                purchase_amount,
+                redeem_share,
+                confirm_share,
+                confirm_amount,
+                divident_type,
+                trade_res_code,
+                trade_res_memo,
+                ta_confirm_sign,
+                business_finish_flag,
+                purchase_fee,
+                status,
+                created_at,
+                updated_at,
+                created_by,
+                updated_by
+            )
+            values (
+                #id#,
+                #fileId#,
+                #contractNo#,
+                #taNo#,
+                #appSheetNo#,
+                #lufaxRequestNo#,
+                #fundCompanyCode#,
+                #trxDate#,
+                #trxTime#,
+                #trxConfirmDate#,
+                #businessCode#,
+                #fundCode#,
+                #chargeType#,
+                #netValue#,
+                #purchaseAmount#,
+                #redeemShare#,
+                #confirmShare#,
+                #confirmAmount#,
+                #dividentType#,
+                #tradeResCode#,
+                #tradeResMemo#,
+                #taConfirmSign#,
+                #businessFinishFlag#,
+                #purchaseFee#,
+                #status#,
+                sysdate,
+                sysdate,
+                'SYS',
+                'SYS'
+            )
+        ]]>
+    </insert>
+
+    <sql id="SelectJijinTradeSyncDTO">
+        select
+        id id,
+        file_id fileId,
+        contract_no contractNo,
+        ta_no taNo,
+        app_sheet_no appSheetNo,
+        lufax_request_no lufaxRequestNo,
+        fund_company_code fundCompanyCode,
+        trx_date trxDate,
+        trx_time trxTime,
+        trx_confirm_date trxConfirmDate,
+        business_code businessCode,
+        fund_code fundCode,
+        charge_type chargeType,
+        net_value netValue,
+        purchase_amount purchaseAmount,
+        redeem_share redeemShare,
+        confirm_share confirmShare,
+        confirm_amount confirmAmount,
+        divident_type dividentType,
+        trade_res_code tradeResCode,
+        trade_res_memo tradeResMemo,
+        ta_confirm_sign taConfirmSign,
+        business_finish_flag businessFinishFlag,
+        purchase_fee purchaseFee,
+        status status,
+        created_at createdAt,
+        updated_at updatedAt,
+        created_by createdBy,
+        updated_by updatedBy
+    </sql>
+
+
+    <select id="getUnDispatchRecords" parameterClass="map" resultClass="com.lufax.jijin.fundation.dto.JijinTradeSyncDTO">
+        <include refid="SelectJijinTradeSyncDTO" />
+        from bus_jijin_trade_sync
+        where status = #status#
+        and
+        <iterate property="businessCodes" open="(" close=")"	conjunction="or">
+            BUSINESS_CODE = #businessCodes[]#
+        </iterate>
+        <![CDATA[
+            and rownum <= #maxNum#
+        ]]>
+    </select>
+    
+    <update id="updateJijinTradeSyncStatusById" parameterClass="map">
+		update     bus_jijin_trade_sync
+		set 
+			status=#status#,
+			updated_at=sysdate
+		where 
+			id=#id#		
+    </update>
+
+    <select id="getJijinTradeSyncByAppSheetNoAndFundCode" parameterClass="map" resultClass="com.lufax.jijin.fundation.dto.JijinTradeSyncDTO">
+        <include refid="SelectJijinTradeSyncDTO" />
+        from bus_jijin_trade_sync
+        where app_sheet_no = #appSheetNo#
+        and fund_code = #fundCode#
+
+    </select>
+
+    <update id="updateJijinTradeSyncStatusAndMemoById" parameterClass="map">
+        update     bus_jijin_trade_sync
+        set
+        status=#status#,
+        memo=#memo#,
+        updated_at=sysdate
+        where
+        id=#id#
+    </update>
+
+    <select id="getJijinTradeSyncByAppSheetNoAndFundCodeAndBusCode" parameterClass="map" resultClass="com.lufax.jijin.fundation.dto.JijinTradeSyncDTO">
+        <include refid="SelectJijinTradeSyncDTO" />
+        from bus_jijin_trade_sync
+        where app_sheet_no = #appSheetNo#
+        and fund_code = #fundCode#
+        and business_code = #businessCode#
+    </select>
+    
+    <select id="getJijinTradeSyncByAppNoAndFundCodeAndBusCode" parameterClass="map" resultClass="com.lufax.jijin.fundation.dto.JijinTradeSyncDTO">
+        <include refid="SelectJijinTradeSyncDTO" />
+        from bus_jijin_trade_sync
+        where lufax_request_no = #appNo#
+        and fund_code = #fundCode#
+		and business_code = #businessCode#
+    </select>
+    
+    <!-- <resultMap id="recordMap" class="com.lufax.jijin.fundation.dto.JijinTradeSyncDTO"/> -->
+    <select id="getJijinTradeSyncTransformed" parameterClass="map" resultClass="com.lufax.jijin.fundation.dto.JijinTradeSyncDTO">
+        <include refid="SelectJijinTradeSyncDTO" />
+        from bus_jijin_trade_sync
+        where app_sheet_no = #appSheetNo#
+    </select>
+
+</sqlMap>

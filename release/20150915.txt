@@ -1,0 +1,13 @@
+[DEP]
+
+[DB1]
+	bettle=865
+[DB2]
+
+[NOTIFY]
+    chenzhiqiang288@pingan.com.cn
+	xuneng311@pingan.con.cn
+[ADVICE]
+    webdev5475
+    webdev5467
+

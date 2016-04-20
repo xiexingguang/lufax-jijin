@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="YLX_MULTI_TRX">
+
+    
+    <typeAlias alias="YLXMultiTrxDTO" type="com.lufax.jijin.ylx.request.dto.YLXMultiTrxDTO"/>
+
+
+	<sql id="selectMultiTrx">
+		select 
+		pmt.id as id,
+		p.code as prodCode,
+		pmt.buyer_user_id as buyerUserId,
+		pmt.trading_time as trxTime,
+		pmt.trade_date as trxDate,
+		pmt.price as price	
+	</sql>
+
+	<sql id="selectMultiTrxsByUser">
+		select 
+		pmt.id as id,
+		pmt.buyer_user_id as buyerUserId,
+		pmt.trading_time as trxTime,
+		pmt.trade_date as trxDate	
+	</sql>
+
+    <select id="getYLXMultiTrxDTOsBycutOffId" parameterClass="map"  resultClass="YLXMultiTrxDTO">
+     select 
+		id as id,
+		code as prodCode,
+		buyer_user_id as buyerUserId,
+		trading_time as trxTime,
+		trade_date as trxDate,
+		price as price
+         from (
+            select 
+			pmt.id,
+			p.code,
+			pmt.buyer_user_id,
+			pmt.trading_time,
+			pmt.trade_date,
+			pmt.price
+			from product_multiple_trx pmt, products p 
+        	where pmt.cut_off_id=#cutOffId#
+        		and pmt.product_category = '401'
+	            and pmt.product_id = p.id
+	            and pmt.id<![CDATA[>]]>#maxInternalTrxId#
+	            and p.code in  
+        		<iterate property="prodCodes" open="(" close=")" conjunction=",">
+        		#prodCodes[]#
+       			</iterate>
+	            order by pmt.id)
+	        where rownum<![CDATA[<]]>#rownum#
+	     </select>
+     
+     <select id="getDistinctProdCodeBycutOffId" parameterClass="long"  resultClass="YLXMultiTrxDTO">
+		<![CDATA[select distinct(p.code) as prodCode from product_multiple_trx pmt, products p  where 
+  				 pmt.cut_off_id=#cutOffId#           
+ 				 and pmt.product_category = '401'  
+ 				 and pmt.product_id = p.id]]>
+     </select>
+
+    <select id="getYLXMultiTrxDTOBycutOffIdWithRownum" parameterClass="map"  resultClass="YLXMultiTrxDTO">
+         <include refid="selectMultiTrxsByUser"/>
+				<![CDATA[
+				from product_multiple_trx pmt
+        		where pmt.cut_off_id=#cutOffId#
+        		and pmt.product_category = '401'
+	            and rownum<#rownum#
+	            order by pmt.id	
+	            ]]>
+     </select>
+
+
+
+	<select id="getYLXMultiTrxGroupByUserAndProductId" parameterClass="long" resultClass="YLXMultiTrxDTO">
+	<![CDATA[
+	    select pmt.buyer_user_id buyerUserId,pmt.product_id productId from product_multiple_trx pmt
+	    									  where pmt.cut_off_id=#cutOffId#
+	    									  and pmt.product_category = '401'
+	    									  group by pmt.buyer_user_id,pmt.product_id having count(*)>1
+	    									  ]]>
+	
+	</select>
+	
+	<select id="getYLXMultiTrxByUserAndProductId" parameterClass="map" resultClass="YLXMultiTrxDTO">
+	    <include refid="selectMultiTrx"/>
+	     from product_multiple_trx pmt
+	     where pmt.cut_off_id=#cutOffId#
+	     and pmt.product_category = '401'
+	     and pmt.buyer_user_id = #userId#
+	     and pmt.product_id=#productId#
+	
+	</select>
+	            
+	<select id="getYLXMultiTrxGroupByUser" parameterClass="long" resultClass="YLXMultiTrxDTO">
+	<![CDATA[
+	    select pmt.buyer_user_id buyerUserId from product_multiple_trx pmt
+	    									  where pmt.cut_off_id=#cutOffId#
+	    									  and pmt.product_category='401'
+	    									  group by pmt.buyer_user_id having count(*)>1
+	    									  ]]>
+	
+	</select>
+	
+	<select id="getYLXMultiTrxByUserId" parameterClass="map" resultClass="YLXMultiTrxDTO">
+	    <include refid="selectMultiTrxsByUser"/>
+	     from product_multiple_trx pmt
+	     where pmt.buyer_user_id=#userId#
+	     and pmt.cut_off_id=#cutOffId#
+	     and pmt.product_category='401'
+	</select>
+	
+	<select id="getYlxTotalConfirmAmountByCutoffId" parameterClass="map" resultClass="com.lufax.fa.ylx.confirm.dto.BuyAuditCutoffDTO">
+		select pmt.cut_off_id as cutoffId, max(pmt.id) as maxTrxId, pmt.product_id as productId, pmt.seller_user_id as sellerUserId, sum(pmt.price) as totalAmount
+   	    	from product_multiple_trx pmt
+    	where pmt.cut_off_id=#cutOffId#
+		     and pmt.product_category='401'
+	    	 and pmt.status != 'FAIL'
+        group by pmt.product_id, pmt.seller_user_id,pmt.cut_off_id
+	</select>
+</sqlMap>

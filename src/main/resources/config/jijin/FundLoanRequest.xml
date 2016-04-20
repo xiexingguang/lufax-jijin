@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="FundLoanRequest">
+
+    <typeAlias alias="FundLoanRequestDTO" type="com.lufax.jijin.dto.FundLoanRequestDTO"/>
+
+    <sql id="SelectFundLoanRequestDTO">
+        id id,
+        product_code productCode,
+        display_name displayName,
+        min_invest_amount minInvestAmount,
+        increase_invest_amount increaseInvestAmount,
+        contract_code contractCode,
+        spv_user_id spvUserId,
+        loanee_user_id loaneeUserId,
+        publish_institutions publishInstitutions,
+        deposit_institutions depositInstitutions,
+        bid_asset_name bidAssetName,
+        bid_asset_type bidAssetType,
+        third_company_code thirdCompanyCode,
+        repayment_method repaymentMethod,
+        full_redem_ratio_limit fullRedemRatioLimit,
+        partial_redem_ratio_limit partialRedemRatioLimit,
+        single_day_redem_amount_limit singleDayRedemAmountLimit,
+        foreign_id foreignId,
+        product_category productCategory,
+        source_type sourceType,
+        created_at createdAt,
+        updated_at updatedAt,
+        created_by createdBy,
+        updated_by updatedBy
+    </sql>
+
+
+    <insert id="insertFundLoanRequest" parameterClass="FundLoanRequestDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select seq_bus_fund_loan_request.nextval as id from dual
+        </selectKey>
+        <![CDATA[
+            insert into bus_fund_loan_request (
+                id,
+                product_code,
+                display_name,
+                min_invest_amount,
+                increase_invest_amount,
+                contract_code,
+                spv_user_id,
+                loanee_user_id,
+                publish_institutions,
+                deposit_institutions,
+                bid_asset_name,
+                bid_asset_type,
+                third_company_code,
+                repayment_method,
+                full_redem_ratio_limit,
+                partial_redem_ratio_limit,
+                single_day_redem_amount_limit,
+                foreign_id,
+                product_category,
+                source_type,
+                created_at,
+                updated_at,
+                created_by,
+                updated_by
+            )
+            values (
+                #id#,
+                #productCode#,
+                #displayName#,
+                #minInvestAmount#,
+                #increaseInvestAmount#,
+                #contractCode#,
+                #spvUserId#,
+                #loaneeUserId#,
+                #publishInstitutions#,
+                #depositInstitutions#,
+                #bidAssetName#,
+                #bidAssetType#,
+                #thirdCompanyCode#,
+                #repaymentMethod#,
+                #fullRedemRatioLimit#,
+                #partialRedemRatioLimit#,
+                #singleDayRedemAmountLimit#,
+                #foreignId#,
+                #productCategory#,
+                #sourceType#,
+                sysdate,
+                sysdate,
+                'SYS',
+                'SYS'
+            )
+        ]]>
+    </insert>
+
+    <select id="getFundLoanRequestByForeignId" parameterClass="map"  resultClass="FundLoanRequestDTO">
+        select
+        <include refid="SelectFundLoanRequestDTO"/>
+        from bus_fund_loan_request
+        where foreign_id = #foreignId#
+    </select>
+
+    <select id="getFundLoanRequestByProductCode" parameterClass="map"  resultClass="FundLoanRequestDTO">
+        select
+        <include refid="SelectFundLoanRequestDTO"/>
+        from bus_fund_loan_request
+        where product_code = #productCode#
+    </select>
+    
+    <select id="getFundLoanRequestByThirdCompanyCode" parameterClass="map"  resultClass="FundLoanRequestDTO">
+        select
+        <include refid="SelectFundLoanRequestDTO"/>
+        from bus_fund_loan_request
+        where THIRD_COMPANY_CODE = #thirdCompanyCode#
+    </select>
+    
+    <select id="getFundLoanRequestBySourceTypeAndCategory" parameterClass="map"  resultClass="FundLoanRequestDTO">
+        select
+        <include refid="SelectFundLoanRequestDTO"/>
+        from bus_fund_loan_request
+        where source_type = #sourceType# and product_category = #productCategory#
+    </select>
+	
+	<select id="getFundLoanRequestByProductCodes" parameterClass="map"  resultClass="FundLoanRequestDTO">
+        select
+        <include refid="SelectFundLoanRequestDTO"/>
+        from bus_fund_loan_request
+        where product_code in 
+        <iterate property="codes" open="(" close=")" conjunction=",">
+        	#codes[]#
+        </iterate>
+    </select>
+	
+</sqlMap>
+

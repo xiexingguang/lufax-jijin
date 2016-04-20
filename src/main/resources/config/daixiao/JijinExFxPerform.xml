@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+        
+<sqlMap namespace="BusJijinExFxPerform">
+
+    <insert id="insertJijinExFxPerform" parameterClass="com.lufax.jijin.daixiao.dto.JijinExFxPerformDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select seq_bus_jijin_ex_fx_perform.nextval as id from dual
+        </selectKey>
+
+        <![CDATA[
+            insert into bus_jijin_ex_fx_perform (
+                id,
+                findex_code ,
+                performance_day ,
+                rise_rate_one_week ,
+                rise_rate_one_month ,
+                rise_rate_three_month ,
+                rise_rate_six_month ,
+                rise_rate_one_year ,
+                rise_rate_two_year ,
+                rise_rate_three_year ,
+                rise_rate_this_year ,
+                batch_id ,
+                status ,
+                created_at,
+                updated_at,
+                created_by,
+                updated_by,
+                is_valid
+            )
+            values (
+                #id#,
+                #findexCode#,
+                #performanceDay#,
+                #riseRateOneWeek#,
+                #riseRateOneMonth#,
+                #riseRateThreeMonth#,
+                #riseRateSixMonth#,
+                #riseRateOneYear#,
+                #riseRateTwoYear#,
+                #riseRateThreeYear#,
+                #riseRateThisYear#,
+                #batchId#,
+                #status#,
+                sysdate,
+                sysdate,
+                'sys',
+                'sys',
+                #isValid#
+            )
+        ]]>
+    </insert>
+
+    <sql id="selectAll">
+        select
+            id  id,
+            created_at  createdAt,
+            created_by  createdBy,
+            updated_at  updatedAt,
+            updated_by  updatedBy,
+            findex_code  findexCode,
+            performance_day  performanceDay,
+            rise_rate_one_week  riseRateOneWeek,
+            rise_rate_one_month  riseRateOneMonth,
+            rise_rate_three_month  riseRateThreeMonth,
+            rise_rate_six_month  riseRateSixMonth,
+            rise_rate_one_year  riseRateOneYear,
+            rise_rate_two_year  riseRateTwoYear,
+            rise_rate_three_year  riseRateThreeYear,
+            rise_rate_this_year  riseRateThisYear,
+            batch_id  batchId,
+            status  status,
+            is_valid isValid
+        from bus_jijin_ex_fx_perform
+    </sql>
+
+
+    <select id="getJijinExFxPerformByBatchId" parameterClass="java.lang.Long" resultClass="com.lufax.jijin.daixiao.dto.JijinExFxPerformDTO">
+        <include refid="selectAll"></include>
+        where batch_id=#batchId#
+    </select>
+	
+	<select id="getUnDispachedJijinExFxPerform" parameterClass="java.lang.Integer" resultClass="com.lufax.jijin.daixiao.dto.JijinExFxPerformDTO">
+		<include refid="selectAll"></include>
+		where status='NEW' and rownum <![CDATA[<=]]> #limit#
+	</select>
+    <select id="getLatestBatchId" resultClass="java.lang.Long">
+        select max(batch_id) from bus_jijin_ex_fx_perform
+    </select>
+
+    <select id="getJijinExFxPerformByFindexCode" parameterClass="java.lang.String" resultClass="com.lufax.jijin.daixiao.dto.JijinExFxPerformDTO">
+        <include refid="selectAll"></include>
+        where findex_code = #findexCode# and is_valid = 1 order by performance_day desc,id desc
+    </select>
+
+    <select id="getLastestJijinExFxPerformByFindexCode" parameterClass="java.lang.String" resultClass="com.lufax.jijin.daixiao.dto.JijinExFxPerformDTO">
+        select * from(
+        <include refid="selectAll"></include>
+        where findex_code = #findexCode# and is_valid = 1
+        order by performance_day desc,id desc) where rownum =1
+    </select>
+
+
+    <update id="updateTheSameFindexCodeAndDateToNotValid" parameterClass="java.util.Map">
+        update bus_jijin_ex_fx_perform 
+        set 
+        	is_valid = 0,
+        	updated_at =sysdate
+        where 
+        	id<![CDATA[<>]]>#id# 
+        and 
+        	findex_code=#findexCode#
+        and
+        	performance_day =#date#
+        and 
+        	is_valid = 1
+    </update>
+    
+    <update id="updateJijinExFxPerform" parameterClass="java.util.Map"> 
+         update bus_jijin_ex_fx_perform
+         set
+            <isNotNull property="isValid">
+            	is_valid =#isValid#,
+            </isNotNull>
+            <isNotEmpty property="status">
+				status =#status#,            
+            </isNotEmpty>
+            updated_at =sysdate
+            where id = #id#
+    </update>
+
+</sqlMap>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+        
+        
+<sqlMap namespace="JijinTradeLog">
+
+    <insert id="insertBusJijinTradeLog" parameterClass="com.lufax.jijin.fundation.dto.JijinTradeLogDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select SEQ_BUS_JIJIN_TRADE_LOG.nextval as id from dual
+        </selectKey>
+        <![CDATA[
+            insert into bus_jijin_trade_log (
+                id,
+                user_id,
+                fund_code,
+                trx_time,
+                trx_date,
+                trade_record_id,
+                status,
+                dividend_type,
+                type,
+                amount,
+                req_share,
+                fee,
+                trx_serial,
+                business_mode,
+                expect_Confirm_Date,
+                expect_Account_Date,
+                confirm_Date,
+                account_Date,
+                created_at,
+                updated_at,
+                created_by,
+                updated_by
+            )
+            values (
+                #id#,
+                #userId#,
+                #fundCode#,
+                #trxTime#,
+                #trxDate#,
+                #tradeRecordId#,
+                #status#,
+                #dividendType#,
+                #type#,
+                #amount#,
+                #reqShare#,
+                #fee#,
+                #trxSerial#,
+                #businessMode#,
+                #expectConfirmDate#,
+                #expectAccountDate#,
+                #confirmDate#,
+                #accountDate#,
+                sysdate,
+                sysdate,
+                'SYS',
+                'SYS'
+            )
+        ]]>
+    </insert>
+
+    <sql id="SelectJijinTradeRecordDTO">
+        select
+        id id,
+        user_id userId,
+        fund_code fundCode,
+        trx_time trxTime,
+        trx_date trxDate,
+        trade_record_id tradeRecordId,
+        status status,
+        dividend_type dividendType,
+        type type,
+        amount amount,
+        req_share reqShare,
+        fee fee,
+        trx_serial trxSerial,
+        business_mode businessMode,
+        expect_Confirm_Date expectConfirmDate,
+        expect_Account_Date expectAccountDate,
+        confirm_Date confirmDate,
+        account_Date accountDate,
+        created_at createdAt,
+        updated_at updatedAt,
+        created_by createdBy,
+        updated_by updatedBy
+    </sql>
+    
+    <select id="findTradeLogByIdAndType" parameterClass="map" resultClass="com.lufax.jijin.fundation.dto.JijinTradeLogDTO">
+		<include refid="SelectJijinTradeRecordDTO"/>	
+		from bus_jijin_trade_log
+			where user_id = #userId#
+			and fund_code = #fundCode#
+			and status = #status#
+			and type in
+			<iterate property="types" open="(" close=")" conjunction=",">
+				#types[]#
+			</iterate>
+		order by id desc
+	</select>
+    
+    <select id="countByUserIdAndType" parameterClass="map" resultClass="com.lufax.jijin.fundation.dto.BaseNumDTO">
+		select count(1) num
+		from bus_jijin_trade_log
+		where user_id = #userId#
+		and fund_code = #fundCode#
+		and status = #status#
+		and type in
+		<iterate property="types" open="(" close=")" conjunction=",">
+			#types[]#
+		</iterate>
+	</select>
+    
+
+</sqlMap>

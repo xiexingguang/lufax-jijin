@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+        
+<sqlMap namespace="BusJijinExDiscount">
+
+    <insert id="insertJijinExDiscount" parameterClass="com.lufax.jijin.daixiao.dto.JijinExDiscountDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select seq_bus_jijin_ex_discount.nextval as id from dual
+        </selectKey>
+
+        <![CDATA[
+            insert into bus_jijin_ex_discount (
+                id,
+                fund_code,
+                biz_code,
+                valid_date,
+                discount_mode,
+                fee_ploy,
+                fixed_rate,
+                fixed_max_amount,
+                fixed_min_amount,
+                set_type,
+                set_value,
+                batch_id,
+                status,
+                created_at,
+                updated_at,
+                created_by,
+                updated_by
+            )
+            values (
+                #id#,
+                #fundCode#,
+                #bizCode#,
+                #validDate#,
+                #discountMode#,
+                #feePloy#,
+                #fixedRate#,
+                #fixedMaxAmount#,
+                #fixedMinAmount#,
+                #setType#,
+                #setValue#,
+                #batchId#,
+                #status#,
+                sysdate,
+                sysdate,
+                'sys',
+                'sys'
+            )
+        ]]>
+    </insert>
+
+    <sql id="selectAll">
+        select
+            id  id,
+            created_at  createdAt,
+            created_by  createdBy,
+            updated_at  updatedAt,
+            updated_by  updatedBy,
+            fund_code  fundCode,
+            biz_code  bizCode,
+            valid_date  validDate,
+            discount_mode  discountMode,
+            fee_ploy  feePloy,
+            fixed_rate  fixedRate,
+            fixed_max_amount  fixedMaxAmount,
+            fixed_min_amount  fixedMinAmount,
+            set_type  setType,
+            set_value  setValue,
+            batch_id  batchId,
+            status  status,
+            is_valid isValid
+        from bus_jijin_ex_discount
+    </sql>
+
+    <select id="getJijinExDiscount" parameterClass="java.util.Map" resultClass="com.lufax.jijin.daixiao.dto.JijinExDiscountDTO">
+        <include refid="selectAll"></include>
+        where 1=1
+        <isNotEmpty property="id" prepend="and">
+            id = #id#
+        </isNotEmpty>
+        <isNotEmpty property="fundCode" prepend="and">
+            fund_code = #fundCode#
+        </isNotEmpty>
+        <isNotEmpty property="bizCode" prepend="and">
+            biz_code = #bizCode#
+        </isNotEmpty>
+        <isNotEmpty property="status" prepend="and">
+            status = #status#
+        </isNotEmpty>
+        <isNotEmpty property="batchId" prepend="and">
+            batch_id = #batchId#
+        </isNotEmpty>
+        <isNotEmpty property="limit" prepend="and">
+            rownum <![CDATA[<=]]>#limit#
+        </isNotEmpty>
+        order by id
+    </select>
+
+    <select id="getJijinExDiscountByFundCodeAndBizCode" parameterClass="java.util.Map" resultClass="com.lufax.jijin.daixiao.dto.JijinExDiscountDTO">
+        <include refid="selectAll"></include>
+        where fund_code=#fundCode# and biz_code=#bizCode# 
+    </select>
+    
+    <select id="getLatestBatchIdByFundCodeAndType" parameterClass="java.util.Map" resultClass="java.lang.Long">
+        <![CDATA[
+        select max(batch_id) from bus_jijin_ex_discount
+        where
+        fund_code=#fundCode#
+        and
+        biz_code = #bizCode#
+        ]]>
+    </select>
+
+    <select id="getLatestBatchIdByDate" parameterClass="java.util.Map" resultClass="java.lang.Long">
+        <![CDATA[
+        select max(batch_id) from bus_jijin_ex_discount
+        where
+        fund_code=#fundCode#]]>
+        <isNotEmpty property="bizCode" prepend="and">
+            biz_code = #bizCode#
+        </isNotEmpty>
+        <isNotEmpty property="currentDate" prepend="and">
+            valid_date <![CDATA[<=]]>#currentDate#
+        </isNotEmpty>
+    </select>
+
+    <select id="getJijinExDiscountsByBatchIdFundCodeAndType" parameterClass="java.util.Map" resultClass="com.lufax.jijin.daixiao.dto.JijinExDiscountDTO">
+        <include refid="selectAll"></include>
+        where batch_id=#batchId# 
+        and fund_code=#fundCode#
+        and biz_Code =#bizCode#
+    </select>
+
+    <update id="updateJijinExDiscount" parameterClass="java.util.Map">
+        update bus_jijin_ex_discount t set
+        <isNotEmpty property="errMsg">
+            t.err_msg = #errMsg#,
+        </isNotEmpty>
+        t.status = #status#,
+        t.updated_at=sysdate
+        where t.id = #id#
+    </update>
+
+</sqlMap>

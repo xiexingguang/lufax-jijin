@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="JijinExStockConf">
+
+    <insert id="insert" parameterClass="com.lufax.jijin.daixiao.dto.JijinExStockConfDTO">
+        <selectKey resultClass="long" keyProperty="id">
+            select seq_bus_jijin_ex_stock_conf.nextval from dual
+        </selectKey>
+        insert into bus_jijin_ex_stock_conf (
+        id,
+        created_at,
+        created_by,
+        updated_at,
+        updated_by,
+        fund_code,
+        end_date,
+        stock_code,
+        stock_name,
+        stock_per,
+        announce_date,
+        stock_value_per,
+        capital_stock_per,
+        stock_value,
+        stock_share,
+        batch_id,
+        status,
+        is_valid
+        ) values (
+        #id#,
+        sysdate,
+        'SYS',
+        sysdate,
+        'SYS',
+        #fundCode#,
+        #endDate#,
+        #stockCode#,
+        #stockName#,
+        #stockPer#,
+        #announceDate#,
+        #stockValuePer#,
+        #capitalStockPer#,
+        #stockValue#,
+        #stockShare#,
+        #batchId#,
+        #status#,
+        #isValid#
+        )
+    </insert>
+
+    <update id="update" parameterClass="com.lufax.jijin.daixiao.dto.JijinExStockConfDTO">
+        update bus_jijin_ex_stock_conf
+        set
+        <isNotEmpty property="fundCode">
+            fund_code = #fundCode#,
+        </isNotEmpty>
+        <isNotEmpty property="endDate">
+            end_date = #endDate#,
+        </isNotEmpty>
+        <isNotEmpty property="stockCode">
+            stock_code = #stockCode#,
+        </isNotEmpty>
+        <isNotEmpty property="stockName">
+            stock_name = #stockName#,
+        </isNotEmpty>
+        <isNotEmpty property="stockPer">
+            stock_per = #stockPer#,
+        </isNotEmpty>
+        <isNotEmpty property="announceDate">
+            announce_date = #announceDate#,
+        </isNotEmpty>
+        <isNotEmpty property="stockValuePer">
+            stock_value_per = #stockValuePer#,
+        </isNotEmpty>
+        <isNotEmpty property="capitalStockPer">
+            capital_stock_per = #capitalStockPer#,
+        </isNotEmpty>
+        <isNotEmpty property="stockValue">
+            stock_value = #stockValue#,
+        </isNotEmpty>
+        <isNotEmpty property="stockShare">
+            stock_share = #stockShare#,
+        </isNotEmpty>
+        <isNotEmpty property="batchId">
+            batch_id = #batchId#,
+        </isNotEmpty>
+        <isNotEmpty property="status">
+            status = #status#,
+        </isNotEmpty>
+        <isNotEmpty property="isValid">
+            is_valid = #isValid#,
+        </isNotEmpty>
+        updated_at = sysdate
+        where
+        id = #id#
+    </update>
+
+    <sql id="allFields">
+        id,
+        created_at createdAt,
+        created_by createdBy,
+        updated_at updatedAt,
+        updated_by updatedBy,
+        fund_code fundCode,
+        end_date endDate,
+        stock_code stockCode,
+        stock_name stockName,
+        stock_per stockPer,
+        announce_date announceDate,
+        stock_value_per stockValuePer,
+        capital_stock_per capitalStockPer,
+        stock_value stockValue,
+        stock_share stockShare,
+        batch_id batchId,
+        status status,
+        is_valid isValid
+    </sql>
+
+    <select id="getByID" parameterClass="long" resultClass="com.lufax.jijin.daixiao.dto.JijinExStockConfDTO">
+        select <include refid="allFields"/>
+        from bus_jijin_ex_stock_conf
+        where id = #id#
+    </select>
+
+
+    <select id="queryLatestStockConfRecordsByFundCode" parameterClass="java.util.Map" resultClass="com.lufax.jijin.daixiao.dto.JijinExStockConfDTO">
+        select <include refid="allFields"/>
+        from bus_jijin_ex_stock_conf
+        where fund_code=#fundCode#
+        and batch_id=#batchId#
+        and end_date = #endDate#
+        and is_valid = 1
+        order by to_number(STOCK_VALUE) desc
+    </select>
+
+	<select id="getStockConfLatestEndDateAndBatchIdByFundCode" parameterClass="String" resultClass="com.lufax.jijin.daixiao.dto.JijinExStockConfDTO">
+		select end_date endDate, batch_id batchId
+		  from (select end_date, batch_id
+		          from bus_jijin_ex_stock_conf
+		         where fund_code = #fundCode#
+		         and is_valid = 1
+		         order by end_date desc, batch_id desc)
+		 where rownum = 1
+	</select>
+	
+</sqlMap>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="INSTRUCTION_SEQ">
+
+    <select id="getSeq" resultClass="long">
+        SELECT seq_instruction_sequence.nextval from Dual
+    </select>
+
+</sqlMap>

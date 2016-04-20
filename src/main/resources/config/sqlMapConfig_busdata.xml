@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+
+
+<sqlMapConfig>
+    <settings useStatementNamespaces="true" errorTracingEnabled="false"/>
+        <sqlMap resource="config/base/LoanRequestSequence.xml"/>
+    	<sqlMap resource="config/fund/InstructionNo.xml"/>
+    	<sqlMap resource="config/jijin/FundAccount.xml"/>
+    	<sqlMap resource="config/jijin/FundLoanRequest.xml"/>
+        <sqlMap resource="config/yeb/YebJJZLIncomeSync.xml"/>
+        <sqlMap resource="config/fund/InsuranceFundRecordDTO.xml"/>
+    	<sqlMap resource="config/fund/InsuranceFundRecordHisDTO.xml"/>
+    	<sqlMap resource="config/ylx/YLXBatch.xml"/>
+    	<sqlMap resource="config/ylx/YLXBatchFile.xml"/>
+    	<sqlMap resource="config/ylx/YLXBuyConfirmDetail.xml"/>
+    	<sqlMap resource="config/ylx/YLXBuyRequestDetail.xml"/>
+    	<sqlMap resource="config/ylx/YLXFundBalance.xml"/>
+    	<sqlMap resource="config/ylx/YLXOpenConfirmDetail.xml"/>
+    	<sqlMap resource="config/ylx/YLXOpenRequestDetail.xml"/>
+    	<sqlMap resource="config/ylx/YLXSellConfirmDetail.xml"/>
+    	<sqlMap resource="config/ylx/YLXSellRequestDetail.xml"/>
+    	<sqlMap resource="config/ylx/YLXAccount.xml"/>
+    	<sqlMap resource="config/ylx/YLXTransactionHistory.xml"/>
+    	<sqlMap resource="config/ylx/YLXAccountTransferRecordDTO.xml"/>
+    	<sqlMap resource="config/ylx/YLXProfit.xml"/>
+
+</sqlMapConfig>

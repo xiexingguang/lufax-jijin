@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+        
+<sqlMap namespace="JijinTransfer">
+
+    <insert id="insertJijinTransfer" parameterClass="com.lufax.jijin.fundation.dto.JijinTransferDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select seq_bus_jijin_transfer.nextval as id from dual
+        </selectKey>
+        <![CDATA[
+            insert into bus_jijin_transfer (
+                id,
+                file_id,
+                inst_id,
+                channel_id,
+                transfer_no,
+                app_sheet_no,
+                paf_order_no,
+                amount,
+                result_flag,
+                transfer_date,
+                remark,
+                fund_code,
+                status,
+                created_at,
+                updated_at,
+                created_by,
+                updated_by
+            )
+            values (
+                #id#,
+                #fileId#,
+                #instId#,
+                #channelId#,
+                #transferNo#,
+                #appSheetNo#,
+                #pafOrderNo#,
+                #amount#,
+                #resultFlag#,
+                #transferDate#,
+                #remark#,
+                #fundCode#,
+                #status#,
+                sysdate,
+                sysdate,
+                'sys',
+                'sys'
+            )
+        ]]>
+    </insert>
+</sqlMap>

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="JijinExMaPerf">
+
+    <insert id="insert" parameterClass="com.lufax.jijin.daixiao.dto.JijinExMaPerfDTO">
+        <selectKey resultClass="long" keyProperty="id">
+            select seq_bus_jijin_ex_ma_perf.nextval from dual
+        </selectKey>
+        insert into bus_jijin_ex_ma_perf (
+        id,
+        created_at,
+        created_by,
+        updated_at,
+        updated_by,
+        ma_id,
+        pub_date,
+        ma_point_type,
+        ma_point,
+        benefit_this_year,
+        rank_this_year,
+        benefit_this_week,
+        rank_this_week,
+        benefit_this_month,
+        rank_this_month,
+        benefit_three_month,
+        rank_three_month,
+        benefit_six_month,
+        rank_six_month,
+        benefit_one_year,
+        rank_one_year,
+        benefit_two_year,
+        rank_two_year,
+        benefit_three_year,
+        rank_three_year,
+        benefit_five_year,
+        rank_five_year,
+        benefit_ten_year,
+        rank_ten_year,
+        benefit_from_begin,
+        year_benefit_from_begin,
+        rank_from_begin,
+        benefit_worst_six_month,
+        benefit_best_six_month,
+        batch_id,
+        status,
+        is_valid
+        ) values (
+        #id#,
+        sysdate,
+        'SYS',
+        sysdate,
+        'SYS',
+        #maId#,
+        #pubDate#,
+        #maPointType#,
+        #maPoint#,
+        #benefitThisYear#,
+        #rankThisYear#,
+        #benefitThisWeek#,
+        #rankThisWeek#,
+        #benefitThisMonth#,
+        #rankThisMonth#,
+        #benefitThreeMonth#,
+        #rankThreeMonth#,
+        #benefitSixMonth#,
+        #rankSixMonth#,
+        #benefitOneYear#,
+        #rankOneYear#,
+        #benefitTwoYear#,
+        #rankTwoYear#,
+        #benefitThreeYear#,
+        #rankThreeYear#,
+        #benefitFiveYear#,
+        #rankFiveYear#,
+        #benefitTenYear#,
+        #rankTenYear#,
+        #benefitFromBegin#,
+        #yearBenefitFromBegin#,
+        #rankFromBegin#,
+        #benefitWorstSixMonth#,
+        #benefitBestSixMonth#,
+        #batchId#,
+        #status#,
+        #isValid#
+        )
+    </insert>
+
+    <sql id="allFields">
+        id,
+        created_at createdAt,
+        created_by createdBy,
+        updated_at updatedAt,
+        updated_by updatedBy,
+        ma_id maId,
+        pub_date pubDate,
+        ma_point_type maPointType,
+        ma_point maPoint,
+        benefit_this_year benefitThisYear,
+        rank_this_year rankThisYear,
+        benefit_this_week benefitThisWeek,
+        rank_this_week rankThisWeek,
+        benefit_this_month benefitThisMonth,
+        rank_this_month rankThisMonth,
+        benefit_three_month benefitThreeMonth,
+        rank_three_month rankThreeMonth,
+        benefit_six_month benefitSixMonth,
+        rank_six_month rankSixMonth,
+        benefit_one_year benefitOneYear,
+        rank_one_year rankOneYear,
+        benefit_two_year benefitTwoYear,
+        rank_two_year rankTwoYear,
+        benefit_three_year benefitThreeYear,
+        rank_three_year rankThreeYear,
+        benefit_five_year benefitFiveYear,
+        rank_five_year rankFiveYear,
+        benefit_ten_year benefitTenYear,
+        rank_ten_year rankTenYear,
+        benefit_from_begin benefitFromBegin,
+        year_benefit_from_begin yearBenefitFromBegin,
+        rank_from_begin rankFromBegin,
+        benefit_worst_six_month benefitWorstSixMonth,
+        benefit_best_six_month benefitBestSixMonth,
+        batch_id batchId,
+        status status,
+        is_valid isValid
+    </sql>
+
+
+    <select id="queryLatestMaPerRecordByManagerIdAndPubDateAndBatchId" parameterClass="java.util.Map" resultClass="com.lufax.jijin.daixiao.dto.JijinExMaPerfDTO">
+        select <include refid="allFields"/>
+        from bus_jijin_ex_ma_perf
+        where ma_id=#maId#
+        and  batch_id =#batchId#
+        and  pub_date =#pubDate#
+        and  is_valid = 1
+    </select>
+
+    <select id="getManagerLatestPubDateAndBatchIdByManagerId" parameterClass="java.lang.String" resultClass="com.lufax.jijin.daixiao.dto.JijinExMaPerfDTO">
+    	select pub_date pubDate, batch_id batchId
+		  from (select pub_date, batch_id
+		          from bus_jijin_ex_ma_perf
+		         where ma_id = #maId#
+		         and is_valid = 1
+		         order by pub_date desc, batch_id desc)
+		where rownum = 1
+    </select>
+</sqlMap>

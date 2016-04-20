@@ -1,0 +1,13 @@
+[DEP]
+
+[DB1]
+	bettle=1912
+[DB2]
+
+[NOTIFY]
+    xuneng311@pingan.com.cn
+
+[ADVICE]
+   WEBDEV-7980 强赎业务逻辑优化
+     陆金宝七日年化和万份收益接口
+ 

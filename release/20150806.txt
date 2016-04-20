@@ -1,0 +1,11 @@
+[DEP]
+   20150806 jijin-app
+[DB1]
+
+[DB2]
+
+[NOTIFY]
+	xuneng311@pingan.com.cn
+
+[ADVICE]
+    BUG-7325

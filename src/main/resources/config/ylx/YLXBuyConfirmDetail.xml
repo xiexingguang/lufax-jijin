@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="YLX_BUY_CONFIRM_DETAIL">
+
+
+	<typeAlias alias="YLXBuyConfirmDetailDTO"
+		type="com.lufax.jijin.ylx.dto.BuyConfirmDetailDTO" />
+
+	<insert id="insert" parameterClass="YLXBuyConfirmDetailDTO">
+		<selectKey keyProperty="id" resultClass="java.lang.Long">
+			SELECT SEQ_YLX_OPEN_CONFIRM_DETAIL.NEXTVAL FROM DUAL
+		</selectKey>
+		insert into YLX_BUY_CONFIRM_DETAIL (
+		ID,
+		BATCH_ID,
+		INTERNAL_TRX_ID,
+		RESULT_CODE,
+		RESULT_INFO,
+		BANK_ACCOUNT,
+		THIRD_CUSTOMER_ACCOUNT,
+		THIRD_ACCOUNT,
+		THIRD_ACCOUNT_TYPE,
+		PROD_CODE,
+		BUY_TYPE,
+		CONFIRM_FUND_SHARE,
+		AMOUNT,
+		CURRENCY,
+		CREATED_AT,
+		UPDATED_AT,
+		CREATED_BY,
+		UPDATED_BY,
+		purchase_fee,
+		confirm_unit_price
+		) values (
+		#id#,
+		#batchId#,
+		#internalTrxId#,
+		#resultCode#,
+		#resultInfo#,
+		#bankAccount#,
+		#thirdCustomerAccount#,
+		#thirdAccount#,
+		#thirdAccountType#,
+		#prodCode#,
+		#buyType#,
+		#confirmFundShare#,
+		#amount#,
+		#currency#,
+		sysdate,
+		sysdate,
+		'SYS',
+		'SYS',
+		#purchaseFee#,
+		#confirmUnitPrice#)
+	</insert>
+	<sql id="SelectBuyConfirmDTO" >
+        select
+        id id,
+        batch_id batchId,
+        internal_trx_id internalTrxId,
+        result_code resultCode,
+        result_info resultInfo,
+        bank_account bankAccount,
+        third_customer_account thirdCustomerAccount,
+        third_account thirdAccount,
+        third_account_type thirdAccountType,
+        prod_code prodCode,
+        buy_type buyType,
+        confirm_fund_share confirmFundShare,
+        amount amount,
+        currency currency,
+        created_at createdAt,
+        updated_at updatedAt,
+        created_by createdBy,
+        updated_by updatedBy,
+        confirm_unit_price confirmUnitPrice,
+        purchase_fee purchaseFee
+	</sql>
+	<select id="getYlxBuyConfirmsByInternalTrxId"  parameterClass="java.util.Map" resultClass="YLXBuyConfirmDetailDTO">
+        <include refid= "SelectBuyConfirmDTO"/>
+        from YLX_BUY_CONFIRM_DETAIL
+        where
+        <iterate property="ids" open="(" close=")"	conjunction="or">
+            INTERNAL_TRX_ID = #ids[]#
+        </iterate>
+    </select>
+
+</sqlMap>

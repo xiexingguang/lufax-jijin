@@ -1,0 +1,19 @@
+[DEP]
+
+[DB1]
+	bettle=2192
+[DB2]
+
+[NOTIFY]
+   xuneng311@pingan.com.cn
+
+[ADVICE]
+    webdev7970 大华货基异常流程
+	webdev8824 payment 改造
+  
+  申购调减（带清算）
+  赎回调增（带清算）
+  认购失败/部分成功退款 （带清算）
+  申购失败/部分成功退款 （带清算）
+  实时认申购失败解冻，这里有两个接口对应两种冻结case： account，payment
+

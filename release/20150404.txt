@@ -1,0 +1,43 @@
+[DEP]
+    account-app 20150623版本
+    fund-app 20150623版本
+    list-app 20150623版本
+
+[DB1]
+    bettle=256
+	busdata/rel_20150623_jijin/001***
+	busdata/rel_20150623_jijin/002***
+	busdata/rel_20150623_jijin/003***
+	busdata/rel_20150623_jijin/004***
+	busdata/rel_20150623_jijin/005***
+	busdata/rel_20150623_jijin/006***
+	busdata/rel_20150623_jijin/007***
+	busdata/rel_20150623_jijin/008***
+	busdata/rel_20150623_jijin/009***
+	busdata/rel_20150623_jijin/010***
+	busdata/rel_20150623_jijin/011***
+	busdata/rel_20150623_jijin/012***
+	busdata/rel_20150623_jijin/013***
+	busdata/rel_20150623_jijin/014***
+	busdata/rel_20150623_jijin/015***
+	busdata/rel_20150623_jijin/016***
+	busdata/rel_20150623_jijin/017***
+	busdata/rel_20150623_jijin/018***
+	busdata/rel_20150623_jijin/019***
+	busdata/rel_20150623_jijin/020***
+	busdata/rel_20150623_jijin/021***
+	busdata/rel_20150623_jijin/022***
+
+[DB2]
+    mqdata/rel_20150623_jijin/001***
+    acmsdata/rel_20150623_jijin/001***
+    acmsdata/rel_20150623_jijin/002***
+
+[NOTIFY]
+	xuneng311@pingan.com.cn
+	chenzhiqiang288@pingan.com.cn
+	chenguang451@pingan.com.cn
+	chenqunhui168@pingan.com.cn
+
+[ADVICE]
+	prd3157: 基金直连

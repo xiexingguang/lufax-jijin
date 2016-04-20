@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="YLX_OPEN_REQUEST_DETAIL">
+
+    
+    <typeAlias alias="YLXOpenRequestDetailDTO" type="com.lufax.jijin.ylx.dto.YLXOpenRequestDetailDTO"/>
+
+    <insert id="insert" parameterClass="YLXOpenRequestDetailDTO">
+        <selectKey keyProperty="id" resultClass="java.lang.Long">
+            SELECT SEQ_YLX_SERIAL_NUM.NEXTVAL FROM DUAL
+        </selectKey>
+        insert into YLX_OPEN_REQUEST_DETAIL (
+        ID,
+        BATCH_ID,
+        INTERNAL_TRX_ID,
+        TRX_TIME,
+        TRX_DATE,
+        VIRTUAL_BANK_ACCOUNT,
+        BANK_ACCOUNT,
+        BANK_ACCOUNT_TYPE,
+        NAME,
+        ID_TYPE,
+        ID_NO,
+        MOBILE_NO,
+        SEX,
+        LUFAX_BANK_CODE,
+        LUFAX_BANK,
+        RISK_LEVEL,
+        STATUS,
+        CREATED_AT,
+        UPDATED_AT,
+        CREATED_BY,
+        UPDATED_BY      
+        ) values (
+        #id#,
+        #batchId#,
+        #internalTrxId#,
+        #trxTime#,
+        #trxDate#,
+        #virtualBankAccount#,
+        #bankAccount#,
+        #bankAccountType#,
+        #name#,
+        #idType#,
+        #idNo#,
+        #mobileNo#,
+        #sex#,
+        #lufaxBankCode#,
+        #lufaxBank#,
+        #riskLevel#,
+        #status#,
+        sysdate,
+        sysdate,
+        'sys',
+        'sys')
+    </insert>
+    
+    <sql id="SelectOpenRequestDTO">
+        select
+        ID as id,
+        BATCH_ID as batchId,
+        INTERNAL_TRX_ID as internalTrxId,
+        TRX_TIME as trxTime,
+        TRX_DATE as trxDate,
+        VIRTUAL_BANK_ACCOUNT as virtualBankAccount,
+        BANK_ACCOUNT as bankAccount,
+        BANK_ACCOUNT_TYPE as bankAccountType,
+        NAME as name,
+        ID_TYPE as idType,
+        ID_NO as idNo,
+        MOBILE_NO as mobileNo,
+        SEX as sex,
+        LUFAX_BANK_CODE as lufaxBankCode,
+        LUFAX_BANK as lufaxBank,
+        RISK_LEVEL as riskLevel,
+        STATUS as status,
+        CREATED_AT as createdAt,
+        UPDATEd_AT as updatedAt,
+        CREATED_BY as createdBy,
+        UPDATED_BY as updatedBy
+    </sql>
+    
+    <select id="getMaxInternalTrxIdsBybatchId" parameterClass="java.lang.Long"  resultClass="java.lang.Long">
+        select max(internal_trx_id)
+        from YLX_OPEN_REQUEST_DETAIL where batch_id=#batchId#
+    </select>
+
+
+	<select id="countOpenRequestBybatchId" parameterClass="java.lang.Long"  resultClass="java.lang.Long">
+        select count(*)
+        from YLX_OPEN_REQUEST_DETAIL where batch_id=#batchId#
+    </select>
+    
+    <select id="sumAmountByBatchIdAndRownum" parameterClass="map"  resultClass="java.math.BigDecimal">
+     <![CDATA[
+        select sum(AMOUNT) from (select rownum as rn,t.* from YLX_OPEN_REQUEST_DETAIL t where batch_id=#batchId# and rownum >0 order by t.id)
+        where rn>=#start# and rn<=#end#    
+        ]]>
+    </select>
+    
+	<select id="getYLXOpenRequestDTOsByBatchId" parameterClass="map"  resultClass="YLXOpenRequestDetailDTO">
+		<include refid="SelectOpenRequestDTO"/>
+		 <![CDATA[                                       
+	    from (select rownum as rn,t.* from YLX_OPEN_REQUEST_DETAIL t where batch_id=#batchId# and rownum >0 order by t.id)
+        where rn>=#start# and rn<#end#                                     
+	     ]]>
+    </select>
+
+	<select id="getUnfilledOpenRequests" parameterClass="map"  resultClass="YLXOpenRequestDetailDTO">
+		<include refid="SelectOpenRequestDTO"/>
+		 <![CDATA[from YLX_OPEN_REQUEST_DETAIL where batch_id=#batchId# and name is NULL and rownum<#size# order by id]]>
+    </select>
+    
+    <update id="updateYLXOpenRequest" parameterClass="YLXOpenRequestDetailDTO">
+        update YLX_OPEN_REQUEST_DETAIL
+        set name=#name#,
+        id_type=#idType#,
+        id_no=#idNo#,
+        mobile_no=#mobileNo#,
+        sex=#sex#,
+        status=#status#,
+        risk_level=#riskLevel#,
+        updated_at = sysdate
+        where id=#id#
+    </update>
+
+    <update id="updateBatchId" parameterClass="map">
+        update YLX_OPEN_REQUEST_DETAIL
+        set batch_id = #toBatchId#,
+            updated_at = sysdate
+        where batch_id = #fromBatchId#
+        and trx_date = #targetDate#
+    </update>
+    
+    <select id="getOpeningOpenRequests" parameterClass="map"  resultClass="YLXOpenRequestDetailDTO">
+		<include refid="SelectOpenRequestDTO"/>
+		 <![CDATA[from YLX_OPEN_REQUEST_DETAIL where batch_id=#batchId# and status=#status# and rownum<#size# order by id]]>
+    </select>
+
+</sqlMap>

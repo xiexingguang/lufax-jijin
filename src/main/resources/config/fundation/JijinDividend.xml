@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+        
+<sqlMap namespace="BusJijinDividend">
+    <insert id="insertBusJijinDividend" parameterClass="com.lufax.jijin.fundation.dto.JijinDividendDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select SEQ_BUS_JIJIN_DIVIDEND.nextval as id from dual
+        </selectKey>
+        <![CDATA[
+            insert into busdata.bus_jijin_dividend (
+                id,
+                file_id,
+                user_id,
+                inst_id,
+                app_sheet_no,
+                fund_code,
+                dividend_type,
+                right_date,
+                trx_date,
+                dividend_date,
+                charge_type,
+                dividend_share,
+                dividend_amount,
+                fee,
+                dividend_mode,
+                res_code,
+                res_msg,
+                status,
+                created_at,
+                updated_at,
+                created_by,
+                updated_by
+            )
+            values (
+                #id#,
+                #fileId#,
+                #userId#,
+                #instId#,
+                #appSheetNo#,
+                #fundCode#,
+                #dividendType#,
+                #rightDate#,
+                #trxDate#,
+                #dividendDate#,
+                #chargeType#,
+                #dividendShare#,
+                #dividendAmount#,
+                #fee#,
+                #dividendMode#,
+                #resCode#,
+                #resMsg#,
+                #status#,
+                sysdate,
+                sysdate,
+                'sys',
+                'sys'
+            )
+        ]]>
+    </insert>
+
+    <sql id="SelectJijinDividendDTO">
+		select
+			id id,
+			file_id fileId,
+			user_id userId,
+			inst_id instId,
+			app_sheet_no appSheetNo,
+			fund_code fundCode,
+			dividend_type dividendType,
+			right_date rightDate,
+			trx_date trxDate,
+			dividend_date dividendDate,
+			charge_type chargeType,
+			dividend_share dividendShare,
+			dividend_amount dividendAmount,
+			fee fee,
+			dividend_mode dividendMode,
+			res_code resCode,
+			res_msg resMsg,
+			status status,
+			created_at createdAt,
+			updated_at updatedAt,
+			created_by createdBy,
+			updated_by updatedBy
+    </sql>
+
+    <select id="findBusJijinDividend" parameterClass="java.util.Map" resultClass="com.lufax.jijin.fundation.dto.JijinDividendDTO">
+        <include refid="SelectJijinDividendDTO" />
+        from busdata.bus_jijin_dividend
+        where 1=1        
+        <isNotEmpty prepend="and" property="id">
+            id = #id#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="fileId">
+            file_id = #fileId#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="userId">
+            user_id = #userId#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="instId">
+            inst_id = #instId#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="appSheetNo">
+            app_sheet_no = #appSheetNo#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="fundCode">
+            fund_code = #fundCode#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="dividendType">
+            dividend_type = #dividendType#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="rightDate">
+            right_date = #rightDate#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="trxDate">
+            trx_date = #trxDate#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="dividendDate">
+            dividend_date = #dividendDate#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="chargeType">
+            charge_type = #chargeType#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="dividendShare">
+            dividend_share = #dividendShare#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="dividendAmount">
+            dividend_amount = #dividendAmount#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="fee">
+            fee = #fee#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="dividendMode">
+            dividend_mode = #dividendMode#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="resCode">
+            res_code = #resCode#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="resMsg">
+            res_msg = #resMsg#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="status">
+            status = #status#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="createdAt">
+            created_at = #createdAt#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="updatedAt">
+            updated_at = #updatedAt#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="createdBy">
+            created_by = #createdBy#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="updatedBy">
+            updated_by = #updatedBy#
+        </isNotEmpty>
+    </select>
+    
+    
+    <select id="findBatchBusJijinDividend" parameterClass="java.util.Map" resultClass="com.lufax.jijin.fundation.dto.JijinDividendDTO">
+        <include refid="SelectJijinDividendDTO" />
+        from busdata.bus_jijin_dividend
+        where status = #status#
+        and dividend_type = #dividendType#
+        <![CDATA[
+            and rownum <= #maxNum#
+        ]]>
+    </select>
+
+
+
+    <update id="updateBusJijinDividend" parameterClass="java.util.Map">
+        update busdata.bus_jijin_dividend t set
+        <isNotEmpty property="id">
+            t.id = #id#,
+        </isNotEmpty>
+        <isNotEmpty property="fileId">
+            t.file_id = #fileId#,
+        </isNotEmpty>
+        <isNotEmpty property="userId">
+            t.user_id = #userId#,
+        </isNotEmpty>
+        <isNotEmpty property="instId">
+            t.inst_id = #instId#,
+        </isNotEmpty>
+        <isNotEmpty property="appSheetNo">
+            t.app_sheet_no = #appSheetNo#,
+        </isNotEmpty>
+        <isNotEmpty property="fundCode">
+            t.fund_code = #fundCode#,
+        </isNotEmpty>
+        <isNotEmpty property="dividendType">
+            t.dividend_type = #dividendType#,
+        </isNotEmpty>
+        <isNotEmpty property="rightDate">
+            t.right_date = #rightDate#,
+        </isNotEmpty>
+        <isNotEmpty property="trxDate">
+            t.trx_date = #trxDate#,
+        </isNotEmpty>
+        <isNotEmpty property="dividendDate">
+            t.dividend_date = #dividendDate#,
+        </isNotEmpty>
+        <isNotEmpty property="chargeType">
+            t.charge_type = #chargeType#,
+        </isNotEmpty>
+        <isNotEmpty property="dividendShare">
+            t.dividend_share = #dividendShare#,
+        </isNotEmpty>
+        <isNotEmpty property="dividendAmount">
+            t.dividend_amount = #dividendAmount#,
+        </isNotEmpty>
+        <isNotEmpty property="fee">
+            t.fee = #fee#,
+        </isNotEmpty>
+        <isNotEmpty property="dividendMode">
+            t.dividend_mode = #dividendMode#,
+        </isNotEmpty>
+        <isNotEmpty property="resCode">
+            t.res_code = #resCode#,
+        </isNotEmpty>
+        <isNotEmpty property="resMsg">
+            t.res_msg = #resMsg#,
+        </isNotEmpty>
+        <isNotEmpty property="status">
+            t.status = #status#,
+        </isNotEmpty>
+        <isNotEmpty property="createdAt">
+            t.created_at = #createdAt#,
+        </isNotEmpty>
+        <isNotEmpty property="createdBy">
+            t.created_by = #createdBy#,
+        </isNotEmpty>
+        <isNotEmpty property="updatedBy">
+            t.updated_by = #updatedBy#,
+        </isNotEmpty>
+        t.updated_at=sysdate
+        where t.id = #id#
+    </update>
+
+</sqlMap>

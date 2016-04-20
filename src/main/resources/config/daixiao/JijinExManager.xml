@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="BusJijinExManager">
+
+    <insert id="insertJijinExManager" parameterClass="com.lufax.jijin.daixiao.dto.JijinExManagerDTO">
+        <selectKey resultClass="java.lang.Long" keyProperty="id">
+            select seq_bus_jijin_ex_manager.nextval as id from dual
+        </selectKey>
+
+        <![CDATA[
+            insert into bus_jijin_ex_manager (
+                id,
+                fund_code,
+                manager,
+                resume,
+                batch_id,
+                status,
+                error_msg,
+                is_valid,
+                manager_id,
+   				pub_date,
+				gender,
+				education,
+				appoint_date,
+                created_at,
+                updated_at,
+                created_by,
+                updated_by
+            )
+            values (
+                #id#,
+                #fundCode#,
+                #manager#,
+                #resume#,
+                #batchId#,
+                #status#,
+                #errorMsg#,
+                #isValid#,
+                #managerId#,
+   				#pubDate#,
+				#gender#,
+				#education#,
+				#appointDate#,
+                sysdate,
+                sysdate,
+                'sys',
+                'sys'
+            )
+        ]]>
+    </insert>
+
+    <sql id="selectAll">
+        select
+        id id,
+        fund_code fundCode,
+        manager manager,
+        resume resume,
+        batch_id batchId,
+        status status,
+        error_msg errorMsg,
+        is_valid isValid,
+        manager_id managerId,
+   		pub_date pubDate,
+		gender gender,
+		education education,
+		appoint_date appointDate,
+        created_at createdAt,
+        updated_at updatedAt,
+        created_by createdBy,
+        updated_by updatedBy
+        from bus_jijin_ex_manager
+    </sql>
+
+    <select id="getJijinExManagerByBatchId" parameterClass="java.lang.Long" resultClass="com.lufax.jijin.daixiao.dto.JijinExManagerDTO">
+        <include refid="selectAll"></include>
+        where batch_id=#batchId#
+
+    </select>
+
+    <select id="getJijinExManagerBatchIdByFundCode" parameterClass="java.lang.String" resultClass="java.lang.Long">
+        select max(batch_id) from bus_jijin_ex_manager
+        where
+        fund_code=#fundCode#
+    </select>
+
+
+    <select id="getJijinExManagersByStatus" parameterClass="java.util.Map" resultClass="com.lufax.jijin.daixiao.dto.JijinExManagerDTO">
+        <include refid="selectAll"></include>
+        <![CDATA[
+            where status=#status#
+            and rownum <= #maxNum#
+        ]]>
+    </select>
+
+    <select id="getJijinExManagerById" parameterClass="java.lang.Long" resultClass="com.lufax.jijin.daixiao.dto.JijinExManagerDTO">
+        <include refid="selectAll"></include>
+        where
+        id=#id#
+    </select>
+
+    <select id="getJijinExManagersByBatchIdAndFundCode" parameterClass="java.util.Map" resultClass="com.lufax.jijin.daixiao.dto.JijinExManagerDTO">
+        <include refid="selectAll"></include>
+        where
+            batch_id=#batchId#
+        and fund_code = #fundCode#
+    </select>
+
+    <update id="updateJijinExManager" parameterClass="java.util.Map">
+        update bus_jijin_ex_manager t set
+        t.status = #status#,
+        <isNotEmpty property="errorMsg">
+            t.error_msg = #errorMsg#,
+        </isNotEmpty>
+        t.updated_at=sysdate
+        where t.id = #id#
+    </update>
+
+
+</sqlMap>

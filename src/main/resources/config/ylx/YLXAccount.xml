@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="YLX_ACCOUNT">
+
+
+	<typeAlias alias="YLXAccountDTO" type="com.lufax.jijin.ylx.dto.YLXAccountDTO" />
+	<sql id="SelectAccountDTO">
+		select
+		ID AS id,
+		THIRD_CUSTOMER_ACCOUNT as thirdCustomerAccount,
+		THIRD_ACCOUNT as thirdAccount,
+		THIRD_ACCOUNT_TYPE as thirdAccountType,
+		USER_ID as userId,
+		CREATED_AT as createdAt,
+		UPDATED_AT as updatedAt,
+		CREATED_BY as createdBy,
+		UPDATED_BY as updatedBy
+	</sql>
+
+	<select id="getUserByIds" parameterClass="map" resultClass="Long">
+        select user_id from YLX_ACCOUNT
+        where user_id in 
+        <iterate property="ids" open="(" close=")" conjunction=",">
+        	#ids[]#
+        </iterate>
+    </select>
+    
+   	<select id="getUserDTOsByIds" parameterClass="map" resultClass="YLXAccountDTO">
+        <include refid="SelectAccountDTO"/> 
+        from YLX_ACCOUNT where user_id in 
+        <iterate property="ids" open="(" close=")" conjunction=",">
+        	#ids[]#
+        </iterate>
+    </select>
+ 
+ </sqlMap>

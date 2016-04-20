@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="INVESTMENT_REQUEST">
+
+    <typeAlias alias="InvestmentRequestDTO" type="com.lufax.jijin.trade.dto.InvestmentRequestDTO"/>
+
+    <sql id="fieldsMapping">
+        IR.PRODUCT_ID as productId,
+        IR.loaner_user_id as loanerId,
+        IR.STATUS as status,
+        IR.CREATED_AT as createdAt,
+        IR.UPDATED_AT as updatedAt,
+        IR.STATUS_TO_XINBAO as statusToXinbao,
+        IR.VERSION as version,
+        IR.TRX_ID as trxId,
+        IR.INVESTMENT_AMOUNT as investmentAmount,
+        IR.ORDER_TIME as orderTime,
+        IR.ORDER_ID as orderId,
+        IR.POLICY_NO as policyNo,
+        IR.PROPOSAL_NO as proposalNo,
+        IR.ID as id
+    </sql>
+
+    <select id="getInvestmentRequestByProductId" parameterClass="long" resultClass="InvestmentRequestDTO">
+        select
+        <include refid="fieldsMapping"/>
+        from INVESTMENT_REQUESTS IR
+        where IR.PRODUCT_ID=#value#
+    </select>
+
+    <select id="getInvestmentRequestById" parameterClass="long" resultClass="InvestmentRequestDTO">
+        select
+        <include refid="fieldsMapping"/>
+        from INVESTMENT_REQUESTS IR
+        where IR.ID=#value#
+    </select>
+	<select id="getInvestmentRequestByTrxId" parameterClass="java.lang.Long" resultClass="InvestmentRequestDTO">
+        select
+        <include refid="fieldsMapping"/>
+        from INVESTMENT_REQUESTS IR
+        where IR.trx_id=#value#
+    </select>
+</sqlMap>
